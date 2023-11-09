@@ -23,7 +23,7 @@ export default function UploadProduct() {
     category: "",
     subBrandName: "",
     price: Number,
-    stock: Number,
+    stock: 0,
     discountPrice: Number,
     productDetails: "",
   });
