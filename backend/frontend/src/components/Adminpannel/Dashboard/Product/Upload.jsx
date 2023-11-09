@@ -149,6 +149,8 @@ export default function UploadProduct() {
       });
   }, [productformData.category]);
   //   get data of categories in database
+  console.log(" this is from changes by aun branch ");
+  
 
   return (
     <div className="upload-product-container">
