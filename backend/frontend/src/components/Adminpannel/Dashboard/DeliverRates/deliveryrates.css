@@ -1,0 +1,114 @@
+.delivery-price-container{
+    padding-left:7vw;
+    padding-right: 7vw;
+    margin-top: 4vh;
+    margin-bottom: 10vh;
+}
+/* .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Dropdown content styles */
+
+.custom-dropdown{
+  position: relative;
+  display: inline-block;
+}
+
+
+  .custom-dropdown-content{
+    display: none;
+    position: absolute;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    left: 0;
+    margin-top: -0.5vh;
+  }
+  .custom-dropdown:hover .custom-dropdown-content{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .custom-dropdown-content>button{
+    border: none;
+    margin: 0.1vh 0;
+    height: 4vh;
+  }
+  .deliver-cb{
+    margin-bottom: 3vh;
+    padding: 10px;
+  }
+  .delivery-AC{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-left: 2vw;
+    margin-top: 4vh;
+    background-color: #f5f5f5;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    padding-top:2vh ;
+    padding-bottom: 2vh;
+  }
+  .delivery-AC > div{
+    display: flex;
+    flex-direction: column;
+    margin-right: 2vw;  
+  }
+  
+  .delivery-AC > div> label{
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-bottom: 1vh;
+  }
+  .delivery-AC > div>input{
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  .delivery-AC > button{
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 3vh;
+    margin-left: 18vw;
+  }
+  .delivery-AC > button:hover{
+    background-color:transparent;
+    color: black;
+    border: 1px solid black;
+
+  }
+  .update-delivery-modal{
+    margin-top: 4vh;
+  }
+  .update-delivery-modal >div >input{
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-bottom: 1vh;
+  }
+  .update-delivery-modal > button{
+    padding: 10px 20px !important;
+    background-color: #dc3545 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    font-size: 16px !important;
+    width: 10vw;
+    margin-top: 2vh;
+  }

@@ -1,0 +1,162 @@
+.update-product-container{
+  /* background-color: rgb(31, 196, 196) !important; */
+  margin-right: 7vw;
+  margin-left: 7vw;
+  /* background-color: #ccc; */
+
+}
+.update-product-container> h1 {
+text-align: center;
+margin-top: 5vh;
+}
+.product-form {
+    display: flex;
+    flex-direction: column;
+    /* max-width: 400px; */
+    margin: 0 auto;
+    padding-left: 5vw;
+    margin-bottom: 10vh !important;
+    background-color: #f5f5f5; /* Set a light gray background color */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    padding-top: 4vh !important;
+    padding-bottom: 4vh;
+  }
+  
+  .get-productid-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-left: 5vw;
+    margin-top: 4vh;
+    background-color: #f5f5f5;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    padding-top:2vh ;
+    padding-bottom: 2vh;
+  }
+  
+  
+  
+  .get-productid-container >div{
+    display: flex;
+    flex-direction: column;
+  }
+  .get-productid-container label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-bottom: 1vh;
+  }
+  
+  .get-productid-container input {
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .get-productid-container button {
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 3vh;
+  }
+  
+  .get-productid-container button:hover {
+    background-color:transparent;
+    color: black;
+    border: 1px solid black;
+  }
+  
+  
+  
+  .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    
+
+  }
+  
+  .form-group label {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 40%;
+    padding: 10px;
+
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 1vh;
+  }
+  
+  .form-group select {
+    height: 40px;
+  }
+  
+  .form-group input[type="file"] {
+    padding: 0;
+  }
+  
+  .product-update-button {
+    background-color: #dc3545; /* Set the background color to red */
+    color: white; /* Set the text color to white */
+    border: none; /* Remove the button border */
+    padding: 10px 20px; /* Add padding for better appearance */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer;
+    width: 20vw; /* Change cursor to pointer on hover */
+    margin-top: 4vh;
+   
+  }
+  
+  /* Change button background color on hover */
+  .product-update-button:hover {
+    background-color: transparent; /* Set background color to transparent on hover */
+    color: black;
+    border: 1px solid black; /* Change text color on hover */ /* Add a border on hover */
+  }
+
+  .image-container{
+    background-color: aqua;
+    margin-bottom: 10vh;
+    padding-bottom: 4vh;
+    padding-left: 5vw;
+    background-color: #f5f5f5;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    padding-top: 2vh;
+  }
+  .image-container> h1 {
+    margin-bottom: 2vh;
+  }
+
+  .image-container> div > img{
+    width: 200px;
+    margin-right: 2vw;
+  }
+
+  .image-container> div >button{
+    background-color: #dc3545; /* Set the background color to red */
+    color: white; /* Set the text color to white */
+    border: none; /* Remove the button border */
+    padding: 10px 20px; /* Add padding for better appearance */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer;/* Change cursor to pointer on hover */
+    margin-top: 4vh;
+  }
+  .image-container >div> button:hover {
+    background-color: transparent; /* Set background color to transparent on hover */
+    color: black;
+    border: 1px solid black; /* Change text color on hover */ /* Add a border on hover */
+  }

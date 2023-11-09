@@ -1,0 +1,16 @@
+*{
+    margin: 0;
+    padding: 0;
+    
+}
+
+.admin-button{
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 15vw;
+    background-color: #dc3545;
+    color: white;
+}

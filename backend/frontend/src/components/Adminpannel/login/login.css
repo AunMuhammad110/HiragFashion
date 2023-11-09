@@ -1,0 +1,83 @@
+
+.Login-Form > input{
+    width: 20vw;
+}
+.password-wrapper{
+    display: flex;
+    flex-direction: row;
+    width: 21.3vw;
+    justify-content: space-between;
+    border: 1px solid rgb(183, 183, 183);
+    height: 5vh;
+    border-radius: 4px;
+
+}
+.password-wrapper >input{
+    border: none;
+    outline: none;
+}
+/* Center the content vertically and horizontally */
+.login-main-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0; /* Background color */
+  }
+  
+  /* Style for the login container */
+  .login-container {
+    border: 1px solid #ccc; /* Border for the login container */
+    border-radius: 5px;
+    padding: 20px;
+    width: 22vw; /* Adjust the width as needed */
+    background-color: #fff; /* Background color for the login container */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
+    padding-right: 2.5vw !important;
+    height: 40vh;
+}
+  
+  /* Style for the login form */
+  .Login-Form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Style for the form inputs */
+  .input-box {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+  }
+  
+  /* Style for the submit button */
+  .input-button {
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF; /* Button background color */
+    color: #fff; /* Text color for the button */
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 0.8vw;
+  }
+  
+  /* Style for the login heading */
+  .login-heading {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Style for the eye icon */
+  .eye-icon {
+    margin-top: 10px;
+    text-align: right;
+    margin-right: 0.5vw;
+  }
+  

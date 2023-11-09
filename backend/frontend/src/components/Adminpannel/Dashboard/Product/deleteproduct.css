@@ -1,0 +1,60 @@
+.delete-product-container{
+    background-color: aqua;
+    margin-right: 7vw;
+    margin-left: 7vw;
+    margin-top: 4vh;
+    height: 20vh;
+    background-color: #f5f5f5; /* Set a light gray background color */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    padding-top: 10vh;
+}
+.delete-product-container > h1{
+    /* text-align: center; */
+    font-style: italic;
+    margin-left: 5vw;
+}
+.delete-product-container > div{
+    margin-top: 2vh;
+}   
+.delete-product-container > div>input{
+    width: 20%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 1vw;
+    height: 3vh;
+    margin-left: 5vw !important;
+    margin-top: 1vh;
+}
+.delete-product-container > div >button{
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 5vh;
+    transition: background-color 0.3s ease;
+}
+.delete-product-container > div >button:hover {
+    background-color: transparent;
+    border: 1px solid black;
+    color: black !important;
+  }
+
+  .delete-modal-container{
+    width: 35vw !important;
+    border-radius: 10px;
+  }
+  .delete-modal-container >div{
+    padding-left: 1vw;
+  }
+  .delete-modal-container >p{
+
+    margin-left: 4vw;
+    /* margin-right: 4vw; */
+  }
+  .delete-modal-container {
+    padding-right: 4vw;
+  }

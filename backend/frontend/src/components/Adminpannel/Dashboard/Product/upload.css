@@ -1,0 +1,438 @@
+/* Upload product css  */
+/* Add this CSS to your stylesheet */
+.upload-product-container{
+    /* background-color: rgb(31, 196, 196) !important; */
+    margin-right: 7vw;
+    margin-left: 7vw;
+    /* background-color: #ccc; */
+
+}
+.upload-product-container> h1 {
+  text-align: center;
+  margin-top: 5vh;
+}
+
+.upload-product-container >h1{
+    text-align: center;
+    margin-top: 2vh;
+
+}
+.product-form {
+    display: flex;
+    flex-direction: column;
+    /* max-width: 400px; */
+    margin: 0 auto;
+    padding-left: 5vw;
+    margin-bottom: 10vh !important;
+    background-color: #f5f5f5; /* Set a light gray background color */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    padding-top: 4vh !important;
+    padding-bottom: 4vh;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    
+
+  }
+  
+  .form-group label {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 40%;
+    padding: 10px;
+
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 1vh;
+  }
+  
+  .form-group select {
+    height: 40px;
+  }
+  
+  .form-group input[type="file"] {
+    padding: 0;
+  }
+  
+  .product-upload-button {
+    background-color: #dc3545; /* Set the background color to red */
+    color: white; /* Set the text color to white */
+    border: none; /* Remove the button border */
+    padding: 10px 20px; /* Add padding for better appearance */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer;
+    width: 20vw; /* Change cursor to pointer on hover */
+    margin-top: 4vh;
+   
+  }
+  
+  /* Change button background color on hover */
+  .product-upload-button:hover {
+    background-color: transparent; /* Set background color to transparent on hover */
+    color: black;
+    border: 1px solid black; /* Change text color on hover */ /* Add a border on hover */
+  }
+
+
+  .category-bar>p{
+    cursor: pointer;
+  }
+  .category-bar>p:hover{
+    font-size: 17px;
+  }
+.category-bar{
+    /* background-color: antiquewhite; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: black !important;
+    color: white;
+    padding-left: 2vw !important;
+    font-style: italic;
+    margin-top: 4vh;
+    margin-bottom: 6vh;
+    padding: 2px;
+}
+.custom-button {
+    background-color: #dc3545;
+    padding: 10px 20px;
+    border: none;
+    color: white !important;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+    border: 1px black solid;
+    margin-right: 0.6vw;
+    font-style: italic !important;
+    border-radius: 6px;
+    
+  
+    /* On hover, change background color to transparent */
+    &:hover {
+      background-color: transparent;
+      color: red;
+      border: 1px solid white;
+    }
+  }
+
+/* Inside your CSS file or a scategoy-checkboxestyle block in your component */
+/* Style for the input box */
+
+.category-main-container{
+  background-color: #f5f5f5; /* Set a light gray background color */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  padding-left: 5vw;
+  margin-bottom: 3vh;
+  padding-bottom: 3vh;
+}
+.category-main-container >p{
+  /* font-weight: bold; */
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.category-container{
+    width: 86vw;
+    /* margin-left: 5vw; */
+    padding-top: 3vh;
+    margin-bottom: 1.5vh;
+    
+}
+.category-container >label{
+  font-size: 20px;
+  font-weight: bold;
+}
+.category-container input[type="text"] {
+    width: 20%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 1vw;
+    height: 3vh;
+    margin-top: 1vh;
+  }
+  
+  /* Style for the submit button */
+  .category-container >button {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top:   2vh;
+    transition: background-color 0.3s ease;
+
+  }
+  
+  /* Change button background color on hover */
+  .category-container >button:hover {
+    background-color: transparent;
+    border: 1px solid black;
+    color: black !important;
+  }
+  
+.category-form > p{
+    cursor: pointer;
+}
+.product-form{
+    /* background-color: aquamarine; */
+}
+
+.update-category-container{
+    padding-left: 5vw !important;
+    margin-bottom: 4vh !important;
+    background-color: #f5f5f5; /* Set a light gray background color */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    width: 81vw;
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+}
+.update-category-container> p {
+  margin-top: 1vh;
+}
+.update-category-container input[type="text"] {
+    width: 20%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 1vw;
+    height: 3vh;
+    margin-top: 1vh;
+    /* margin-left: 5vw !important; */
+  }
+  
+  /* Style for the submit button */
+  .update-category-container > button {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+  }
+  .update-category-container > button:hover{
+    background-color: transparent;
+    border: 1px solid black;
+  }
+
+  .remove-category-container{
+    margin-bottom: 4vh;
+    background-color: #f5f5f5; /* Set a light gray background color */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    width: 81vw;
+    padding-left: 5vw;
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+  }
+  .remove-category-container input[type="text"] {
+    width: 30%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 1vw;
+    height: 3vh;
+    margin-top: 1vh;
+  }
+  
+  /* Style for the submit button */
+  .remove-category-container > button {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    height:5vh;
+    transition: background-color 0.3s ease;
+
+  }
+  .remove-category-container> button:hover{
+    background-color: transparent;
+    border: 1px solid black;
+    color: black;
+  }
+
+
+  /* Modal CSS */
+  /* modal-styles.css */
+
+/* Style for the modal container */
+.modal-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40vw;
+    background-color: white; /* Set the background color to white */
+    border: 2px solid #000;
+    box-shadow: 24px;
+    padding: 20px;
+  }
+  
+  /* Style for the "Remove Category" heading */
+  .modal-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  /* Style for the modal content */
+  .modal-container p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  /* Style for the "Yes" and "No" buttons */
+  .modal-container button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 6vw;
+    float: right;
+    background-color: #dc3545;
+  }
+  
+  /* Change button background color on hover */
+  .modal-container button:hover {
+    background-color: transparent;
+    color: black;
+  }
+  
+  /* Style for the "No" button */
+  .modal-container button:last-child {
+    background-color: transparent;
+    border: 1px solid #0074d9;
+    color: #0074d9;
+  }
+  
+  /* Change "No" button background color on hover */
+  .modal-container button:last-child:hover {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+
+  .input-label{
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 1vh !important;
+  }
+
+
+
+.categoy-checkboxes{
+  /* background-color: #0074d9; */
+  margin-top: 2vh;
+}
+.categoy-checkboxes> div{
+  margin-top: 1vh;
+  margin-bottom: 1.5vh;
+}
+.categoy-checkboxes> div> input{  
+  transform: scale(1.3);
+}
+.categoy-checkboxes> div>label{
+  font-size: 18px !important;
+  margin-left: 0.6vw;
+}
+
+.update-sub-category{
+  padding-top: 3vh;
+  margin-right: 5vw;
+}
+.update-sub-category >form{
+  margin-top: 2vh;
+}
+
+.update-sub-category >form >button{
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 15vw;
+  background-color: #dc3545;
+  color: white;
+}
+.update-sub-category >form >button:hover{
+  background-color: transparent;
+  color: black;
+  border: 1px solid black;
+}
+.update-sub-category >form > select{
+  margin-top: 1vh;
+  width: 15vw;
+  height: 5vh;
+  margin-bottom: 2vh;
+}
+
+.update-sub-category >form >input {
+  width: 30%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 1vw;
+  height: 3vh;
+  margin-top: 1vh;
+}
+
+
+
+
+
+
+.sub-category-remove{
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  padding-top: 3vh;
+  margin-right: 5vw;
+}
+.sub-category-remove > div{
+  display: flex !important;
+  flex-direction: column;
+}
+.sub-category-remove > div > select{
+  width: 15%;
+  height: 5vh;
+}
+.buttons-sub-remove{
+  display: flex;
+  flex-direction: row !important;
+}
+.buttons-sub-remove> button{
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 15vw;
+  float: right;
+  background-color: #dc3545;
+  color: white;
+}
+.buttons-sub-remove> button:hover{
+  background-color: transparent;
+  color: black;
+  border: 1px solid black;
+}
+.remove-category-container{
+
+}
