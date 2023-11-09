@@ -76,7 +76,7 @@ return (
           />
           <div className="password-wrapper">
             <input
-              className="password-box input-box"
+              className="password-box "
               type={showPassword ? "text" : "password"}
               placeholder="Enter Password"
               required
