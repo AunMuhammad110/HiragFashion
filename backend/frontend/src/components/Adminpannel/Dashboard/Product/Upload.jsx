@@ -148,8 +148,6 @@ export default function UploadProduct() {
         console.log(error);
       });
   }, [productformData.category]);
-  //   get data of categories in database
-  console.log(" this is from changes by aun branch ");
   
 
   return (
