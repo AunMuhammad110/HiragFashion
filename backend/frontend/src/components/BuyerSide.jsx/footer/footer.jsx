@@ -1,91 +1,133 @@
 import React from "react";
-import './footer.css';
-import logo from './hg2r.png'
+import "./footer.css";
+import logo from "./hg2r.png";
+import { Navigate, useNavigate } from "react-router-dom";
 
-function Footer(){
-    return(
-        <>
-        <footer>
+function Footer() {
+  const navigate=useNavigate();
+  ()=>navigate('/')
+  return (
+    <>
+      <footer>
         <div className="footer-wrap">
-  <div className="container-fluid first_className">
-    <hr className="ss"/>
-      <div className="row">
-    
-        <div className="col-md-4 col-sm-6">
-          <h2 className="sad">BE THE FIRST TO KNOW</h2>
-          <p>Get all the latest information on launch of latest Collections, Sale New Arrival and many more. Sign up for our newsletter today.</p>
-        </div>
-        <div className="col-md-4 col-sm-6">
-        <form className="newsletter">
-           <input type="text" placeholder="Email Address"/> 
-                                                        <button className="newsletter_submit_btn" type="submit"><i className="fa fa-paper-plane"></i></button>  
-        </form>
-        
-        </div>
-        <div className="col-md-4 col-sm-6">
-        <div className="col-md-12">
-          <div className="standard_social_links">
-        <div>
-          <li className="round-btn btn-facebook"><a href="#"><i className="fab fa-facebook-f"></i></a>
-
-          </li>
-          <li className="round-btn btn-instagram"><a href="#"><i className="fab fa-instagram" aria-hidden="true"></i></a>
-
-          </li>
-          <li className="round-btn btn-whatsapp"><a href="#"><i className="fab fa-whatsapp" aria-hidden="true"></i></a>
-
-          </li>
-          <li className="round-btn btn-envelop"><a href="#"><i className="fa fa-envelope" aria-hidden="true"></i></a>
-          </li>
-        </div>
-      </div>  
-        </div>
-          <div className="clearfix"></div>
-        <div className="col-md-12"><h3>Stay Connected</h3></div>
-        </div>
-        <hr />
-      </div>
-  </div>
-    <div className="second_className">
-      <div className="container-fluid second_className_bdr">
-      <div className="row">
-        <div className="col-md-4 col-sm-6">
-
-          <div className="footer-logo"><img src={logo} alt="logo" width='350px' height='200px'/>
-          </div>
-<p>One of the best clothing from where you can get all the brands, latest collection, wedding collection</p>        </div>
-        <div className="col-md-4 col-sm-6">
-          <h3>Quick  LInks</h3>
-          <ul className="footer-links">
-            <li><a href="#">Home</a>
-            </li>
-            <li><a href="#">About us</a>
-            </li>
-            <li><a href="#">Contact Us</a>
-            </li>
-            <li><a href="#" target="_blank">Terms &amp; Conditions</a>
-            </li>
-            <li><a href="#">Share your views</a>
-            </li>
-          </ul>
-        </div>
-        <div className="col-md-4 col-sm-6">
-          <h3>INFORMATION</h3>
-          <ul className="footer-category">
-            <li><a href="#" target="_blank">Privacy Policy</a>
-            </li>
-            <li><a href="#">Refund Policy</a>
-            </li>
-            <li><a href="#">Custom Tailoring</a>
-            </li>
-            <li><a href="#">FAQ's</a>
-            </li>
-          </ul>
-          <div className="clearfix"></div>
-        </div>
-            <div className="copyright"> @Copyright 2023 | All Right Reserved and developed by Auniz Tech Innovators</div>
+          <div className="container-fluid first_className">
+            <hr className="ss" />
+            <div className="row">
+              <div className="col-md-4 col-sm-6">
+                <h2 className="sad">BE THE FIRST TO KNOW</h2>
+                <p>
+                  Get all the latest information on launch of latest
+                  Collections, Sale New Arrival and many more. Sign up for our
+                  newsletter today.
+                </p>
+              </div>
+              <div className="col-md-4 col-sm-6">
+                <form className="newsletter">
+                  <input type="text" placeholder="Email Address" />
+                  <button className="newsletter_submit_btn" type="submit">
+                    <i className="fa fa-paper-plane"></i>
+                  </button>
+                </form>
+              </div>
+              <div className="col-md-4 col-sm-6">
+                <div className="col-md-12">
+                  <div className="standard_social_links">
+                    <div>
+                      <li className="round-btn btn-facebook">
+                        <a href="#">
+                          <i className="fab fa-facebook-f"></i>
+                        </a>
+                      </li>
+                      <li className="round-btn btn-instagram">
+                        <a href="#">
+                          <i
+                            className="fab fa-instagram"
+                            aria-hidden="true"
+                          ></i>
+                        </a>
+                      </li>
+                      <li className="round-btn btn-whatsapp">
+                        <a href="#">
+                          <i className="fab fa-whatsapp" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li className="round-btn btn-envelop">
+                        <a href="#">
+                          <i className="fa fa-envelope" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                    </div>
+                  </div>
+                </div>
+                <div className="clearfix"></div>
+                <div className="col-md-12">
+                  <h3>Stay Connected</h3>
+                </div>
+              </div>
+              <hr />
             </div>
-        {/* <div className="col-md-3 col-sm-6">
+          </div>
+          <div className="second_className">
+            <div className="container-fluid second_className_bdr">
+              <div className="row">
+                <div className="col-md-4 col-sm-6">
+                  <div className="footer-logo">
+                    <img src={logo} alt="logo" width="350px" height="200px" />
+                  </div>
+                  <p>
+                    One of the best clothing from where you can get all the
+                    brands, latest collection, wedding collection
+                  </p>{" "}
+                </div>
+                <div className="col-md-4 col-sm-6">
+                  <h3>Quick LInks</h3>
+                  <ul className="footer-links">
+                    <li>
+                      <a onClick={()=>navigate('/')} className="cursor-pointer">Home</a>
+                    </li>
+                    <li>
+                      <a onClick={()=>navigate('/about-us')} className="cursor-pointer">About us</a>
+                    </li>
+                    <li>
+                      <a onClick={()=>navigate('/')} className="cursor-pointer">Contact Us</a>
+                    </li>
+                    <li>
+                      <a onClick={()=>navigate('/terms-condition')} className="cursor-pointer">
+                        Terms &amp; Conditions
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">Share your views</a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="col-md-4 col-sm-6">
+                  <h3>INFORMATION</h3>
+                  <ul className="footer-category">
+                    <li>
+                      <a onClick={()=>navigate('/')} className="cursor-pointer">
+                        Privacy Policy
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">Refund Policy</a>
+                    </li>
+                    <li>
+                      <a onClick={()=>navigate('/custom-tailoring')} className="cursor-pointer">Custom Tailoring</a>
+                    </li>
+                    <li>
+                      <a onClick={()=>navigate('/faqs')} className="cursor-pointer">FAQ's</a>
+                    </li>
+                  </ul>
+                  <div className="clearfix"></div>
+                </div>
+                <div className="copyright">
+                  {" "}
+                  @Copyright 2023 | All Right Reserved and developed by Auniz
+                  Tech Innovators
+                </div>
+              </div>
+              {/* <div className="col-md-3 col-sm-6">
           <h3>triedge Events</h3>
           <ul className="footer-links">
             <li><a href="#">Triedge Events</a>
@@ -95,16 +137,13 @@ function Footer(){
             </li>
           </ul>
         </div> */}
-      </div>
-      
-    </div>
-    </div>
-    
-    <div className="row">
-      <div className="container">
-      
-    </div>
-  </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="container"></div>
+        </div>
         {/* <div classNameName="container-fluid">
             <div classNameName="row d-flex flex-md-row flex-column">
             <div classNameName="col-4 py-0">
@@ -132,8 +171,9 @@ function Footer(){
             </div>
             </div>
         </div> */}
-        </footer>
-        </>);
+      </footer>
+    </>
+  );
 }
 
 export default Footer;
