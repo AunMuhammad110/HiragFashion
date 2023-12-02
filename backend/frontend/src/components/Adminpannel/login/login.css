@@ -1,14 +1,11 @@
 
-.Login-Form > input{
-    width: 20vw;
-}
 .password-wrapper{
     display: flex;
     flex-direction: row;
-    width: 21.3vw;
+    width: 21vw;
     justify-content: space-between;
     border: 1px solid rgb(183, 183, 183);
-    height: 7.5vh;
+    height: 6vh;
     border-radius: 4px;
     margin-bottom: 2vh;
     margin-right: 1vw !important;
@@ -19,6 +16,9 @@
     font-size: 16px; 
     margin-left: 0.6vw;
     /* height:  5vh; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 /* Center the content vertically and horizontally */
 .login-main-container{
@@ -38,11 +38,11 @@
     border: 1px solid #ccc; /* Border for the login container */
     border-radius: 5px;
     padding: 20px;
-    width: 22vw; /* Adjust the width as needed */
+    width: 25vw; /* Adjust the width as needed */
     background-color: #fff; /* Background color for the login container */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
     padding-right: 2.5vw !important;
-    height: 40vh;
+    height: 50vh;
     padding-left: 2vw;
     padding-bottom: 7vh;
 }
@@ -63,7 +63,9 @@
     border-radius: 5px;
     outline: none;
     font-size: 16px;
-    height: 5vh;
+    height: 3.5vh;
+    width: 21vw;
+    height: 6vh;
   }
   
   /* Style for the submit button */
@@ -99,7 +101,7 @@
   .eye-icon {
     margin-top: 15px;
     text-align: right;
-    margin-right: 10vw;
+    margin-right: 1vw;
   }
 
   

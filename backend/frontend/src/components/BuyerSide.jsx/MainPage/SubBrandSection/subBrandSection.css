@@ -1,0 +1,79 @@
+.sub-brand-section {
+  /* background-color: tomato; */
+  padding: 0 12vw;
+  padding-bottom: 2vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+}
+.sub-brand-section > p {
+  margin-bottom: 1.5vh;
+  font-size: 22px;
+  letter-spacing: 1.5px;
+  margin-top: 1.5vh;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2.5vw;
+}
+
+/* cards css */
+
+.brand-card-container {
+  position: relative;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center !important;
+  overflow: hidden;
+}
+.brand-card-container > p {
+  position: absolute;
+  max-width: 80%;
+  text-align: center;
+  transition: bottom 1.5s ease-in-out;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+.brand-card-container button {
+  position: absolute;
+  bottom: -50px; /* Set it initially below the card */
+  transition: bottom 0.6s ease-in-out;
+  padding: 4px 8px;
+  background-color: transparent;
+  color: white;
+  width: 50%;
+  border: 1px solid white;
+  letter-spacing: 1px; /* Transition the bottom property */
+}
+.brand-card-container:hover p {
+  margin-bottom: 10%;
+}
+.brand-card-container:hover button {
+  bottom: 15%; /* Move the button up on hover */
+}
+
+/* Media Queries */
+@media only screen and (max-width: 767px) {
+  .sub-brand-section {
+    padding: 0 5vw;
+    padding-bottom: 5vh;
+  }
+  .brand-card-container {
+    height: 25vh;
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5vw;
+  }
+  .brand-card-container button {
+    display: none;
+  }
+  .brand-card-container:hover p {
+    margin-bottom: 0%;
+  }
+}

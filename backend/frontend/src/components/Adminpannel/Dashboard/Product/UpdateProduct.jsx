@@ -9,7 +9,7 @@ import CategoryContext from "./details";
 import useBoolean from "../../../Customhooks/boolean";
 import UploadProduct from "./Upload";
 
-export default function UpdateProduct() {
+const UpdateProduct= React.memo(()=> {
   const {categoryList,CallData} = useContext(CategoryContext);
   const [displayCategory, setDisplayCategory] = useState(false);
   const [subCategoryList, setSubCategoryList] = useState([]);
@@ -222,51 +222,6 @@ export default function UpdateProduct() {
     AddProduct()
 
   }
-  // ...
-  // const UpdateProduct = debounce(async () => {
-  //   // Create an object to send to the server
-  //   const data = {
-  //     productId: productId,
-  //     images: image,
-  //     productformData: productformData,
-  //   };
-  //   console.log(data);
-  
-  //   // console.log (data);
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:3334/UpdateProduct",
-  //       data
-  //     );
-  
-  //     if (response.status === 200) {
-  //       // Handle success, e.g., show a success message or perform further actions
-  //       toast.success("Product updated successfully");
-  //       setProductId("");
-  //       setProductFormData({
-  //         productName: "",
-  //         category: "",
-  //         price: 0,
-  //         stock: 0,
-  //         discountPrice: "",
-  //         productDetails: "",
-  //       });
-  //       setDisplayCategory(false);
-  
-  //       // Clear the image array
-  //       setImage([]);
-  //     } else {
-  //       // Handle other response statuses as needed
-  //       toast.error("Error: " + response.data.message);
-  //     }
-  //   } catch (error) {
-  //     // Handle errors from the server
-  //     console.error("Error while updating product: " + error.response.data);
-  //   }
-  // }, 1000);
-
-  // ...
-
   return (
     <div className="update-product-container">
       <h1>Update the Product</h1>
@@ -497,4 +452,5 @@ export default function UpdateProduct() {
       <ToastContainer />
     </div>
   );
-}
+});
+export default UpdateProduct;

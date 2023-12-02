@@ -1,19 +1,18 @@
 import React from "react";
-import Temp from "./Buyerside/temp";
-import Login from "./Adminpannel/Login/login";
-import { Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Route, Routes } from "react-router-dom";
 import MainDashboard from "./Adminpannel/Dashboard/mainDashboard";
-import { CategoryProvider } from "./Adminpannel/Dashboard/Product/details";
+import Login from "./Adminpannel/Login/login";
+// import MainBuyer from "./Buyerside/MainBuyer";
+import Temp from "./temp";
+import MainBuyer from "./BuyerSide.jsx/MainBuyer";
+
 export default function App() {
   return (
-    <CategoryProvider>
-      <Routes>
-        <Route path="/" element={<Temp />} />
-        <Route path="/admin" element={<Login />}>
-          {/* Correct the nested route path */}
-          <Route path="mainDashboard/*" element={<MainDashboard />} />
-        </Route>
-      </Routes>
-    </CategoryProvider>
-  )
+    <Routes>
+      <Route path="/*" element={<MainBuyer />} />
+      <Route path="/admin" element={<Login />}>
+        <Route path="mainDashboard/*" element={<MainDashboard />} />
+      </Route>
+    </Routes>
+  );
 }

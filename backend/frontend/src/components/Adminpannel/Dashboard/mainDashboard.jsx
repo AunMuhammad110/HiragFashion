@@ -13,6 +13,7 @@ export default function MainDashboard(props) {
   return (
     <>
       <Navbar />
+      <CategoryProvider>
       <Routes>
         <Route path="/" element={<Order />} />
         <Route path="/uploadProduct" element={<UploadProduct />} />
@@ -22,6 +23,8 @@ export default function MainDashboard(props) {
         <Route path="/notification" element={<Notifications/>} />
         <Route path="/deliveryprice" element={<DeliverPrice/>} />
       </Routes>
+      </CategoryProvider>
+     
     </>
   );
 }

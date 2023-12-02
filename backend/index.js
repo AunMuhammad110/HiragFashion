@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser"); // Import body-parser
+const bodyParser = require("body-parser");
+const mainPage=require("./MainPage/index")
+// Import body-parser
 // const UserModel = require('./models/users')
 const path = require("path");
 const { Console, log } = require("console");
@@ -10,17 +12,20 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cors());
 app.use(express.json());
+app.use('/MainPage', mainPage);
 require("dotenv").config({ path: "data.env" });
 
 // Increase request payload size limit to handle larger images
 app.use(bodyParser.json({ limit: "30mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
 let ans = mongoose.connect("mongodb://localhost:27017/hiraGfashion");
-let lastGeneratedProductId = "D0010199";
+let lastGeneratedProductId = "D030209";
 
 if (ans) {
   console.log("connected to the mongodb server");
-  console.log("no mongodb server");
+}
+else{
+  console.log("Not connected to the mongodb server");
 }
 
 // // call the schema of product
@@ -32,6 +37,7 @@ require("./schema/notification");
 require("./schema/deliveryPrice");
 require("./schema/categoryDetails");
 require("./schema/productImages")
+
 // // creating product Schema Model
 const Product = mongoose.model("Product");
 const carrousalSettings = mongoose.model("CarrousalSettings");
@@ -39,6 +45,17 @@ const ProductNotification = mongoose.model("ProductNotification");
 const DeliveryPricing = mongoose.model("DeliveryPricing");
 const Brand = mongoose.model("BrandDetail");
 const Images = mongoose.model("Images");
+
+
+const buyerSide= require('./MainPage/index')
+app.use("/buyerSide",  buyerSide);
+
+
+
+
+
+
+
 function generateUniqueProductId() {
   try {
     // Extract the letter and number parts from the last generated product ID.
@@ -64,13 +81,6 @@ function generateUniqueProductId() {
   }
 }
 
-// app.post('/upload-image', async (req, res) => {
-//     const base64 = req.body.image;
-//     try{
-//         Image.create({image:base64});
-//         res.send({Status:"ok"});
-// // Generating Unique product ID
-
 app.post("/signin", (req, res) => {
   const UserName = req.body.User_Name;
   const Password = req.body.Password;
@@ -86,7 +96,7 @@ app.post("/signin", (req, res) => {
 
 app.post("/AddCategory", async (req, res) => {
   const brandName = req.body.brandName.trim();
-
+  console.log("Brand Name: " + brandName);
   // Check if the brand already exists in the collection
   const existingBrand = await Brand.findOne({ brandName });
 
@@ -140,9 +150,6 @@ app.post("/AddSubBrand", async (req, res) => {
   }
 });
 
-// app.get('/get-image', async (req, res) => {
-
-// // Update Category
 app.post("/UpdateCategory", async (req, res) => {
   let previousCategoryName = req.body.previousCategoryName;
   let newCategoryName = req.body.newCategoryName;
@@ -216,7 +223,6 @@ app.put("/UpdateSubCategoryList", async (req, res) => {
   }
 });
 
-// Remove the category
 app.post("/RemoveCategory", async (req, res) => {
   const categoryName = req.body.categoryName.trim(); // Trim whitespace from the name
 
@@ -263,13 +269,12 @@ app.post("/RemoveSubCategory", async (req, res) => {
   }
 });
 
-// // fetch and send categories to the client
-
 app.get("/GetCategories", async (req, res) => {
   try {
     const categories = await Brand.find({}, "brandName");
     const categoryNames = categories.map((product) => product.brandName); // Use 'brandName' here
     const uniqueCategoryNames = [...new Set(categoryNames)]; // Remove duplicates if any
+    console.log("it ran when nothing is rendered");
     res.json(uniqueCategoryNames);
   } catch (error) {
     console.error("Error while fetching categories:", error);
@@ -301,7 +306,6 @@ app.post("/GetSubCategoryList", async (req, res) => {
   }
 });
 
-//   Upload Product
 app.post("/UploadProduct", async (req, res) => {
   try {
     const { productformData, image1 } = req.body;
@@ -377,7 +381,7 @@ app.post("/GetProduct", async (req, res) => {
   const productId = req.body.productId;
 
   try {
-    // Query the database to find the product by productId in the Product model
+    // Query the database to find const product = await Product.findOne({ productId: productId });the product by productId in the Product model
     const product = await Product.findOne({ productId: productId });
 
     if (!product) {
@@ -724,6 +728,91 @@ app.delete("/DeleteCountry/:id", async (req, res) => {
       .json({ message: "Error deleting country", error: error.message });
   }
 });
+
+// const data = [
+//   {
+//     "_id": "6545fb885c478c1f94f6b0b9",
+//     "brandName": "Asim Jofa",
+//     "subCategory": [
+//       {
+//         "subBrandName": "Khushboo",
+//         "collections": ["Wedding Collection", "New Collection"]
+//       },
+//       {
+//         "subBrandName": "Sarah Sami",
+//         "collections": ["Wedding Collection", "New Collection", "Summer Collection"]
+//       },
+//       {
+//         "subBrandName": "My name is syed aun muhammad i work in koderalabs this was my first day of third week it was fun",
+//         "collections": ["Wedding Collection", "New Collection"]
+//       },
+//       {
+//         "subBrandName": "bbm b7ujn67b67",
+//         "collections": ["Wedding Collection", "New Collection", "Summer Collection", "Winter Collection", "Sale"]
+//       }
+//     ],
+//     "__v": 7
+//   },
+//   {
+//     "_id": "6545fb8c5c478c1f94f6b0bc",
+//     "brandName": "Maria B",
+//     "subCategory": [
+//       {
+//         "subBrandName": "Auni",
+//         "collections": ["Wedding Collection", "New Collection", "Summer Collection", "Winter Collection"]
+//       }
+//     ],
+//     "__v": 3
+//   },
+//   {
+//     "_id": "65490f530941b6a3e106c189",
+//     "brandName": "Saphire",
+//     "subCategory": [],
+//     "__v": 0
+//   },
+//   {
+//     "_id": "654c842933613f9a134489c4",
+//     "brandName": "Gul Ahmed",
+//     "subCategory": [],
+//     "__v": 0
+//   },
+//   {
+//     "_id": "6550b179bb5ff039e21a4a71",
+//     "brandName": "Nishat",
+//     "subCategory": [],
+//     "__v": 1
+//   }
+// ];
+
+// // First index: Array of objects with brandName only
+// const brandNamesArray = data.map(item => ({ brandName: item.brandName }));
+
+// // Second index: Array of objects with collections as keys and an array of subBrandNames as values
+// const collectionsArray = [];
+// const collections = ["Wedding Collection", "New Collection", "Summer Collection", "Winter Collection", "Sale"];
+
+// collections.forEach(collection => {
+//   const collectionObj = {
+//     [collection]: []
+//   };
+
+//   data.forEach(item => {
+//     item.subCategory.forEach(subItem => {
+//       if (subItem.collections.includes(collection)) {
+//         collectionObj[collection].push({ "subBrandName": subItem.subBrandName });
+//       }
+//     });
+//   });
+
+//   collectionsArray.push(collectionObj);
+// });
+
+// // console.log("The collection array is ", collectionsArray[0]);
+
+// const resultArray = [brandNamesArray, collectionsArray];
+
+// console.log(resultArray[1][0]["Wedding Collection"][0].subBrandName);
+
 
 app.listen(3334, () => {
   console.log("The Server is running on port 3334");

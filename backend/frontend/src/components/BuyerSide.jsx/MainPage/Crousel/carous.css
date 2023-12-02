@@ -1,0 +1,73 @@
+@media only screen and (max-width:750px) {
+
+    .center-caption {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        max-height: 100%;
+        height: auto;
+    }
+
+    .carousel-caption {
+        /* min-height: 10%;
+        height: auto !important; */
+        position: absolute;
+        top: 50%;
+        left: 20%;
+        transform: translate(1%, -50%);
+        text-align: center;
+        color: white;
+    }
+
+    .cr-cap {
+        padding: 20px;
+        border-radius: 10px;
+        background-color: rgba(1, 1, 1, 0.5);
+    }
+}
+
+@media only screen and (min-width:750px) {
+    .carousel-adj {
+        display: block;
+        padding-left: 10%;
+        padding-right: 10%;
+        /* width: 100%; */
+        /* height: 50%; */
+    }
+
+    .center-caption {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        max-height: 100%;
+        height: auto;
+    }
+
+    .carousel-caption {
+        /* min-height: 10%;
+          height: auto !important; */
+        position: absolute;
+        top: 55%;
+        left: 14%;
+        transform: translate(1%, -50%);
+        text-align: center;
+        color: white;
+    }
+
+    .cr-cap {
+        padding: 10px;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .text-size{
+        font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-size: 55px;
+    }
+    
+    .carousel .carousel-item img {
+    max-height: 1300px !important;}
+
+
+}

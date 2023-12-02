@@ -7,15 +7,13 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useBoolean from "../../../Customhooks/boolean";
-import { nanoid } from 'nanoid';
-
 
 import CategoryContext from "./details";
 import "./upload.css";
 
 
 
-const UploadProduct=React.memo(()=> {
+export default function ChildUploadProduct() {
     const { categoryList, CallData } = useContext(CategoryContext);
     const [subCategoryList, setSubCategoryList] = useState([]);
     const [isToggle, { setToggle }] = useBoolean();
@@ -79,7 +77,6 @@ const UploadProduct=React.memo(()=> {
     };
     const AddProduct = async (e) => {
       e.preventDefault();
-      console.log(productformData);
       if (!productformData.category || !productformData.subBrandName) {
         toast.error("Please fill the required inputs");
         return;
@@ -347,7 +344,7 @@ const UploadProduct=React.memo(()=> {
         <ToastContainer />
       </div>
     );
-  });
+  }
   
   function Category(props) {
     const [showCategoryForm, { setToggle: setShowCategoryForm }] =
@@ -664,7 +661,6 @@ const UploadProduct=React.memo(()=> {
         })
         .then((response) => {
           if (response.status === 200) {
-            console.log(response.data.subCategory);
             setSubCategoryList(response.data.subCategory);
           }
         })
@@ -895,13 +891,11 @@ const UploadProduct=React.memo(()=> {
   
     useEffect(() => {
       if (subCategoryList.length > 0) {
-        console.log("it changed ");
         setSubBrandName(subCategoryList[0].subBrandName);
       }
     }, [subCategoryList]);
   
     const Remove = debounce(() => {
-      console.log(brandName + " removed from " + subBrandName);
       axios
         .post("http://localhost:3334/RemoveSubCategory", {
           brandName,
@@ -962,5 +956,3 @@ const UploadProduct=React.memo(()=> {
     );
   }
   
-
-  export default UploadProduct;
