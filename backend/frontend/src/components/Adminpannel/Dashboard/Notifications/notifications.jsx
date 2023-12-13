@@ -4,6 +4,17 @@ import "react-toastify/dist/ReactToastify.css";
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import Modal from "@mui/material/Modal";
+import Table from "@mui/material/Table";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import TableRow from "@mui/material/TableRow";
+import "react-toastify/dist/ReactToastify.css";
+import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import TableContainer from "@mui/material/TableContainer";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 import "./notification.css";
 import useBoolean from "../../../Customhooks/boolean";
@@ -23,6 +34,24 @@ export default function Notifications() {
         toast("Error: " + error.message);
       });
   }, [count]);
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
 
   const DeleteProductID = debounce((id) => {
     axios
@@ -47,7 +76,7 @@ export default function Notifications() {
   return (
     <div className="notification-container">
       <h1>Notifications Settings</h1>
-      <div className="category-bar" style={{ padding: "2vh" }}>
+      <div className="ccategory-bar">
         <p onClick={() => setShowAddProductId()}>
           Want to add Product ? Click here to add a product
         </p>
@@ -60,29 +89,32 @@ export default function Notifications() {
           }}
         />
       )}
-      <div className="notification-card">
-      <div>
-        <p style={{'fontSize':'20px'}}><strong>Sno</strong></p>
-        <p style={{'fontSize':'20px'}}><strong>ProductId</strong></p>
-        <p style={{'fontSize':'20px'}}><strong>Product Name</strong></p>
-        <p style={{'fontSize':'20px'}}><strong>Product Price</strong></p>
-      </div>
+       <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="">Product Id</StyledTableCell>
+              <StyledTableCell align="">Product Title</StyledTableCell>
+              <StyledTableCell align="">Product Price</StyledTableCell>
+              <StyledTableCell align="">Delete Product</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
 
-          <p style={{'fontSize':'20px'}}><strong>Delete Product </strong></p>
-
-      </div>
-      {notificationDetails.length > 0 &&
+          {notificationDetails.length > 0 &&
         notificationDetails.map((notification, index) => (
-          <NotificationCard
-            sno={index + 1}
-            id={notification.productId}
-            name={notification.productName}
-            price={notification.price}
-            onDelete={() => DeleteProductID(notification.productId)}
-          />
-        ))}
-        <ToastContainer/>
-      {/* <NotificationUpdate/> */}
+          <StyledTableRow key={index} style={{height:'7vh'}}>
+          <StyledTableCell component="th" scope="row">
+            {notification.productId}
+          </StyledTableCell>
+          <StyledTableCell align="">{notification.productName}</StyledTableCell>
+          <StyledTableCell align="">{notification.price}</StyledTableCell>
+          <StyledTableCell style={{paddingLeft:"3vw"}} onClick={()=>DeleteProductID(notification.productId)} ><DeleteOutlineOutlinedIcon/></StyledTableCell>
+            </StyledTableRow>
+        ))} 
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 }
@@ -122,7 +154,6 @@ function NotificationUpdate(props2) {
             // Product added successfully
             toast.success("Product added successfully");
             props2.closeNU();
-            console.log(response.data);
           }
         } else {
           toast.error("Product Failed to Update: " + response.data.error);

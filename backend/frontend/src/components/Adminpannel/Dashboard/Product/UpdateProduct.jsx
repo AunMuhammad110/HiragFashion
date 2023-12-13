@@ -1,4 +1,5 @@
-  import axios from "axios";
+import axios from "axios";
+import { nanoid } from "nanoid";
 import debounce from "lodash.debounce";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,7 +8,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import "./updateproduct.css";
 import CategoryContext from "./details";
 import useBoolean from "../../../Customhooks/boolean";
-import UploadProduct from "./Upload";
 
 const UpdateProduct= React.memo(()=> {
   const {categoryList,CallData} = useContext(CategoryContext);
@@ -21,6 +21,7 @@ const UpdateProduct= React.memo(()=> {
     price: Number,
     stock: Number,
     discountPrice: Number,
+    productWeight: Number,
     productDetails: "",
   });
 
@@ -35,14 +36,48 @@ const UpdateProduct= React.memo(()=> {
   const [productId, setProductId] = useState("");
 
   function convertToBase64(e) {
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
+  
     reader.onload = () => {
-      setImage([...image, reader.result]);
-    };
-    reader.onerror = () => {
-      toast.error("failed to convert Imafile to Base64");
-      console.log("Error ", error);
+      const img = new Image();
+      img.src = reader.result;
+  
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+  
+        // Set canvas dimensions based on the desired width and height
+        const maxWidth = 800;
+        const maxHeight = 800;
+  
+        let width = img.width;
+        let height = img.height;
+  
+        if (width > height) {
+          if (width > maxWidth) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
+        }
+  
+        canvas.width = width;
+        canvas.height = height;
+  
+        // Draw the image onto the canvas
+        ctx.drawImage(img, 0, 0, width, height);
+  
+        // Convert the canvas content to base64
+        const compressedBase64 = canvas.toDataURL("image/jpeg", 0.9); // Adjust quality (0.9 is just an example)
+  
+        // Add the compressed image to the image array
+        setImage([...image, compressedBase64]);
+      };
     };
   }
 
@@ -64,7 +99,6 @@ const UpdateProduct= React.memo(()=> {
           // Product data successfully retrieved
           toast.success("Product data successfully retrieved");
           const productData = response.data;
-          console.log(productData);
           if (productData) {
             // Update the product form data with the fetched data
             setProductFormData({
@@ -72,11 +106,11 @@ const UpdateProduct= React.memo(()=> {
               subBrandName: productData.subBrandName,
               productName: productData.productTitle || "",
               price: productData.productPrice || 0,
-              stock: productData.stockcount || 0,
+              stock: productData.stockCount || 0,
+              productWeight: productData.productWeight || 0,
               discountPrice: productData.discountPrice || "",
               productDetails: productData.productDetails || "",
             });
-            setImage([]);
             setDisplayCategory(false);
             setImage(productData.images || []);
             setDisplayCategory(true);
@@ -98,9 +132,6 @@ const UpdateProduct= React.memo(()=> {
     axios
       .post("http://localhost:3334/DeleteProduct", { productId })
       .then((response) => {
-        if (response.status === 200 ) {
-          setProductId("");
-        } 
       })
       .catch((error) => {
         toast.error("Product not found");
@@ -115,12 +146,11 @@ const UpdateProduct= React.memo(()=> {
       })
       .then((response) => {
         if (response.status === 200) {
-          console.log(response.data.subCategory);
           setSubCategoryList(response.data.subCategory);
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error.message);
       });
   }, [productformData.brandName]);
 
@@ -130,35 +160,9 @@ const UpdateProduct= React.memo(()=> {
     setShowImageInputs();
   }
 
-
-
-
-  const UploadImages = async () => {
-    axios
-      .post("http://localhost:3334/UploadImages", {
-        image2: image[1],
-        image3: image[2],
-      })
-      .then((response) => {
-        // Check the response status and handle accordingly
-        if (response.status === 200) {
-          setImage([]);
-          image2Ref.current.value = "";
-          image3Ref.current.value = "";
-          return true;
-        } else {
-          // Handle other response statuses (e.g., 409 for a conflict)
-          console.log("error occurred in else: " + response.status);
-          return false;
-        }
-      })
-      .catch((error) => {
-        // Handle any errors that occur during the request
-        console.log("error occur at catch");
-        return false;
-      });
-  };
   const AddProduct = async () => {
+    let productId = nanoid(8);
+    // e.preventDefault();
     if (!productformData.category || !productformData.subBrandName) {
       toast.error("Please fill the required inputs");
       return;
@@ -169,52 +173,33 @@ const UpdateProduct= React.memo(()=> {
       const productResponse = await axios.post(
         "http://localhost:3334/UploadProduct",
         {
-          image1: image[0],
+          image,
           productformData,
+          productId,
         }
-      );
-
-      if (productResponse.status === 200) {
-        if (image.length > 1) {
-          let x = UploadImages();
-          if (x) {
-            setProductFormData({
-              productName: "",
-              category: "",
-              subBrandName: "",
-              price: Number,
-              stock: Number,
-              discountPrice: Number,
-              productDetails: "",
-            });
-            image1Ref.current.value = "";
-            toast.success("Product Updated successfully");
-          } else {
-            toast.error(
-              "Product Updated but unable to upload last two images because of size limit"
-            );
-          }
-        } else {
+      ).then((response) => {
+        setProductFormData({
+          productName: "",
+          category: "",
+          subBrandName: "",
+          price: Number,
+          stock: Number,
+          discountPrice: Number,
+          productWeight: Number,
+          productDetails: "",
+        }); 
+          setShowImageInputs(false);
+          setDisplayCategory(false);
+          setImage([]);
+          if(image1Ref.current ) image1Ref.current.value=null;
+          if(image2Ref.current ) image2Ref.current.value=null;
+          if(image3Ref.current ) image3Ref.current.value=null;
           toast.success("Product Updated successfully");
-          setProductFormData({
-            productName: "",
-            category: "",
-            subBrandName: "",
-            price: Number,
-            stock: Number,
-            discountPrice: Number,
-            productDetails: "",
-          });
-          image1Ref.current.value = "";
-        }
-      } else {
-        toast.error("Product upload failed: " + productResponse.data.message);
-      }
+      })
     } catch (error) {
-      console.error("Error", error);
       toast.error("Failed to upload the product or images.");
     }
-  }; 
+  };
 
 
   function Handler(){
@@ -339,6 +324,19 @@ const UpdateProduct= React.memo(()=> {
             name="stock"
             onChange={handleChange}
             value={productformData.stock}
+            required
+            id="stock"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="stock">Product Weight:</label>
+          <input
+            style={{ width: "15vw" }}
+            type="number"
+            placeholder="Enter Product  Weight"
+            name="productWeight"
+            onChange={handleChange}
+            value={productformData.productWeight}
             required
             id="stock"
           />

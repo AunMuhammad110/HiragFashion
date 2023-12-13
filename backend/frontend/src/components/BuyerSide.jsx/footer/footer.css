@@ -74,6 +74,7 @@ img{
   
   .footer-wrap {
     background-size: cover;
+    margin-bottom: -4vh;
 }
 
 .footer-wrap h3 {

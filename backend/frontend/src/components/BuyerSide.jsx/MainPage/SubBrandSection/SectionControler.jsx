@@ -5,7 +5,7 @@ import React from "react";
 const SectionController =React.memo(()=>{
   const { data, isLoading, isError } = useContext(MainPageDataContext);
   if (isLoading) {
-    return <p>Loading....</p>;
+    return <p></p>;
     }
 
     const arrayShopByBrand=data[0].map((item)=>(
@@ -14,8 +14,6 @@ const SectionController =React.memo(()=>{
             image:item.image
         }
     ))
-
-
     const objShopByBrand={
         "Shop By Brand":arrayShopByBrand
     }

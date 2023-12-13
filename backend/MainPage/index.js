@@ -4,12 +4,14 @@ const mongoose = require("mongoose");
 require("../schema/product.js");
 // require("/Users/aunmuhammad/Documents/HiragFashion/backend/schema/categoryDetails.js");\
 require("../schema/categoryDetails.js")
-require("../schema/productImages.js")
+// require("../schema/productImages.js")
+require("../schema/notification")
 // require("../")
 const router = express.Router();
 const Brand = mongoose.model("BrandDetail");
 const Product = mongoose.model("Product");
-const Images=mongoose.model("Images");
+// const Images=mongoose.model("Images");
+const ProductNotification = mongoose.model("ProductNotification");
 
 async function fetchAndAddImages(brandNamesArray) {
   const updatedBrandNamesArray = [];
@@ -68,10 +70,10 @@ router.get("/GetCategories", async (req, res) => {
     const collectionsArray = [];
     const collections = [
       "Wedding Collection",
+      "Sale",
       "New Collection",
       "Summer Collection",
       "Winter Collection",
-      "Sale",
     ];
 
     collections.forEach((collection) => {
@@ -138,26 +140,96 @@ router.post('/GetProducts', async (req, res) => {
 
 router.get('/GetProductDetails/:id', async (req, res) => {
   const productId = req.params.id;
-
+  const parentCollection = req.query.parentCollection;
   try {
+    // Fetch the main product details
     const product = await Product.findOne({ productId: productId }).lean();
-
     if (!product) {
       return res.status(404).send("Product not found");
     }
-    const imagesData = await Images.findOne({ productId: productId }).lean();
 
-    if (imagesData) {
-      product.images.push(...imagesData.images);
+    // Determine the key based on parentCollection
+    let key;
+    if (parentCollection.id == 1) {
+      key = "brandName";
+    } else {
+      key = "subBrandName";
     }
-    let pd= product.productDetails.split("<br>");
-    const customObject= {...product, splitProductDetails: pd}
+
+    // Fetch related products based on the dynamic key
+    const relatedProducts = await Product.find({
+      [key]: product[key],
+      productId: { $ne: productId }
+    }).limit(4).lean();
+
+    // Extract the first index image from the images array of each related product
+    const relatedProductsModified = relatedProducts.map((relatedProduct) => {
+      const firstImage = relatedProduct.images && relatedProduct.images.length > 0
+        ? relatedProduct.images[0]
+        : null;
+      return { ...relatedProduct, firstImage };
+    });
+
+    let pd = product.productDetails.split("<br>");
+    const customObject = { ...product, splitProductDetails: pd, relatedProducts: relatedProductsModified };
     res.status(200).json(customObject);
   } catch (error) {
     console.error("Error while fetching product:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+
+
+
+
+
+
+router.get("/GetNotifications", async(req, res) => {
+  try {
+    // Find all product notification documents
+    const productNotifications = await ProductNotification.find({}, "productId");
+
+    // Extract the productIds from the retrieved documents
+    const productIds = productNotifications.map((notification) => notification.productId);
+
+    // Find the corresponding product details for each productId
+    const productDetails = await Product.find({ productId: { $in: productIds } });
+
+    // Create an array of objects with productId, productName, price, and image
+    const productObjects = productDetails.map((product) => ({
+      productId: product.productId,
+      productName: product.productTitle,
+      brandName: product.brandName,
+      image: product.images && product.images.length > 0 ? product.images[0] : null, // Get the image from index 0
+    }));
+    res.json(productObjects);
+  } catch (error) {
+    console.error("Error while fetching product data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/GetSaleProducts",async(req, res) => {  
+  const categories = await Brand.find({});
+  let subBrandName;
+  let subBrandName2;
+  categories.some((category) => {
+    return category.subCategory.some((sub_category) => {
+      return sub_category.collections.some((collectionItem) => {
+        if (collectionItem === "Sale") {
+          subBrandName = sub_category.subBrandName; // This breaks out of the some loop
+        }
+        else if (collectionItem === "New Collection") {
+          subBrandName2=sub_category.subBrandName;
+        }
+      });
+    });
+  });
+  const products = await Product.find({subBrandName:subBrandName});
+  const products2 = await Product.find({subBrandName:subBrandName2});
+  const objectToSend={subBrandDetails:[{subBrandName:subBrandName, id:2, productData:products}, {subBrandName:subBrandName2, id:2,productData:products2}]}
+  res.json(objectToSend);
+});
+
 module.exports = router;
-
-

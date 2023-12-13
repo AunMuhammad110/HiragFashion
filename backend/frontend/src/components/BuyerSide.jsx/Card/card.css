@@ -7,9 +7,34 @@ img{
 }
 
 
+.related-products-container{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3.5vw;
+  /* padding: 1vh 2vw; */
+}
+
+
+
+.related-product-button{
+  margin-top: 2vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.related-product-button > button{
+  padding: 4px 15px;
+  background-color: black;
+  color: rgb(230, 230, 230);
+  font-size: 14px;
+}
+.related-product-button > button > span{
+  margin-top: 20px !important; 
+}
 
 @media screen and (min-width:768px){
-    
+
     
     .zoom {
         max-width: 350px;
@@ -363,4 +388,13 @@ h2{
 }
 .container>.row>.col-md-6>.row>h6{
   font-weight: 600;
+}
+@media only screen and (max-width: 767px) {
+  .related-products-container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3.5vw;
+    /* padding: 1vh 2vw; */
+  }
+  
 }

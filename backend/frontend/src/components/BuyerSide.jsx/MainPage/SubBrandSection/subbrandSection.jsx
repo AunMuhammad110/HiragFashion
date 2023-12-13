@@ -6,16 +6,15 @@ export default function SubBrandSection(props) {
   useEffect(()=>{
     setBrandName(Object.keys(props.data)[0])
   },[])
-
-
   return (
-    <div className="sub-brand-section">
-      <p style={{ textAlign: "center" }}> {brandName.toUpperCase()}</p>
-      <div className="grid-container">
-      {brandName.length>0 && props.data[brandName].map((item, index) => (
-        <SubBrandCards subBrandName={item.subBrandName} image={item.image} key={index} id={props.id} />
-      ))}
-      </div>
+    props.data[brandName]?.length >0?   <div className="sub-brand-section">
+    <p style={{ textAlign: "center" }}> {brandName.toUpperCase()}</p>
+    <div className="grid-container">
+    {brandName.length>0 && props.data[brandName].map((item, index) => (
+      <SubBrandCards subBrandName={item.subBrandName} image={item.image} key={index} id={props.id} />
+    ))}
     </div>
+  </div> :<></>
+ 
   );
 }

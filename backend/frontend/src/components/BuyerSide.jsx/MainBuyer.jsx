@@ -9,11 +9,15 @@ import MainProductSection from "./ProductSection/mainSection";
 import CarrousalSectionWrapper from "./MainPage";
 import { MainDataProvider } from "./GlobalData/MainPage";
 import ImageGallery from "./Card/Detailcard";
-import PrivacyPolicy from "./staticPages/PrivacyPolicy";
-import TermsCondition from "./staticPages/TermsCondiiton";
-import CustomTailoring from "./staticPages/CustomTailoring";
-import Faqs from "./staticPages/Faqs";
-import AboutUs from "./staticPages/AboutUs";
+import PrivacyPolicy from "./StaticPages/PrivacyPolicy";
+import TermsCondition from "./StaticPages/TermsCondiiton";
+import CustomTailoring from "./StaticPages/CustomTailoring";
+import Faqs from "./StaticPages/Faqs";
+import AboutUs from "./StaticPages/AboutUs";
+import ExchangePolicy from "./StaticPages/ExchangePolicy";
+import WhatsAppPopUp from "./WhatsappComponent/whatsapp";
+import NotificationController from "./Notification";
+
 
 export default function MainBuyer(props) {
   const queryClient = new QueryClient();
@@ -31,10 +35,14 @@ export default function MainBuyer(props) {
             <Route path="/custom-tailoring" element={<CustomTailoring/>}/>
             <Route path="/about-us" element={<AboutUs/>}/>
             <Route path="/faqs" element={<Faqs/>}/>
+            <Route path="/exchange-policy" element={<ExchangePolicy/>}/>
+            <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
           </Routes>
         </MainDataProvider>
+     
+      <NotificationController/>
       </QueryClientProvider>
-      
+      <WhatsAppPopUp />
       <Footer />
     </>
   );

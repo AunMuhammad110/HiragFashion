@@ -1,40 +1,71 @@
-*{
-    margin: 0;
-    padding: 0;
-    
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.admin-button{
-    padding: 10px 20px;
-    margin-right: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 15vw;
-    background-color: #dc3545;
-    color: white;
+.admin-button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 15vw;
+  background-color: #dc3545;
+  color: white;
 }
-.display-flex{
-    display: flex;
-    flex-direction: row;
-    /* justify-content: center; */
-    align-items: center;
+.display-flex {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
+  align-items: center;
 }
-.h-50{
-    height: 50vh;
+.h-50 {
+  height: 50vh;
 }
-.hr-mb-10{
-    margin-bottom: 10px;
+.hr-mb-10 {
+  margin-bottom: 10px;
 }
-.hr-mt-10{
-    margin-top: 10px;
+.hr-mb-50{
+    margin-bottom: 50px;
 }
-.hr-mt-20{
-    margin-top: 20px;
+.hr-mb-50 {
+    margin-bottom: 50px;
+  }
+.hr-mt-10 {
+  margin-top: 10px;
 }
-.text-center{
-    text-align: center;
+.hr-mt-20 {
+  margin-top: 20px;
 }
-.cursor-pointer{
-    cursor: pointer;
+.hr-mt-30 {
+  margin-top: 30px;
 }
+.hr-mt-40 {
+    margin-top: 40px;
+  }
+.hr-mt-50{
+    margin-top: 50px;
+}
+.hr-pl-20{
+    padding-left: 10px;
+}
+.h-37{
+  height: 37vh;
+}
+.text-center {
+  text-align: center;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.font-60 {
+  font-size: 50px !important;
+}
+.underline-text {
+  text-decoration: underline;
+}
+.font-grey-color{
+    color: rgb(139, 137, 137);
+}
+
+

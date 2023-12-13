@@ -63,6 +63,20 @@
   
 
 }
+.parent-cart-alert{
+  position: relative;
+}
+.cart-alert{
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  padding: 2px 8px;
+  font-size: 14px;
+  border-radius: 59%;
+  position: absolute;
+  right: -7px;
+  bottom: 22px;
+}
 @media only screen and (max-width:750px){
   /* .cx{ */
     /* padding-left: 25px;}   */

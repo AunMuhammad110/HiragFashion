@@ -141,7 +141,6 @@ export default function ChildUploadProduct() {
         })
         .then((response) => {
           if (response.status === 200) {
-            console.log(response.data.subCategory);
             if(response.data.subCategory.length > 0) {
               productformData.subBrandName=response.data.subCategory[0].subBrandName;
             }

@@ -19,7 +19,7 @@ require("dotenv").config({ path: "data.env" });
 app.use(bodyParser.json({ limit: "30mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
 let ans = mongoose.connect("mongodb://localhost:27017/hiraGfashion");
-let lastGeneratedProductId = "D030209";
+let lastGeneratedProductId = "D5361029";
 
 if (ans) {
   console.log("connected to the mongodb server");
@@ -96,7 +96,6 @@ app.post("/signin", (req, res) => {
 
 app.post("/AddCategory", async (req, res) => {
   const brandName = req.body.brandName.trim();
-  console.log("Brand Name: " + brandName);
   // Check if the brand already exists in the collection
   const existingBrand = await Brand.findOne({ brandName });
 
@@ -274,10 +273,9 @@ app.get("/GetCategories", async (req, res) => {
     const categories = await Brand.find({}, "brandName");
     const categoryNames = categories.map((product) => product.brandName); // Use 'brandName' here
     const uniqueCategoryNames = [...new Set(categoryNames)]; // Remove duplicates if any
-    console.log("it ran when nothing is rendered");
     res.json(uniqueCategoryNames);
   } catch (error) {
-    console.error("Error while fetching categories:", error);
+    console.error("Error while fetching categories:", error); 
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -306,23 +304,20 @@ app.post("/GetSubCategoryList", async (req, res) => {
   }
 });
 
-app.post("/UploadProduct", async (req, res) => {
+app.post("/uploadProduct", async (req, res) => {
   try {
-    const { productformData, image1 } = req.body;
-    productformData.productName = productformData.productName.trim();
-    const generatedProductId = generateUniqueProductId();
+    const { productformData, image, productId } = req.body;
+    const generatedProductId = productId.trim();
 
-    // Check if a product with the same productId already exists
     const existingProduct = await Product.findOne({
       productId: generatedProductId,
     });
 
-    if (existingProduct) {
-      // Product with the same productId already exists
+    if (existingProduct) {  
       return res.status(409).json({ message: "Product already exists" });
     }
-
-    // Prepare the product object to be inserted into the database
+    // console.log("the product category is ", productformData);
+    // return res.status(200).json({ message: "Product Uploaded Successfully" });
     const newProduct = {
       productId: generatedProductId,
       brandName: productformData.category,
@@ -331,27 +326,23 @@ app.post("/UploadProduct", async (req, res) => {
       productPrice: productformData.price,
       discountPrice: productformData.discountPrice,
       stockCount: productformData.stock,
+      productWeight: productformData.productWeight,
       subBrandName: productformData.subBrandName,
-      images: [],
+      images: image,
     };
 
-    // Add image1 to the product
-    newProduct.images.push(image1);
-
-    // Save the new product to the database
     const result = await new Product(newProduct).save();
 
     if (!result) {
       return res.status(404).json({ message: "Request failed with code 404" });
     }
 
-    return res.status(200).json("Product Uploaded Successfully");
+    return res.status(200).json({ message: "Product Uploaded Successfully" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
 
 app.post("/UploadImages", async (req, res) => {
   const productId=lastGeneratedProductId;
@@ -388,16 +379,6 @@ app.post("/GetProduct", async (req, res) => {
       // If the product is not found in the Product model, return a 404 response indicating that the product does not exist
       return res.status(404).send("Product not found");
     }
-
-    // Search for images in the Images model based on productId
-    const imagesData = await Images.findOne({ productId: productId });
-
-    if (imagesData) {
-      // If images are found in the Images model, push them to the product's images array
-      product.images.push(...imagesData.images);
-    }
-
-    // Send the product data to the front end
     res.status(200).json(product);
   } catch (error) {
     console.error("Error while fetching product:", error);
@@ -466,24 +447,11 @@ app.post("/DeleteProduct", async (req, res) => {
     if (!productId) {
       return res.status(400).json({ message: "Product ID is required" });
     }
-
-    // Use the Product model to find and remove the product by productId
     const product = await Product.findOneAndDelete({ productId: productId });
-
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-
-    // Use the Images model to find and remove images by productId, if they exist
-    const images = await Images.findOneAndDelete({ productId: productId });
-
-    let deletionMessage = "Product deleted successfully";
-
-    if (images) {
-      deletionMessage += " and associated images deleted successfully";
-    }
-
-    res.status(200).json({ message: deletionMessage });
+    res.status(200).json({ message: "Product deleted successfully"});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -666,11 +634,6 @@ app.post("/AddDeliveryPrice", async (req, res) => {
     res.status(500).json({ error: "Failed to add delivery pricing data" });
   }
 });
-// app.get('/getusers', (req, res) => {
-//   UserModel.find({}).
-//   then(result=> res.json(result))
-//   .catch(err => res.json(err))
-// })
 app.get("/GetDeliveryDetails", (req, res) => {
   DeliveryPricing.find({})
     .then((data) => {
@@ -728,91 +691,6 @@ app.delete("/DeleteCountry/:id", async (req, res) => {
       .json({ message: "Error deleting country", error: error.message });
   }
 });
-
-// const data = [
-//   {
-//     "_id": "6545fb885c478c1f94f6b0b9",
-//     "brandName": "Asim Jofa",
-//     "subCategory": [
-//       {
-//         "subBrandName": "Khushboo",
-//         "collections": ["Wedding Collection", "New Collection"]
-//       },
-//       {
-//         "subBrandName": "Sarah Sami",
-//         "collections": ["Wedding Collection", "New Collection", "Summer Collection"]
-//       },
-//       {
-//         "subBrandName": "My name is syed aun muhammad i work in koderalabs this was my first day of third week it was fun",
-//         "collections": ["Wedding Collection", "New Collection"]
-//       },
-//       {
-//         "subBrandName": "bbm b7ujn67b67",
-//         "collections": ["Wedding Collection", "New Collection", "Summer Collection", "Winter Collection", "Sale"]
-//       }
-//     ],
-//     "__v": 7
-//   },
-//   {
-//     "_id": "6545fb8c5c478c1f94f6b0bc",
-//     "brandName": "Maria B",
-//     "subCategory": [
-//       {
-//         "subBrandName": "Auni",
-//         "collections": ["Wedding Collection", "New Collection", "Summer Collection", "Winter Collection"]
-//       }
-//     ],
-//     "__v": 3
-//   },
-//   {
-//     "_id": "65490f530941b6a3e106c189",
-//     "brandName": "Saphire",
-//     "subCategory": [],
-//     "__v": 0
-//   },
-//   {
-//     "_id": "654c842933613f9a134489c4",
-//     "brandName": "Gul Ahmed",
-//     "subCategory": [],
-//     "__v": 0
-//   },
-//   {
-//     "_id": "6550b179bb5ff039e21a4a71",
-//     "brandName": "Nishat",
-//     "subCategory": [],
-//     "__v": 1
-//   }
-// ];
-
-// // First index: Array of objects with brandName only
-// const brandNamesArray = data.map(item => ({ brandName: item.brandName }));
-
-// // Second index: Array of objects with collections as keys and an array of subBrandNames as values
-// const collectionsArray = [];
-// const collections = ["Wedding Collection", "New Collection", "Summer Collection", "Winter Collection", "Sale"];
-
-// collections.forEach(collection => {
-//   const collectionObj = {
-//     [collection]: []
-//   };
-
-//   data.forEach(item => {
-//     item.subCategory.forEach(subItem => {
-//       if (subItem.collections.includes(collection)) {
-//         collectionObj[collection].push({ "subBrandName": subItem.subBrandName });
-//       }
-//     });
-//   });
-
-//   collectionsArray.push(collectionObj);
-// });
-
-// // console.log("The collection array is ", collectionsArray[0]);
-
-// const resultArray = [brandNamesArray, collectionsArray];
-
-// console.log(resultArray[1][0]["Wedding Collection"][0].subBrandName);
-
 
 app.listen(3334, () => {
   console.log("The Server is running on port 3334");

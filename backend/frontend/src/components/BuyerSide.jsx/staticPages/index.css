@@ -43,7 +43,10 @@
     margin-left: 4vw !important;
     margin-right: 4vw !important;
 }
-
+.about-container > h3{
+    text-align: center;
+    font-weight: 550;
+}
 .about-container > p{
     max-width: 70%;
     text-align: center;
@@ -51,10 +54,103 @@
     margin-right: auto;
     font-size: 22px;
 }
+
+
+/* ------------------------- */
+/* Faq */
+/* ---------------------- */
+.faq-static-container{
+    background-color: #ffffff;
+    padding: 5em 10em;
+}
+.faq-static-container >p {
+    margin-top: 0.2vh !important;
+    margin-bottom: 0.2vh !important;
+}
+.faq-answer{
+    padding-left: 40px;
+    max-width: 85%;
+}
+@media only screen and (max-width: 767px) {
+    .faq-static-container{
+        background-color: #ffffff;
+        padding: 5em 1em;
+    }
+    .faq-static-container >p {
+        margin-top: 1vh !important;
+        margin-bottom: 1vh !important;
+    }
+    .faq-answer{
+        padding-left: 10px;
+        max-width: 100%;
+    }
+}
+
+
+
+
+
+/* -------------------------------- */
+/* Terms & Conditions  */
+/* --------------------------------- */
+.tc-static-container{
+    background-color: #ffffff;
+    padding: 5em 10em;
+}
+.tc-static-container >h1{
+    text-align: center;
+}
+.tc-static-container >div{
+    margin-bottom: 1vh;
+    margin-top: 3vh;
+}
+
+.tc-static-container >div >p{
+    padding-left: 30px;
+
+}
+@media only screen and (max-width: 767px) {
+    .tc-static-container{
+        background-color: #ffffff;
+        padding: 5em 1em;
+    }
+    .tc-static-container >h1{
+        font-size: 33px;
+        font-weight: bolder;
+    }
+
+}
+
+
+
+/* --------------------- */
+/* Exchange Policy */
+/* ------------------------ */
+.tc-static-container >div > ol {
+    padding-left: 30px;
+    margin-top: 2.5vh;
+}
+.tc-static-container >div > ol >li{
+    margin-top: 2.5vh;
+    font-size: 18px;
+}
+
+/* ----------------------------------------------------------------
+Custom tailoring 
+======================================================================== */
+.cc-static-container{
+    background-color: #ffffff;
+    padding: 3em 10em;
+}
+.cc-static-container > h1{
+    margin-bottom: 7vh;
+
+}
+
 @media only screen and (max-width: 767px) {
     .static-container{
         background-color:#f2f0f0;
-        padding: 4vh 6vw !important;
+        padding: 4vh 3vw !important;
     }
     .child-static-container{
         background-color: #ffffff;
@@ -78,3 +174,12 @@
         font-size: 20px;
     }
 }
+
+
+
+
+
+
+
+
+

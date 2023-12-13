@@ -9,7 +9,7 @@ function Footer() {
   return (
     <>
       <footer>
-        <div className="footer-wrap">
+        <div className="footer-wrap hr-mt-50">
           <div className="container-fluid first_className">
             <hr className="ss" />
             <div className="row">
@@ -34,12 +34,12 @@ function Footer() {
                   <div className="standard_social_links">
                     <div>
                       <li className="round-btn btn-facebook">
-                        <a href="#">
+                        <a href="https://www.facebook.com/profile.php?id=100066794115308" target="_blank">
                           <i className="fab fa-facebook-f"></i>
                         </a>
                       </li>
                       <li className="round-btn btn-instagram">
-                        <a href="#">
+                        <a href="https://www.instagram.com/hira.g.fashions/" target="_blank">
                           <i
                             className="fab fa-instagram"
                             aria-hidden="true"
@@ -47,12 +47,12 @@ function Footer() {
                         </a>
                       </li>
                       <li className="round-btn btn-whatsapp">
-                        <a href="#">
+                        <a href="https://wa.me/923333694455" target="_blank">
                           <i className="fab fa-whatsapp" aria-hidden="true"></i>
                         </a>
                       </li>
                       <li className="round-btn btn-envelop">
-                        <a href="#">
+                        <a  href="mailto:seharhira.burhan@gmail.com?subject=Subject%20Text&body=Body%20Text" target="_blank">
                           <i className="fa fa-envelope" aria-hidden="true"></i>
                         </a>
                       </li>
@@ -97,7 +97,7 @@ function Footer() {
                       </a>
                     </li>
                     <li>
-                      <a href="#">Share your views</a>
+                      <a  onClick={()=>navigate('/exchange-policy')} className="cursor-pointer">Exchange Policy</a>
                     </li>
                   </ul>
                 </div>
@@ -105,7 +105,7 @@ function Footer() {
                   <h3>INFORMATION</h3>
                   <ul className="footer-category">
                     <li>
-                      <a onClick={()=>navigate('/')} className="cursor-pointer">
+                      <a onClick={()=>navigate('/privacy-policy')} className="cursor-pointer">
                         Privacy Policy
                       </a>
                     </li>

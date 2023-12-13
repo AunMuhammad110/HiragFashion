@@ -37,7 +37,6 @@ export default function DeliverPrice() {
   const CallUpdateCountry = (id) => {
     setCountryId(id);
     setIsUpdate();
-    console.log("The id " + id);
   };
 
   const deleteCountry = debounce((id) => {
@@ -74,7 +73,7 @@ export default function DeliverPrice() {
 
   return (
     <div className="delivery-price-container">
-       <div className="category-bar deliver-cb">
+       <div className="ccategory-bar deliver-cb">
         <p onClick={()=>{setIsAdd();}}>
           Dont find a Category ? Click here to add category
         </p>
@@ -126,7 +125,6 @@ export default function DeliverPrice() {
         <UpdateDeliveryDetails
           id={countryId}
           close={() => {
-            console.log("Update from parent");
             setIsUpdate();
             setCountryId("");
             setCount(count + 1);

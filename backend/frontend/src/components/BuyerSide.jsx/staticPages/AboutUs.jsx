@@ -11,26 +11,25 @@ export default function AboutUs() {
         </div>
         <h1 className="text-center hr-mt-20" >ABOUT US</h1>
         <p className="hr-mt-20">
-          LAAM.pk is Pakistan’s one-stop fashion online store that is home to
-          the country’s finest designer wear. The main aim behind this venture
-          is to host various Pakistani designer, prêt, lifestyle and luxury
-          brands under one roof where global customers can shop what they want
-          to under the banner of LAAM. A user-friendly platform that helps you
-          browse through over a thousand products in a matter of minutes.
+        Welcome to Hira G Fashions, your premier destination for exquisite fashion finds. Established in 2012, we are a leading multi-brand online shopping store based in Pakistan, offering a curated selection of premium designer collections from renowned brands to clients both globally and locally.
         </p>
 
+        <h3>Our Journey</h3>
+
         <p className="hr-mt-20">
-          LAAM is ensuring that our international clientele can gather on one
-          platform and enjoy the best shopping experience of all time. You can
-          shop from the giants of the fashion industry under the one umbrella
-          moreover, our customer service is available 24/7 to help you out.
+        With a foundation laid in 2012, Hira G Fashions has evolved into a fashion-forward haven, providing a seamless shopping experience to customers worldwide. We take pride in being at the forefront of the e-commerce landscape, consistently delivering the latest trends and timeless classics to your doorstep.
         </p>
+        <h3>Global Reach, Local Charm:</h3>
         <p className="hr-mt-20">
-          A one-stop couture shop for designer wear that is specifically
-          designed to cater to the needs of modern women. LAAM has all the
-          top-notch designers on board such as Ali Xeeshan, Saira Shakira, Zuria
-          Dor, Tena Durani, Mohsin Naveed Ranjha and many more.
+        At Hira G Fashions, our reach knows no boundaries. While we operate globally, we remain deeply rooted in our local ethos. This duality allows us to offer a diverse range of products, blending international style with the rich cultural tapestry of Pakistan.
         </p>
+        <h3>What Sets Us Apart:</h3>
+        <p>We stand out in the crowded e-commerce space by not just offering products, but crafting an experience. Our commitment to excellence extends beyond the brands we carry; we provide customized stitching services to ensure that every piece you order fits you perfectly. With home delivery options, we bring the latest in fashion right to your doorstep.</p>
+        <h3>Our Mission:</h3>
+        <p>Our mission at Hira G Fashions is simple yet profound: to build a user-friendly space for people where they can access hundreds of designer brands under one roof. We are dedicated to providing the highest quality products and services locally and internationally. Through innovation and teamwork, we aspire to set new standards in the world of online shopping, creating a haven for fashion enthusiasts worldwide.</p>
+        <p>Thank you for choosing Hira G Fashions. Explore, indulge, and make a statement with your style.</p>
+        <p> --------- </p>
+        <p>Feel free to customize this draft to better align with your brand's voice and style. If you have any specific points you'd like to emphasize or modify, let me know!</p>
       </div>
     </div>
   );

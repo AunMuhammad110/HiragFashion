@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Crousel from "./Crousel/crousel";
-import { useNavigate } from "react-router-dom";
 import SectionController from "./SubBrandSection/SectionControler";
+import MainPageProducts from "./MainPageProducts";
 
-export default function CarrousalSectionWrapper(){
-    const navigate=useNavigate();
-    function Navigator(name, id){
-        navigate('/product-section',{state:{name: name, id:id}})
+export default function CarrousalSectionWrapper() {
+    useEffect(() => {
+        if(!window.localStorage.getItem("SHOPPING_DATA")){
+            window.localStorage.setItem("SHOPPING_DATA",JSON.stringify([]));
         }
-    
-    return(
-        <>
-         <Crousel/>
-        <SectionController/>
-        </>
-    )
+    },[]);
+  return (
+    <>
+      <Crousel /> 
+      <SectionController />
+      <MainPageProducts/>
+    </>
+  );
 }

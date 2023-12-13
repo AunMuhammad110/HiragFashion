@@ -6,7 +6,7 @@ const brandDetails = new mongoose.Schema({
 
     },
     subCategory: [
-]
+                ]
     
   });
   

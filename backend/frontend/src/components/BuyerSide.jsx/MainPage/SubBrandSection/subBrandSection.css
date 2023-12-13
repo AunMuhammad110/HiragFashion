@@ -12,9 +12,10 @@
   letter-spacing: 1.5px;
   margin-top: 1.5vh;
 }
+
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 2.5vw;
 }
 
@@ -22,13 +23,29 @@
 
 .brand-card-container {
   position: relative;
-  height: 30vh;
+  height: 32vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center !important;
   overflow: hidden;
 }
+.brand-card-container >img{
+  filter: brightness(90%);
+  object-fit: cover;
+  width: 100%; /* Make sure the image covers the entire width of the container */
+  height: 100%;
+  object-position: 20% 0%;
+   /* Make sure the image covers the entire height of the container */
+
+}
+.brand-card-container:hover > img {
+  filter: brightness(75%);
+}
+/* .brand-card-container >img:hover{
+  filter: brightness(80%);
+
+} */
 .brand-card-container > p {
   position: absolute;
   max-width: 80%;
@@ -36,7 +53,8 @@
   transition: bottom 1.5s ease-in-out;
   margin-bottom: 0;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  color: white !important;
 }
 .brand-card-container button {
   position: absolute;
