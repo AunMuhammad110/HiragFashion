@@ -39,6 +39,6 @@ const productSchema = new mongoose.Schema({
 });
 
 // Add the collection name as the second argument to mongoose.model
-const Product = mongoose.model('Product', productSchema, 'productCollection');
+const Product = mongoose.model('productCollection', productSchema, 'productCollection');
 
 module.exports = Product;

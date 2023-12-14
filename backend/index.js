@@ -2,6 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser"); // Import body-parser
+// The below is for cart
+const { LocalStorage } = require('node-localstorage');
+const localStorage = new LocalStorage('./scratch');
 // const UserModel = require('./models/users')
 const path = require("path");
 const { Console, log } = require("console");
@@ -15,11 +18,12 @@ require("dotenv").config({ path: "data.env" });
 // Increase request payload size limit to handle larger images
 app.use(bodyParser.json({ limit: "30mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
-let ans = mongoose.connect("mongodb://localhost:27017/hiraGfashion");
+let ans = mongoose.connect("mongodb://127.0.0.1:27017/hiraGfashion", { useNewUrlParser: true, useUnifiedTopology: true });
 let lastGeneratedProductId = "D0010199";
 
 if (ans) {
-  console.log("connected to the mongodb server");
+  console.log("connected to the mongodb server");}
+  else{
   console.log("no mongodb server");
 }
 
@@ -32,13 +36,17 @@ require("./schema/notification");
 require("./schema/deliveryPrice");
 require("./schema/categoryDetails");
 require("./schema/productImages")
+require("./schema/ordertable")
 // // creating product Schema Model
-const Product = mongoose.model("Product");
+const Product = mongoose.model("productCollection");
 const carrousalSettings = mongoose.model("CarrousalSettings");
 const ProductNotification = mongoose.model("ProductNotification");
 const DeliveryPricing = mongoose.model("DeliveryPricing");
 const Brand = mongoose.model("BrandDetail");
 const Images = mongoose.model("Images");
+const Order = mongoose.model("Order");
+
+
 function generateUniqueProductId() {
   try {
     // Extract the letter and number parts from the last generated product ID.
@@ -74,6 +82,7 @@ function generateUniqueProductId() {
 app.post("/signin", (req, res) => {
   const UserName = req.body.User_Name;
   const Password = req.body.Password;
+  console.log('It is running')
 
   if (UserName === process.env.USERNAME && Password === process.env.PASSWORD) {
     // User is successfully signed in
@@ -372,34 +381,131 @@ app.post("/UploadImages", async (req, res) => {
   }
 });
 
+app.post('/setOrderDetails', async (req, res) => {
+  try {
+    // Save data to MongoDB
+    const order = new Order(req.body);
+    await order.save();
 
-app.post("/GetProduct", async (req, res) => {
-  const productId = req.body.productId;
+    res.status(200).json({ message: 'Order details saved successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// app.post("/GetProduct", async (req, res) => {
+//   const productId = req.body.productId;
+//   console.log(productId)
+//   try {
+//     // Query the database to find the product by productId in the Product model
+//     const product = await Product.findOne({ productId: productId });
+
+//     if (!product) {
+//       // If the product is not found in the Product model, return a 404 response indicating that the product does not exist
+//       return res.status(404).send("Product not found");
+//     }
+
+//     // Search for images in the Images model based on productId
+//     const imagesData = await Images.findOne({ productId: productId });
+
+//     if (imagesData) {
+//       // If images are found in the Images model, push them to the product's images array
+//       product.images.push(...imagesData.images);
+//     }
+
+//     // Send the product data to the front end
+//     res.status(200).json(product);
+//   } catch (error) {
+//     console.error("Error while fetching product:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
+
+
+// Below API is perfect to use but doesnot contain local storage Fucks
+// app.post("/GetProducts", async (req, res) => {
+//   // const mainObject=req.body;
+//   const productIds = req.body.map(item => item.productId);
+//   const quantity = req.body.map(item => item.quantity);
+//   console.log(productIds);
+//   // console.log(req.body);
+
+//   try {
+//     // Query the database to find products by productIds in the Product model
+//     const products = await Product.find({ productId: { $in: productIds } });
+
+//     if (!products || products.length === 0) {
+//       // If no products are found in the Product model, return a 404 response indicating that the products do not exist
+//       return res.status(404).send("Products not found");
+//     }
+//     // const mergedArray = products.map((objA, index) => ({ ...objA, ...mainObject[index] }));
+//     const productsWithQuantity = products.map((product, index) => ({
+//       ...product,
+//       quantity: quantity[index]
+//     }));
+//     // You may need to adapt the logic based on your specific requirements
+//     // For example, you might want to aggregate data from other models
+// // console.log(mergedArray)
+// console.log(productsWithQuantity)
+//     // Send the product data to the front end
+//     res.status(200).json(productsWithQuantity);
+//   } catch (error) {
+//     console.error("Error while fetching products:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
+// This api is for Cart
+app.post("/GetProducts", async (req, res) => {
+  const productIds = req.body.map(item => item.productId);
+  const quantity = req.body.map(item => item.quantity);
+  console.log(productIds);
 
   try {
-    // Query the database to find the product by productId in the Product model
-    const product = await Product.findOne({ productId: productId });
+    let products = [];
 
-    if (!product) {
-      // If the product is not found in the Product model, return a 404 response indicating that the product does not exist
-      return res.status(404).send("Product not found");
+    if (productIds.length > 0) {
+      // Query the database to find products by productIds in the Product model
+      products = await Product.find({ productId: { $in: productIds } });
+
+      if (!products || products.length === 0) {
+        // If no products are found in the Product model, return a 404 response indicating that the products do not exist
+        return res.status(404).send("Products not found");
+      }
+    } else {
+      // If the request does not contain any data, retrieve data from local storage
+      // Adjust the key based on your application's needs
+      const storedData = JSON.parse(localStorage.getItem('yourLocalStorageKey')) || [];
+      return res.status(200).json(storedData);
     }
 
-    // Search for images in the Images model based on productId
-    const imagesData = await Images.findOne({ productId: productId });
+    const productsWithQuantity = products.map((product, index) => ({
+      ...product,
+      quantity: quantity[index]
+    }));
 
-    if (imagesData) {
-      // If images are found in the Images model, push them to the product's images array
-      product.images.push(...imagesData.images);
-    }
-
+    // Store the fetched data in local storage
+    // Adjust the key based on your application's needs
+    localStorage.setItem('yourLocalStorageKey', JSON.stringify(productsWithQuantity));
+    // const c = (localStorage.getItem('yourLocalStorageKey'))
+    // console.
     // Send the product data to the front end
-    res.status(200).json(product);
+    res.status(200).json(productsWithQuantity);
   } catch (error) {
-    console.error("Error while fetching product:", error);
+    console.error("Error while fetching products:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+// this below is fetch data of countries for shipment
+app.get('/fetchCountryDetails', async (req,res)=>{
+  try{
+    const data = await DeliveryPricing.find({});
+    res.status(200).json(data)
+  }catch{
+    console.status(500).json("error")
+  }
+  
+})
 
 
 app.post("/UpdateProduct", async (req, res) => {
@@ -722,6 +828,131 @@ app.delete("/DeleteCountry/:id", async (req, res) => {
     return res
       .status(500)
       .json({ message: "Error deleting country", error: error.message });
+  }
+});
+
+// From here the order api's begin
+app.post('/orders', (req, res) => {
+  // Create a new order document based on the request body
+  const newOrder = new Order({
+    orderId: req.body.orderId,
+    clientName: req.body.clientName,
+    NoProduct: req.body.NoProduct,
+    Location: req.body.Location,
+  }).save();
+  if (!newOrder){return res.status(404).json({ message: "Error Occurred" })}
+else{return res.status(200).json({message:"Order posted"})}
+  // Save the new order to the database
+});
+
+app.get('/getOrder', async (req, res) => {
+  try {
+    const result = await Order.find({});
+
+    if (!result) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error('Error occurred:', error);
+    return res.status(500).json({ message: "An error occurred" });
+  }
+});
+app.get('/getorderbyid/:id', (req, res) => {
+  const id=req.params.id;
+  console.log(id)
+  Order.find({orderId:id})
+  .then(result=> res.json(result))
+  .catch(err => res.json(err))
+});
+
+
+
+//this is used to delete order from the table
+app.post("/DeleteOrder",async (req,res)=>{
+  try{
+    const id =req.body.orderId;
+    console.log(id);
+    const ordId= await Order.findOneAndDelete({orderId:id});
+    let deletionMessage = "order deleted successfully";
+    if(!ordId){
+       console.log('nahi hoa')
+      return res.status(400).json({message:"Error in Deletion"})
+    }
+     console.log('hogyaa delete')
+    res.status(200).json({ message: deletionMessage });}
+  catch(error){
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+})
+
+//Dummy api to add data in the order database:((IT woyuld be change according to frontend implementation))
+app.post('/addOrder', async (req, res) => {
+  try {
+    // Initialize variables from the request body
+    const orderId = req.body.orderId;
+    const clientFName = req.body.clientFName;
+    const clientLName = req.body.clientLName;
+    const Address = req.body.Address;
+    const postalCode = req.body.postalCode;
+    const PhoneNo = req.body.PhoneNo;
+    const Image = req.body.PaymentSS;
+    const NoProduct = req.body.NoOfProduct;
+    const Location = req.body.Location;
+    const email= req.body.email;
+    const totalBill = req.body.totalBill;
+    const productsInfo = req.body.productsInfo;
+    console.log(req.body);
+    // Create a new order document with the variables
+    const newOrder = new Order({
+      email:email,
+      totalBill:totalBill,
+      orderId:orderId,
+      clientFName:clientFName,
+      clientLName:clientLName,
+      Address:Address,
+      postalCode:postalCode,
+      PhoneNo:PhoneNo,
+      Image:Image,
+      NoProduct:NoProduct,
+      Location:Location,
+      productsInfo:productsInfo
+    });
+ console.log("add oder is working")
+    // Save the document to the database
+    const savedOrder = await newOrder.save();
+
+    res.status(201).json(savedOrder);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error adding order' });
+  }
+});
+
+
+//changing response
+app.put('/updateOrderResponse', async (req, res) => {
+  const orderId = req.body.id;
+  const Response = req.body.status;
+console.log("the response would be"+Response+".");
+  try {
+    const order = await Order.findOne({ orderId });
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Update the orderResponse field to true
+    order.Response = Response;
+    // Save the updated document
+    await order.save();
+
+    res.status(200).json({ message: 'Order response updated to true' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error updating order response' });
   }
 });
 

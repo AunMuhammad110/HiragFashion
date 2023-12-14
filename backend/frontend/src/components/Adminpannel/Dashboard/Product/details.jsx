@@ -11,6 +11,7 @@ export function CategoryProvider({ children }) {
     if(shouldFetch){
       axios.get('http://localhost:3334/GetCategories')
       .then((result) => {
+  
         setCategoryList(result.data);
       })
       .catch((error) => {

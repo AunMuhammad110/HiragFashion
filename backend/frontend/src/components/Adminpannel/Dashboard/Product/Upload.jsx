@@ -343,8 +343,8 @@ export default function UploadProduct() {
 }
 
 function Category(props) {
-  const [showCategoryForm, { setToggle: setShowCategoryForm }] =
-    useBoolean(false);
+  const [showCategoryForm, { setToggle: setShowCategoryForm }] = 
+  useBoolean(false);
   const [showUpdateCategory, { setToggle: setShowUpdateCategory }] =
     useBoolean(false);
   const [showRemoveCategory, { setToggle: setShowRemoveCategory }] =
