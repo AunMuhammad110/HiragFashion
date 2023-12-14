@@ -279,6 +279,23 @@ app.get("/GetCategories", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+app.post("/DeleteCarrousal", async (req, res) => {
+  const id= req.body.id;
+
+  try {
+    // Search for the brand by brandName
+    const deleteData = await carrousalSettings.findByIdAndDelete(id);
+
+    if (!deleteData) {
+      // Brand not found
+      return res.status(400).json({ error: "Carrousal Data not found" });
+    }
+    res.status(200).json({message:"Data Deleted Successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 app.post("/GetSubCategoryList", async (req, res) => {
   const brandName = req.body.brandName;
 
@@ -297,6 +314,7 @@ app.post("/GetSubCategoryList", async (req, res) => {
     // Log the subCategory to the console
 
     // Send subCategory in the response
+    console.log("SubCategory",subCategory);
     res.status(200).json({ subCategory });
   } catch (error) {
     console.error(error);
@@ -462,39 +480,24 @@ app.post("/DeleteProduct", async (req, res) => {
 
 // Update Carrousal
 
-app.post("/UpdateCarrousal", (req, res) => {
-  const carrousalImage = req.body.carrousalImage;
+app.post("/CreateCarrousal", (req, res) => {
+  const carrousalImage = req.body.carrousalImage; // Use req.file.path for the file path
   let categoryName = req.body.subcategoryName;
-  const objId = req.body.objId;
   const brandName = req.body.brandName;
   categoryName = categoryName.trim();
-
-  // Check if the category exists in the Product collection
-  // You should perform the category check here and then update the carrousalSettings
-
-  // Find and update the carrousalSettings document by objId
-  carrousalSettings
-    .findOneAndUpdate(
-      { _id: objId },
-      {
-        image: carrousalImage,
-        subCategoryName: categoryName,
-        brandName: brandName,
-      },
-      { new: true }
-    )
-    .then((updatedCarrousal) => {
-      if (!updatedCarrousal) {
-        res.status(404).json({ message: "Carrousal Product does not exist" });
-        return;
-      }
-      res
-        .status(200)
-        .json({ message: "Carrousal product updated successfully." });
+  const newCarrousal = new carrousalSettings({
+    image: carrousalImage,
+    subCategoryName: categoryName,
+    brandName: brandName,
+  });
+  newCarrousal
+    .save()
+    .then((createdCarrousal) => {
+      res.status(201).json({ message: "Carrousal product created successfully", data: createdCarrousal });
     })
     .catch((error) => {
-      console.error("Error updating carrousal product:", error);
-      res.status(500).json({ message: "Failed to update carrousal product" });
+      console.error("Error creating carrousal product:", error);
+      res.status(500).json({ message: "Failed to create carrousal product" });
     });
 });
 

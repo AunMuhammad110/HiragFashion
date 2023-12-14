@@ -12,6 +12,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import "./upload.css";
 import CategoryContext from "./details";
 import useBoolean from "../../../Customhooks/boolean";
+import axiosClient from "../../../../apisSetup/axiosClient";
 
 const UploadProduct = React.memo(() => {
   const { categoryList, CallData } = useContext(CategoryContext);
@@ -92,8 +93,8 @@ const UploadProduct = React.memo(() => {
 
     try {
       // Send the product data to be uploaded
-      const productResponse = await axios.post(
-        "http://localhost:3334/UploadProduct",
+      const productResponse = await axiosClient.post(
+        "/UploadProduct",
         {
           image,
           productformData,
@@ -126,8 +127,8 @@ const UploadProduct = React.memo(() => {
 
   useEffect(() => {
       
-    axios
-    .post("http://localhost:3334/GetSubCategoryList", {
+    axiosClient
+    .post("/GetSubCategoryList", {
       brandName: productformData.category ?  productformData.category: categoryList[0],
     })
     .then((response) => {
@@ -366,8 +367,8 @@ function Category(props) {
   const { categoryList, CallData } = useContext(CategoryContext);
 
   const AddCategory = debounce((data) => {
-    axios
-      .post("http://localhost:3334/AddCategory", {
+    axiosClient
+      .post("/AddCategory", {
         brandName: data.brandName,
       })
       .then((response) => {
@@ -457,8 +458,8 @@ function SubBrandForm(addprops) {
       alert("Selection of any checkbox is mandatory");
       return;
     }
-    axios
-      .post("http://localhost:3334/AddSubBrand", {
+    axiosClient
+      .post("/AddSubBrand", {
         data,
       })
       .then((response) => {
@@ -579,8 +580,8 @@ function UpdateCategory(props) {
       return;
     }
     e.preventDefault();
-    axios
-      .post("http://localhost:3334/UpdateCategory", {
+    axiosClient
+      .post("/UpdateCategory", {
         previousCategoryName: updateFormData.previousCategoryName,
         newCategoryName: updateFormData.newCategoryName,
       })
@@ -662,8 +663,8 @@ function UpdateSubCategory(updateprops) {
   const [next, setNext] = useState(0);
 
   useEffect(() => {
-    axios
-      .post("http://localhost:3334/GetSubCategoryList", {
+    axiosClient
+      .post("/GetSubCategoryList", {
         brandName,
       })
       .then((response) => {
@@ -678,8 +679,8 @@ function UpdateSubCategory(updateprops) {
 
   const UpdataSubBrand = debounce((data, e) => {
     e.preventDefault();
-    axios
-      .put("http://localhost:3334/UpdateSubCategoryList", {
+    axiosClient
+      .put("/UpdateSubCategoryList", {
         data,
         brandName,
         prevSubBrandName,
@@ -806,8 +807,8 @@ function RemoveCategory(props) {
 
   const Remove_Category = debounce(() => {
     closeModal();
-    axios
-      .post("http://localhost:3334/RemoveCategory", {
+    axiosClient
+      .post("/RemoveCategory", {
         categoryName: categoryName, // Update the property name to match the backend API
       })
       .then((response) => {
@@ -882,8 +883,8 @@ function RemoveSubCategory(removeprops) {
   }
 
   useEffect(() => {
-    axios
-      .post("http://localhost:3334/GetSubCategoryList", {
+    axiosClient
+      .post("/GetSubCategoryList", {
         brandName,
       })
       .then((response) => {
@@ -903,8 +904,8 @@ function RemoveSubCategory(removeprops) {
   }, [subCategoryList]);
 
   const Remove = debounce(() => {
-    axios
-      .post("http://localhost:3334/RemoveSubCategory", {
+    axiosClient
+      .post("/RemoveSubCategory", {
         brandName,
         subBrandName,
       })

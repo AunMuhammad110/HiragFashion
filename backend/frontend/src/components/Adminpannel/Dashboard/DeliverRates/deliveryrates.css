@@ -10,7 +10,10 @@
   }
   
   /* Dropdown content styles */
-
+.delivery-price-container > h1{
+  font-style: italic;
+  text-align: center;
+}
 .custom-dropdown{
   position: relative;
   display: inline-block;
@@ -39,6 +42,8 @@
   .deliver-cb{
     margin-bottom: 3vh;
     padding: 10px;
+    height: 5vh !important;
+    /* padding-bottom: 20px !important; */
   }
   .delivery-AC{
     display: flex;

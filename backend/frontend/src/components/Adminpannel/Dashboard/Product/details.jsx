@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import axiosClient from '../../../../apisSetup/axiosClient';
 const CategoryContext = createContext();
 
 export function CategoryProvider({ children }) {
@@ -9,7 +10,7 @@ export function CategoryProvider({ children }) {
   useEffect(() => {
     // Fetch categoryList from the server or wherever you need
     if(shouldFetch){
-      axios.get('http://localhost:3334/GetCategories')
+      axiosClient.get('/GetCategories')
       .then((result) => {
         setCategoryList(result.data);
       })

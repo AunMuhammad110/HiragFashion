@@ -17,6 +17,7 @@ import AboutUs from "./StaticPages/AboutUs";
 import ExchangePolicy from "./StaticPages/ExchangePolicy";
 import WhatsAppPopUp from "./WhatsappComponent/whatsapp";
 import NotificationController from "./Notification";
+import MainPageProducts from "./MainPage/MainPageProducts";
 
 
 export default function MainBuyer(props) {
@@ -37,6 +38,7 @@ export default function MainBuyer(props) {
             <Route path="/faqs" element={<Faqs/>}/>
             <Route path="/exchange-policy" element={<ExchangePolicy/>}/>
             <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
+            <Route path="/main-products" element={<MainPageProducts/>}/>
           </Routes>
         </MainDataProvider>
      

@@ -23,7 +23,7 @@
 
 .brand-card-container {
   position: relative;
-  height: 32vh;
+  height: 33vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -52,7 +52,7 @@
   text-align: center;
   transition: bottom 1.5s ease-in-out;
   margin-bottom: 0;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   color: white !important;
 }

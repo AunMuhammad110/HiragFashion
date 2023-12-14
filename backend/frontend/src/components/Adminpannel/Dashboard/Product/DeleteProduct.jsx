@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import "./deleteproduct.css";
 import Alert from "./alert.png";
+import axiosClient from "../../../../apisSetup/axiosClient";
 
 export default function DeleteProduct() {
   const [productId, setProductId] = useState("");
@@ -28,15 +29,13 @@ export default function DeleteProduct() {
       alert("Please enter a product ID");
       return;
     }
-    axios
-      .post("http://localhost:3334/GetProductToDelete", { productId })
+    axiosClient
+      .post("/GetProductToDelete", { productId })
       .then((result) => {
         if (result.data) {
-          // If the product is found, update your state or UI with the product details
           setProductDetails(result.data);
           openModal();
         } else {
-          // If the product is not found, display an alert
           toast.error("Product not found");
         }
       })
@@ -49,8 +48,8 @@ export default function DeleteProduct() {
 
 const RemoveProduct = debounce(() => {
   closeModal();
-  axios
-    .post("http://localhost:3334/DeleteProduct", { productId })
+  axiosClient
+    .post("/DeleteProduct", { productId })
     .then((response) => {
       if (response.status === 200 ) {
         toast.success("Product deleted successfully");

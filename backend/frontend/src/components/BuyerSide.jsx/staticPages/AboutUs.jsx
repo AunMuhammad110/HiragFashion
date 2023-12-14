@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import image from "../MainPage/Crousel/carrousal.jpeg";
 // import image from "./staticPages/carousal.jpeg"
 export default function AboutUs() {
+  useEffect(()=>{
+    console.log("Component mounted, scrolling to top");
+    window.scrollTo(0,0);
+  },[])
   return (
     <div className="about-main-container">
       <div className="about-container">

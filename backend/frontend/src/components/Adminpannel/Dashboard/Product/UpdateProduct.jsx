@@ -8,6 +8,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import "./updateproduct.css";
 import CategoryContext from "./details";
 import useBoolean from "../../../Customhooks/boolean";
+import axiosClient from "../../../../apisSetup/axiosClient";
 
 const UpdateProduct= React.memo(()=> {
   const {categoryList,CallData} = useContext(CategoryContext);
@@ -92,8 +93,8 @@ const UpdateProduct= React.memo(()=> {
   }
 
   const FetchProduct = debounce((e) => {
-    axios
-      .post("http://localhost:3334/GetProduct", { productId: productId })
+    axiosClient
+      .post("/GetProduct", { productId: productId })
       .then((response) => {
         if (response.status === 200) {
           // Product data successfully retrieved
@@ -129,8 +130,8 @@ const UpdateProduct= React.memo(()=> {
 
 
   const RemoveProduct = debounce(() => {
-    axios
-      .post("http://localhost:3334/DeleteProduct", { productId })
+    axiosClient
+      .post("/DeleteProduct", { productId })
       .then((response) => {
       })
       .catch((error) => {
@@ -140,8 +141,8 @@ const UpdateProduct= React.memo(()=> {
   }, 500); 
 
   useEffect(() => {
-    axios
-      .post("http://localhost:3334/GetSubCategoryList", {
+    axiosClient
+      .post("/GetSubCategoryList", {
         brandName: productformData.brandName,
       })
       .then((response) => {
@@ -170,8 +171,8 @@ const UpdateProduct= React.memo(()=> {
 
     try {
       // Send the product data to be uploaded
-      const productResponse = await axios.post(
-        "http://localhost:3334/UploadProduct",
+      const productResponse = await axiosClient.post(
+        "/UploadProduct",
         {
           image,
           productformData,

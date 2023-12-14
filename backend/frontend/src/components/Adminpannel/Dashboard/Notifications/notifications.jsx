@@ -18,16 +18,16 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 import "./notification.css";
 import useBoolean from "../../../Customhooks/boolean";
+import axiosClient from "../../../../apisSetup/axiosClient";
 
 export default function Notifications() {
   const [count, setCount] = useState(0);
   const [notificationDetails, setNotificationDetails] = useState([]);
   const [showAddProductId, { setToggle: setShowAddProductId }] = useBoolean();
   useEffect(() => {
-    axios
-      .get("http://localhost:3334/GetProductIds")
+    axiosClient
+      .get("/GetProductIds")
       .then((result) => {
-        // Uncomment the following line to set the carrousalDetails state
         setNotificationDetails(result.data);
       })
       .catch((error) => {
@@ -54,8 +54,8 @@ export default function Notifications() {
   }));
 
   const DeleteProductID = debounce((id) => {
-    axios
-      .post("http://localhost:3334/DeleteProductId", { productId: id })
+    axiosClient
+      .post("/DeleteProductId", { productId: id })
       .then((response) => {
         if (response.status === 200) {
           // Product deleted successfully
@@ -141,8 +141,8 @@ function NotificationUpdate(props2) {
       alert("Input Required");
       return;
     }
-    axios
-      .post("http://localhost:3334/AddNotification", {
+    axiosClient
+      .post("/AddNotification", {
         changeProductId: changeProductId,
       })
       .then((response) => {

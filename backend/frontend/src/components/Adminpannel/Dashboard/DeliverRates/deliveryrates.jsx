@@ -16,6 +16,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 import "./deliveryrates.css";
 import useBoolean from "../../../Customhooks/boolean";
+import axiosClient from "../../../../apisSetup/axiosClient";
 
 export default function DeliverPrice() {
   const [isUpdate, { setToggle: setIsUpdate }] = useBoolean(false);
@@ -25,8 +26,8 @@ export default function DeliverPrice() {
   const [deliveryDetails, setDeliveryDetails] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3334/GetDeliveryDetails")
+    axiosClient
+      .get("GetDeliveryDetails")
       .then((result) => {
         setDeliveryDetails(result.data);
       })
@@ -40,8 +41,8 @@ export default function DeliverPrice() {
   };
 
   const deleteCountry = debounce((id) => {
-    axios
-      .delete(`http://localhost:3334/DeleteCountry/${id}`)
+    axiosClient
+      .delete(`/DeleteCountry/${id}`)
       .then((result) => {
         toast.success("Country deleted successfully");
         // Refresh the data after deletion
@@ -73,6 +74,7 @@ export default function DeliverPrice() {
 
   return (
     <div className="delivery-price-container">
+      <h1>Set Delivery Rates</h1>
        <div className="ccategory-bar deliver-cb">
         <p onClick={()=>{setIsAdd();}}>
           Dont find a Category ? Click here to add category
@@ -153,8 +155,8 @@ function UpdateDeliveryDetails(props) {
   }
   const UpdateCountry = debounce(async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:3334/UpdateCountry/${props.id}`,
+      const response = await axiosClient.post(
+        `/UpdateCountry/${props.id}`,
         countryformData
       );
   
@@ -252,8 +254,8 @@ function ADDeliveryDetails(props2) {
     });
   }
   const AddCountry = debounce(() => {
-    axios
-      .post("http://localhost:3334/AddDeliveryPrice", {
+    axiosClient
+      .post("AddDeliveryPrice", {
         country: countryformData.countryName,
         firstKg: countryformData.firstKg,
         addKg: countryformData.addKg,

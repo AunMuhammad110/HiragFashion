@@ -7,15 +7,27 @@ import React, { useContext, useEffect, useState } from "react";
 import "./carrousal.css";
 import CategoryContext from "../Product/details";
 import useBoolean from "../../../Customhooks/boolean";
+import axiosClient from "../../../../apisSetup/axiosClient";
 
 
 export default function CarrousalSettings() {
   const [count, setCount] = useState(0);
   const [carrousalDetails, setCarrousalDetails] = useState([]);
   const[showAdd, setShowAdd]=useState(false);
+  const [disableClick, setDisableClick] = useState(false);
+  const handleAddClick = () => {
+    if (carrousalDetails.length===3) {
+      setDisableClick(true);
+      toast.error("Cannot add new Carrousal data. Maximum limit reached.");
+    } else {
+      // setDisableClick(false);
+      setShowAdd(!showAdd);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get("http://localhost:3334/GetCarrousalDetails")
+    axiosClient
+      .get("/GetCarrousalDetails")
       .then((result) => {
         setCarrousalDetails(result.data);
       })
@@ -26,10 +38,12 @@ export default function CarrousalSettings() {
   return (
     <div className="carrousal-settings-container">
       <h1>Carrousal Settings</h1>
-      <div className="category-bar" >
-        <p onClick={()=>setShowAdd(!showAdd)}>Want to Add New Carrousal Data ? Click here to add</p>
+      <div className="category-bar">
+        <p onClick={handleAddClick} style={{ cursor: disableClick ? "not-allowed" : "pointer" }}>
+          Want to Add New Carrousal Data ? Click here to add
+        </p>
       </div>
-      {showAdd && <ChangeCarrousal/>}
+      {showAdd && <ChangeCarrousal _render={() => setCount(count + 1)} closeForm={()=>setShowAdd(false)}/>}
 
       {carrousalDetails.length > 0 &&
         carrousalDetails.map((item) => (
@@ -48,10 +62,19 @@ export default function CarrousalSettings() {
 }
 
 function CarrousalCard(props) {
-  const [isCallUpdate, { setToggle: setIsCallUpdate }] = useBoolean();
-  function Rerender() {
-    setIsCallUpdate();
-    props._render();
+  function DeleteCarrousal(){
+    axiosClient
+    .post("/DeleteCarrousal", {
+      id:props.id,
+    })
+    .then((response) => {
+      toast.success("Carrousal Data deleted successfully")
+      props._render();
+    })
+    .catch((error) => {
+      toast.error("Error while deleting carrousal")
+    });
+
   }
   return (
     <div>
@@ -61,72 +84,108 @@ function CarrousalCard(props) {
 
         <div>
           <img src={props.image} alt="carrousal image" />
-          <button onClick={() => setIsCallUpdate()}>Delete</button>
+          <button onClick={DeleteCarrousal}>Delete</button>
         </div>
       </div>
-      {/* {isCallUpdate && (
-        <ChangeCarrousal key={props.id} objId={props.id} CloseCC={Rerender} />
-      )} */}
     </div>
   );
 }
 
-function ChangeCarrousal() {
+function ChangeCarrousal({_render,closeForm}) {
   const {categoryList,CallData} = useContext(CategoryContext);
+  const [subCategoryList, setSubCategoryList] = useState([]);
   const [subcategoryName, setSubCategoryName] = useState("");
   const [carrousalImage, setCarrousalImage] = useState("");
   const [brandName, setBrandName] = useState(categoryList[0]);
   function handleChange(e) {
     setBrandName(e.target.value);
   }
+
+  useEffect(() => {
+    axiosClient
+  .post("/GetSubCategoryList", {
+    brandName: brandName ? brandName : categoryList[0],
+  })
+  .then((response) => {
+    if (response.status === 200) {
+      setSubCategoryList(response.data.subCategory);
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+  },[brandName])
+
   function convertToBase64(e) {
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
+
     reader.onload = () => {
-      setCarrousalImage(reader.result);
+      const img = new Image();
+      img.src = reader.result;
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const maxWidth = 800;
+        const maxHeight = 800;
+
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressedBase64 = canvas.toDataURL("image/jpeg", 0.9); // Adjust quality (0.9 is just an example)
+        setCarrousalImage(compressedBase64);
+      };
     };
+
     reader.onerror = () => {
-      console.log("Error ", error);
+      toast.error("Error ", error);
     };
   }
 
-  // const UpdateCarrousal = debounce(() => {
-  //   if (subcategoryName.length === 0 && carrousalImage.length === 0) {
-  //     toast.error("Input Required");
-  //     return;
-  //   }
-  //   axios
-  //     .post("http://localhost:3334/UpdateCarrousal", {
-  //       carrousalImage,
-  //       subcategoryName,
-  //       objId,
-  //       brandName,
-  //     })
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         // Successful response from the backend
-  //         if (response.data === "Category does not exist") {
-  //           toast.error("This Category does not exist");
-  //         } else if (response.data === "Carrousal Product does not exist") {
-  //           toast.error("Carrousal Product does not exist");
-  //         } else {
-  //           props1.CloseCC();
-  //           toast.success("Carrousal product updated successfully");
-  //         }
-  //       } else {
-  //         // Handle other response statuses (e.g., 409 for a conflict)
-  //         toast.error("Carrousal Failed to Update: " + response.data);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       toast.error("Error", error);
-  //     });
-  // }, 1000); 
+
+  const AddCarrousal = debounce(() => {
+    if (subcategoryName.length === 0 && carrousalImage.length === 0) {
+      toast.error("Input Required");
+      return;
+    }
+    axiosClient
+      .post("/CreateCarrousal", {
+        carrousalImage,
+        subcategoryName,
+        brandName,
+      })
+      .then((response) => {
+          toast.success("Carrousal created successfully");
+          _render();
+          closeForm();
+      })
+      .catch((error) => {
+        toast.error("Error", error);
+      });
+  }, 1000); 
+
+  
 
   return (
     <div className="change-carrousal-container">
       <div>
-        <select onChange={handleChange} value={brandName} required>
+        <select onChange={handleChange} value={brandName} required className="custom-select">
           {categoryList.map((category, index) => (
             <option key={index} value={category}>
               {category}
@@ -134,16 +193,18 @@ function ChangeCarrousal() {
           ))}
         </select>
       </div>
-      <input
-        type="text"
-        onChange={(event) => setSubCategoryName(event.target.value)}
-        value={subcategoryName}
-        placeholder="Enter Sub Category Name"
-        required
-      />
+      <div>
+        <select onChange={(e)=> setSubCategoryName(e.target.value)} value={subcategoryName} required className="custom-select">
+          {subCategoryList?.map((category, index) => (
+            <option key={index} value={category.subBrandName}>
+              {category.subBrandName}
+            </option>
+          ))}
+        </select>
+      </div>
       <input type="file" onChange={convertToBase64} accept="image/*" required />
 
-      <button onClick={()=>{}}>Change</button>
+      <button onClick={AddCarrousal}>Add</button>
       <ToastContainer />
     </div>
   );
