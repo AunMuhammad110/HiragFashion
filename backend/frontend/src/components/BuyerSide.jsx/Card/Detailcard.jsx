@@ -8,14 +8,17 @@ import ImageCarousel from "./crousel-img";
 import ZoomImage from "./zoomImage";
 import ProductCard from "../ProductSection/brandCards/brandCards";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { useCount } from "../GlobalData/cartContext/cartData";
 
 const ImageGallery = React.memo(() => {
+  const {state,dispatch}= useCount();
   const locationData = useLocation();
+
   const {
     state: { id, parentCollection },
   } = locationData;
-  const [number, setNumber] = useState(0);
   const navigate = useNavigate();
+  const [number, setNumber] = useState(0);
   const [productData, setProductData] = useState({}); // Move useLocation inside the component
   const [showError, setShowError] = useState(false);
   const [selectedImage, setSelectedImage] = useState([]);
@@ -24,19 +27,20 @@ const ImageGallery = React.memo(() => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const res = await axiosClient.get(
-            `/buyerSide/GetProductDetails/${id}`,{
-              params:{parentCollection}
-            }
-          );
-          setProductData(res.data);
-          return;
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
+    const fetchData = async () => {
+      try {
+        const res = await axiosClient.get(
+          `/buyerSide/GetProductDetails/${id}`,
+          {
+            params: { parentCollection },
+          }
+        );
+        setProductData(res.data);
+        return;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
     fetchData();
   }, [locationData]);
@@ -105,14 +109,14 @@ const ImageGallery = React.memo(() => {
       prevShoppingData.push(productInfo);
     }
 
-
     // Save the updated array back to localStorage
     window.localStorage.setItem(
       "SHOPPING_DATA",
       JSON.stringify(prevShoppingData)
     );
+    
     setShowSuccessMessage(true);
-
+    dispatch({ type: 'INCREMENT' });
     setTimeout(() => {
       setShowSuccessMessage(false);
     }, 3000);
@@ -265,44 +269,41 @@ const ImageGallery = React.memo(() => {
             </div>
           </div>
         </div>
-     {productData?.relatedProducts && (
-  <div className="related-products-main">
-  <p>RELATED PRODUCTS</p>
-  <div className="related-products-container">
-    {productData.relatedProducts.map((item) => {
-      if (item.productId != id) {
-        return (
-          <ProductCard
-            className={"change-height"}
-            item={item}
-            parentCollection={parentCollection}
-          />
-        );
-      }
-    })}
-  </div>
+        {productData?.relatedProducts && (
+          <div className="related-products-main">
+            <p>RELATED PRODUCTS</p>
+            <div className="related-products-container">
+              {productData.relatedProducts.map((item, index) => {
+                if (item.productId != id) {
+                  return (
+                    <ProductCard
+                      className={"change-height"}
+                      item={item}
+                      parentCollection={parentCollection}
+                      key={index}
+                    />
+                  );
+                }
+              })}
+            </div>
 
-  <div className="related-product-button">
-    <button
-      onClick={() =>
-        navigate("/product-section", { state: parentCollection })
-      }
-    >
-      <span>
-        <KeyboardBackspaceIcon />
-      </span>{" "}
-      BACK TO {parentCollection.name.toUpperCase()}
-    </button>
-  </div>
-</div>
-)}
-
-
+            <div className="related-product-button">
+              <button
+                onClick={() =>
+                  navigate("/product-section", { state: parentCollection })
+                }
+              >
+                <span>
+                  <KeyboardBackspaceIcon />
+                </span>{" "}
+                BACK TO {parentCollection.name.toUpperCase()}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     )
   );
 });
 
 export default ImageGallery;
-
-

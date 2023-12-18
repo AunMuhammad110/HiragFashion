@@ -6,7 +6,6 @@ const mainPage=require("./MainPage/index")
 // Import body-parser
 // const UserModel = require('./models/users')
 const path = require("path");
-const { Console, log } = require("console");
 const app = express();
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
@@ -37,6 +36,7 @@ require("./schema/notification");
 require("./schema/deliveryPrice");
 require("./schema/categoryDetails");
 require("./schema/productImages")
+require("./schema/mainPageBrands")
 
 // // creating product Schema Model
 const Product = mongoose.model("Product");
@@ -45,15 +45,11 @@ const ProductNotification = mongoose.model("ProductNotification");
 const DeliveryPricing = mongoose.model("DeliveryPricing");
 const Brand = mongoose.model("BrandDetail");
 const Images = mongoose.model("Images");
+const MainPageBrands=mongoose.model("mainPageBrands")
 
 
 const buyerSide= require('./MainPage/index')
 app.use("/buyerSide",  buyerSide);
-
-
-
-
-
 
 
 function generateUniqueProductId() {
@@ -311,10 +307,6 @@ app.post("/GetSubCategoryList", async (req, res) => {
     // Access the subCategory array
     const subCategory = brand.subCategory;
 
-    // Log the subCategory to the console
-
-    // Send subCategory in the response
-    console.log("SubCategory",subCategory);
     res.status(200).json({ subCategory });
   } catch (error) {
     console.error(error);
@@ -511,7 +503,6 @@ app.get("/GetCarrousalDetails", async (req, res) => {
   }
 });
 
-// Add Product Id
 app.post("/AddNotification", async (req, res) => {
   const productId = req.body.changeProductId.trim();
 
@@ -692,6 +683,67 @@ app.delete("/DeleteCountry/:id", async (req, res) => {
     return res
       .status(500)
       .json({ message: "Error deleting country", error: error.message });
+  }
+});
+
+
+app.post("/AddMainPageProducts", async (req, res) => {
+  const { brandName, categoryName, category } = req.body;
+
+  try {
+    // Check if a document with the specified category already exists
+    const existingCategory = await MainPageBrands.findOne({ category: category });
+
+    if (existingCategory) {
+      // If the category already exists, send an error response
+      return res.status(400).json({ message: "Category 'Sale' already exists" });
+    }
+
+    // If the category doesn't exist, proceed to create a new document
+    const response = await MainPageBrands.create({
+      brandName: brandName,
+      categoryName: categoryName,
+      category: category,
+    });
+
+    if (response) {
+      res.status(200).json({ message: "Successfully added" });
+    } else {
+      res.status(400).json({ message: "Error occurred while saving Product" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+});
+
+
+app.post('/DeleteMainPageProducts', async (req, res) => {
+  const {id}=req.body;
+  try{
+      const response = await MainPageBrands.findByIdAndDelete({_id:id});
+      if (response) {
+        res.status(200).json({message: "Successfully deleted"});
+      }
+      else{
+        res.status(400).json({message: "Error occurred while deleting Product"});
+      }
+  }
+  catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+});
+app.get('/GetMainPageProducts', async (req, res) => {
+  try{
+      const data = await MainPageBrands.find({});
+      if (data) {
+        res.status(200).json({message: "Successfully Retrieved",data:data});
+      }
+      else{
+        res.status(400).json({message: "Error occured while finding product"});
+      }
+  }
+  catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 });
 

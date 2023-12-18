@@ -1,0 +1,13 @@
+.no-data-container{
+    width: 250px;
+}
+.card-container{
+    background-color: #f5f5f5; /* Set a light gray background color */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px 0;
+}
+.custom-heading{
+    margin-left: 2vw;
+    font-style: italic;
+    margin-top: 4vh;
+}

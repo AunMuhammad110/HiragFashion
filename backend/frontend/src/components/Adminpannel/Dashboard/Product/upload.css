@@ -53,7 +53,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
-    margin-top: 1vh;
+    /* margin-top: 1vh; */
   }
   
   .form-group select {
@@ -104,7 +104,7 @@
     margin-bottom: 6vh;
     /* padding: 2px; */
 }
-.custom-button {
+.bar-button {
     background-color: #dc3545;
     padding: 10px 20px;
     border: none;
@@ -129,6 +129,7 @@
 /* Style for the input box */
 
 .category-main-container{
+  position: relative;
   background-color: #f5f5f5; /* Set a light gray background color */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   padding-left: 5vw;
@@ -159,7 +160,8 @@
     border-radius: 5px;
     margin-right: 1vw;
     height: 6vh;
-    margin-top: 1vh;
+    /* margin-top: 1vh;
+     */
   }
   
   /* Style for the submit button */
@@ -181,7 +183,7 @@
     border: 1px solid black;
     color: black !important;
   }
-  
+
 .category-form > p{
     cursor: pointer;
 }
@@ -190,11 +192,12 @@
 }
 
 .update-category-container{
+  position: relative;
     padding-left: 5vw !important;
     margin-bottom: 4vh !important;
     background-color: #f5f5f5; /* Set a light gray background color */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    width: 81vw;
+    width: 86vw;
     padding-top: 3vh;
     padding-bottom: 3vh;
 }
@@ -209,7 +212,7 @@
     border-radius: 5px;
     margin-right: 1vw;
     height: 6vh;
-    margin-top: 1vh;
+    /* margin-top: 1vh; */
     /* margin-left: 5vw !important; */
   }
   
@@ -230,6 +233,7 @@
   }
 
   .remove-category-container{
+    position: relative;
     margin-bottom: 4vh;
     background-color: #f5f5f5; /* Set a light gray background color */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -246,7 +250,7 @@
     border-radius: 5px;
     margin-right: 1vw;
     height: 6vh;
-    margin-top: 1vh;
+    /* margin-top: 1vh; */
   }
   
   /* Style for the submit button */
@@ -331,7 +335,7 @@
   .input-label{
     font-weight: bold;
     font-size: 20px;
-    margin-bottom: 1vh !important;
+    /* margin-bottom: 1vh !important; */
   }
 
 
@@ -390,8 +394,9 @@
   border-radius: 5px;
   margin-right: 1vw;
   height: 6vh;
-  margin-top: 1vh;
+  /* margin-top: 1vh; */
 }
+
 
 
 
@@ -435,4 +440,10 @@
 }
 .remove-category-container{
 
+}
+.close-icon{
+  position:  absolute;
+  right: 25px;
+  top: 15px;
+  cursor: pointer;
 }

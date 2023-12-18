@@ -160,8 +160,8 @@ function ChangeCarrousal({_render,closeForm}) {
 
 
   const AddCarrousal = debounce(() => {
-    if (subcategoryName.length === 0 && carrousalImage.length === 0) {
-      toast.error("Input Required");
+    if (subcategoryName.length === 0 || carrousalImage.length === 0 ||  brandName.length===0) {
+      toast.error("Fill the input");
       return;
     }
     axiosClient

@@ -14,7 +14,7 @@ export default function ProductCard(data) {
       <div
         className={`product-card-container ${className}`}
         style={{
-          backgroundImage: `url(${item.images[0]})`,
+          backgroundImage: `url(${item?.images[0]})`,
           backgroundPosition: "center Top",
           backgroundSize: "cover",
           objectFit: "center",

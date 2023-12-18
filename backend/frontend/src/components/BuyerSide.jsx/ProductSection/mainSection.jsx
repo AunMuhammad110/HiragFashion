@@ -13,32 +13,60 @@ export default function MainProductSection() {
   const location = useLocation();
   const [tag, setTag] = useState("Title");
   const { mutate } = useRequestProcessor();
-  const [page, setPage] = React.useState(1);
   const [productData, setProductData] = useState([]);
+  const [showMore,setShowMore]=useState(false);
+  const [offsetCount,setOffsetCount] = useState(1);
 
-  const handleChange = (event, value) => {
-    setPage(value);
-  };
   useEffect(() => {
-    setTag(location.state.name);
-  }, [location.state]);
+    setTag(location?.state?.name);
+  }, [location?.state]);
 
+  // const {data, isLoading, isError} =query("productData", async ()=>{
+  //     try{
+  //       const response =axiosClient.get("/buyerSide/GetProducts",{params:{offset:1}})
+  //       setProductData(response.data);
+  //       if(response.data.length ===25) setShowMore(true);
+  //       return response.data;
+  //     }
+  //     catch(error){
+  //       console.error("Error fetching product data:", error);
+  //       throw error;
+  //     }
+  // })
   const mutation = mutate("unique", async () => {
     try {
       const response = await axiosClient.post(
-        "/buyerSide/GetProducts",
-        location.state
-      );
-      setProductData(response.data);
+        "/buyerSide/GetProducts",{
+        locationData:location.state,
+        offsetCount:offsetCount}
+
+      )
+      if(!productData.length ===0){
+        if(productData[0].brandName===response.data[0].brandName && productData[0].subBrandName===response.data[0].subBrandName  ){
+          setProductData([...productData, ...response.data]);
+        }
+      }
+      else{
+        setProductData(response.data);
+      }
+      if(response.data.length ===25) setShowMore(true);
     } catch (error) {
       console.error("Error:", error);
     }
   });
   useEffect(() => {
     mutation.mutate();
-  }, [location]);
-  if (mutation.isLoading) {
-    return <p>Loading....</p>;
+  }, [location,offsetCount]);
+  useEffect(() => {
+    if(productData.length % 25 !== 0){
+      setShowMore(false);
+    }
+  },[productData])
+  useEffect(()=>{
+    setProductData([]);
+  },[location])
+  if (mutate.isLoading) {
+    return <></>;
   }
 
   if (productData.length === 0) {
@@ -59,8 +87,10 @@ export default function MainProductSection() {
       <h1>{tag}</h1>
       <div className="sub-product-main">
         <div className="main-card-container">
-          {productData.map((item, index) => {
+          {productData?.map((item, index) => {
+            // {console.log("item data is ", item) }
             return (
+              // <></>
               <ProductCard
                 key={index}
                 item={item}
@@ -69,12 +99,8 @@ export default function MainProductSection() {
             );
           })}
         </div>
-        <div className="pagination">
-          <Stack spacing={2}>
-            <Pagination count={3} page={page} onChange={handleChange} />
-          </Stack>
-        </div>
       </div>
+      {showMore && <div className="related-product-button custom-view"><button className="" onClick={()=>setOffsetCount(offsetCount +1)}> View More Products </button></div>}
     </div>
   );
 }

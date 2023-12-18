@@ -18,9 +18,7 @@
   position: relative;
   display: inline-block;
 }
-
-
-  .custom-dropdown-content{
+.custom-dropdown-content{
     display: none;
     position: absolute;
     min-width: 120px;

@@ -29,6 +29,9 @@ export default function Navbar() {
         <li>
           <Link to="/admin/mainDashboard/notification">Notifications</Link>
         </li>
+        <li>
+          <Link to="/admin/mainDashboard/product-settings">Main Page</Link>
+        </li>
         <li className="logout-button">
           <Link onClick={()=>window.location.reload()}>Logout</Link>
         </li>

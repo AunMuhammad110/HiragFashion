@@ -1,16 +1,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const mainPageBrands = require("../schema/mainPageBrands.js");
 // require("/Users/aunmuhammad/Documents/HiragFashion/backend/schema/product.js");
 require("../schema/product.js");
 // require("/Users/aunmuhammad/Documents/HiragFashion/backend/schema/categoryDetails.js");\
 require("../schema/categoryDetails.js")
 // require("../schema/productImages.js")
 require("../schema/notification")
+require("../schema/mainPageBrands")
 // require("../")
 const router = express.Router();
 const Brand = mongoose.model("BrandDetail");
 const Product = mongoose.model("Product");
 // const Images=mongoose.model("Images");
+const MainPageBrands=mongoose.model("mainPageBrands")
 const ProductNotification = mongoose.model("ProductNotification");
 
 async function fetchAndAddImages(brandNamesArray) {
@@ -121,15 +124,15 @@ router.get("/GetCategories", async (req, res) => {
 
 router.post('/GetProducts', async (req, res) => {
   try {
-      const { id, name } = req.body;
+      const { locationData:{id, name }, offsetCount} = req.body;
+      let skipValue= (offsetCount-1) * 25;
+      let limitValue= offsetCount*25;
       
       if (id === 1) {
-          // Fetch all products with the specified brandName
-          const products = await Product.find({ brandName: name });
+          const products = await Product.find({ brandName: name }).skip(skipValue).limit(limitValue);
           res.json(products);
       } else {
-          // Search for products with the specified subBrandName
-          const products = await Product.find({ subBrandName: name });
+          const products = await Product.find({ subBrandName: name }).skip(skipValue).limit(limitValue);
           res.json(products);
       }
   } catch (error) {
@@ -211,25 +214,23 @@ router.get("/GetNotifications", async(req, res) => {
 });
 
 router.get("/GetSaleProducts",async(req, res) => {  
-  const categories = await Brand.find({});
+  const categories = await mainPageBrands.find({});
   let subBrandName;
   let subBrandName2;
-  categories.some((category) => {
-    return category.subCategory.some((sub_category) => {
-      return sub_category.collections.some((collectionItem) => {
-        if (collectionItem === "Sale") {
-          subBrandName = sub_category.subBrandName; // This breaks out of the some loop
-        }
-        else if (collectionItem === "New Collection") {
-          subBrandName2=sub_category.subBrandName;
-        }
-      });
-    });
+  categories.map((item) => {
+    if (item.category === "Sale") {
+      subBrandName = item?.categoryName;
+    } else {
+      subBrandName2 = item?.categoryName; // Change this line as needed
+    }
+    // Note: This loop will overwrite 'subBrandName' in each iteration.
+    // If you want to store multiple subBrandNames, consider using an array.
   });
-  const products = await Product.find({subBrandName:subBrandName});
-  const products2 = await Product.find({subBrandName:subBrandName2});
+  const products = await Product.find({subBrandName:subBrandName}).limit(4);
+  const products2 = await Product.find({subBrandName:subBrandName2}).limit(6);
   const objectToSend={subBrandDetails:[{subBrandName:subBrandName, id:2, productData:products}, {subBrandName:subBrandName2, id:2,productData:products2}]}
   res.json(objectToSend);
+
 });
 
 module.exports = router;

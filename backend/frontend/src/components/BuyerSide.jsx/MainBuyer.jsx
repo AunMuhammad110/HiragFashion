@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes,useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import Footer from "./footer/footer";
@@ -18,15 +18,24 @@ import ExchangePolicy from "./StaticPages/ExchangePolicy";
 import WhatsAppPopUp from "./WhatsappComponent/whatsapp";
 import NotificationController from "./Notification";
 import MainPageProducts from "./MainPage/MainPageProducts";
+import { CountProvider } from "./GlobalData/cartContext/cartData";
+import ScrolToTop from "../Customhooks/scrolltotop";
 
 
 export default function MainBuyer(props) {
   const queryClient = new QueryClient();
+  // const {pathname} = useLocation();
+
+  // React.useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [pathname]);
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <MainDataProvider>
+          <CountProvider>
           <Navbarr/>
+          <ScrolToTop/>
           <Routes>
             <Route path="/" element={<CarrousalSectionWrapper />}/>
             <Route path="/product-section" element={<MainProductSection/>}/>
@@ -40,6 +49,7 @@ export default function MainBuyer(props) {
             <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
             <Route path="/main-products" element={<MainPageProducts/>}/>
           </Routes>
+          </CountProvider>
         </MainDataProvider>
      
       <NotificationController/>

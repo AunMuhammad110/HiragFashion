@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import React, { useContext, useEffect, useRef, useState } from "react";
-
+import CloseIcon from "@mui/icons-material/Close";
 
 import "./upload.css";
 import CategoryContext from "./details";
@@ -26,10 +26,10 @@ const UploadProduct = React.memo(() => {
     category: "",
     subBrandName: "",
     price: Number,
-    stock: 0,
+    stock: Number,
     discountPrice: Number,
     productDetails: "",
-    productWeight:Number,
+    productWeight: Number,
   });
   const [image, setImage] = useState([]);
   function convertToBase64(e) {
@@ -93,14 +93,11 @@ const UploadProduct = React.memo(() => {
 
     try {
       // Send the product data to be uploaded
-      const productResponse = await axiosClient.post(
-        "/UploadProduct",
-        {
-          image,
-          productformData,
-          productId,
-        }
-      );
+      const productResponse = await axiosClient.post("/UploadProduct", {
+        image,
+        productformData,
+        productId,
+      });
 
       if (productResponse.status === 200) {
         setProductFormData({
@@ -111,13 +108,13 @@ const UploadProduct = React.memo(() => {
           stock: Number,
           discountPrice: Number,
           productDetails: "",
-          productWeight:Number,
+          productWeight: Number,
         });
-          image1Ref.current.value = "";
-          setImage([]);
-          image2Ref.current.value = "";
-          image3Ref.current.value = "";
-          toast.success("Product uploaded successfully");
+        image1Ref.current.value = "";
+        setImage([]);
+        image2Ref.current.value = "";
+        image3Ref.current.value = "";
+        toast.success("Product uploaded successfully");
       }
     } catch (error) {
       console.error("Error", error);
@@ -126,28 +123,25 @@ const UploadProduct = React.memo(() => {
   };
 
   useEffect(() => {
-      
     axiosClient
-    .post("/GetSubCategoryList", {
-      brandName: productformData.category ?  productformData.category: categoryList[0],
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        if (response.data.subCategory.length > 0) {
-          productformData.subBrandName =
-            response.data.subCategory[0].subBrandName;
+      .post("/GetSubCategoryList", {
+        brandName: productformData.category
+          ? productformData.category
+          : categoryList[0],
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          if (response.data.subCategory.length > 0) {
+            productformData.subBrandName =
+              response.data.subCategory[0].subBrandName;
+          }
+          setSubCategoryList(response.data.subCategory);
         }
-        setSubCategoryList(response.data.subCategory);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  
-
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [productformData.category]);
-
-  console.log("The brands names is ", categoryList);
 
   return (
     <div className="upload-product-container">
@@ -395,16 +389,22 @@ function Category(props) {
           Dont find a Category ? Click here to add category
         </p>
         <div>
-          <button className="custom-button" onClick={setShowRemoveCategory}>
-            Remove Category{" "}
+          <button className="bar-button" onClick={setShowRemoveCategory}>
+            Remove Category
           </button>
-          <button className="custom-button" onClick={setShowUpdateCategory}>
-            Update Category{" "}
+          <button className="bar-button" onClick={setShowUpdateCategory}>
+            Update Category
           </button>
         </div>
       </div>
       {showCategoryForm && (
         <div className="category-main-container">
+          <div
+            className="close-icon"
+            onClick={() => setShowCategoryForm(false)}
+          >
+            <CloseIcon />
+          </div>
           <form className="category-form" onSubmit={handleSubmit(AddCategory)}>
             <div className="category-container">
               <label>Brand Name</label>
@@ -458,6 +458,7 @@ function SubBrandForm(addprops) {
       alert("Selection of any checkbox is mandatory");
       return;
     }
+
     axiosClient
       .post("/AddSubBrand", {
         data,
@@ -547,6 +548,7 @@ function SubBrandForm(addprops) {
       </form>
       <br />
       <br />
+
       <ToastContainer />
     </div>
   );
@@ -605,6 +607,9 @@ function UpdateCategory(props) {
 
   return (
     <div className="update-category-container">
+      <div className="close-icon" onClick={props.CloseUpdateCategory}>
+        <CloseIcon />
+      </div>
       <label style={{ "margin-left": "0vw" }} className="input-label">
         Previous Name
       </label>
@@ -634,7 +639,7 @@ function UpdateCategory(props) {
       <button onClick={UpdateCategory}>Change Name</button>
       <ToastContainer />
       <p onClick={setShowCategoryUpdateform} style={{ cursor: "pointer" }}>
-        Want to Edit Sub Category ?
+        Want to Edit Sub Category ? Click here
       </p>
       {showCategoryUpdateForm && (
         <UpdateSubCategory
@@ -757,7 +762,7 @@ function UpdateSubCategory(updateprops) {
           <div>
             <input
               type="checkbox"
-              value="Summer Collectuin"
+              value="Summer Collection"
               {...register("collections")}
             />
             <label> Summer Collection</label>
@@ -765,7 +770,7 @@ function UpdateSubCategory(updateprops) {
           <div>
             <input
               type="checkbox"
-              value="Winter Collectuin"
+              value="Winter Collection"
               {...register("collections")}
             />
             <label> Winter Collection</label>
@@ -781,7 +786,7 @@ function UpdateSubCategory(updateprops) {
       <button
         onClick={() => setNext(next + 1)}
         className="admin-button"
-        style={{ width: "5vw", marginLeft: "16vw" }}
+        style={{ marginTop: "2vh" }}
       >
         next
       </button>
@@ -826,6 +831,9 @@ function RemoveCategory(props) {
 
   return (
     <div className="remove-category-container">
+      <div className="close-icon" onClick={props.CloseRemoveCategory}>
+        <CloseIcon />
+      </div>
       <label className="input-label">Brand Name</label>
       <br />
       <input

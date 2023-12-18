@@ -5,6 +5,7 @@ import NavBar from "./nav";
 import logo from "./hg2r.png";
 import MainPageDataContext from "../GlobalData/MainPage";
 import { useNavigate } from "react-router-dom"; 
+import CartIcon from "./cartIcon";
 
 const Navbarr = React.memo(() => {
   const navigate = useNavigate();
@@ -85,15 +86,7 @@ const Navbarr = React.memo(() => {
             <a href="#" className="p-2">
               <i className="fa fa-heart-o" id="bag-Icon" aria-hidden="true"></i>
             </a>
-
-            <a href="#" className="p-2 parent-cart-alert">
-              <i
-                className="fas fa-shopping-cart"
-                id="bag-Icon"
-                aria-hidden="true"
-              ></i>
-              <span className="cart-alert">{cartDataLength.current}</span>
-            </a>
+                <CartIcon/>
           </div>
 
           {/* All the tags */}

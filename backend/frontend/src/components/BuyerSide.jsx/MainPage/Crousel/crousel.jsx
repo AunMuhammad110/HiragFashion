@@ -44,8 +44,8 @@ const Crousel = React.memo(() => {
     <Carousel
       interval={8000} /* Change slide every 8 seconds (3000 milliseconds) */
     className="hr-mb-10">
-      {carrousalData?.data?.map((item) => (
-        <Carousel.Item>
+      {carrousalData?.data?.map((item, index) => (
+        <Carousel.Item key={index}>
           <div className="carousel-adj d-flex align-items-center ">
             <img
               className="w-100 heightt"
