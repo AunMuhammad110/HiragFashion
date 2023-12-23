@@ -1214,6 +1214,15 @@ const mergedArray = productIdandQunatity.map(({ productId, quantity }) => ({
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+app.get('/fetchCountryDetails', async (req,res)=>{
+  try{
+    const data = await DeliveryPricing.find({});
+    res.status(200).json(data)
+  }catch{
+    console.status(500).json("error")
+  }
+  
+})
 
 
 app.listen(3334, () => {

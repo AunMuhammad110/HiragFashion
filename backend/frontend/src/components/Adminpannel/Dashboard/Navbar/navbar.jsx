@@ -18,7 +18,7 @@ export default function Navbar() {
           </div>
         </li>
         <li>
-          <Link to="/order">Order</Link>
+          <Link to="/admin/mainDashboard/">Order</Link>
         </li>
         <li>
           <Link to="/admin/mainDashboard/carrousalSettings">Carrousal Settings</Link>

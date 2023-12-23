@@ -18,7 +18,7 @@ export const DataProvider = ({ children }) => {
   
   const setCartWithLocalStorage = () => {
     let newCartData = localStorage.getItem("SHOPPING_DATA");
-    console.log(JSON.parse(newCartData));
+    console.log("local storage data",JSON.parse(newCartData));
     console.log(newCartData)
     if (newCartData==null || newCartData==[]) {
       // console.log(productIds);
@@ -109,7 +109,7 @@ export const DataProvider = ({ children }) => {
       try {
         if (cart.length !== 0) {
           console.log(cart)
-          const response = await axios.post("http://localhost:3331/GetProducts", cart);
+          const response = await axios.post("http://localhost:3334/GetProducts", cart);
           // console.log(response)
           setData(response.data);
         }

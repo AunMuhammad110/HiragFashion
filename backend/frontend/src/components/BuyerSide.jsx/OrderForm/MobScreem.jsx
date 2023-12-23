@@ -74,7 +74,8 @@ const TotalDrop = ({shipmentTotal}) => {
 
             <AccordionDetails>
               <Typography >
-              <div className="col-md-5 col-12 " style={{paddingLeft:"1px",paddingLeft:"2px"}}>
+              {/* <div className="col-md-5 col-12 " style={{paddingLeft:"1px",paddingLeft:"2px"}}> */}
+              <div className="col-md-5 col-12 ">
                                     <div className="row seq-ord-1 h-10" >
                                         {data && data.map((item) =>(
                                         <div style={{display:"flex",minHeight:"100px",height:"auto",minWidth:"100%",marginTop:"10px"}}>

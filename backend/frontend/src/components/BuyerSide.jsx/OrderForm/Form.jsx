@@ -177,15 +177,13 @@ const OrderForm = () => {
         // Fetch the list of countries from the backend
         const fetchCountries = async () => {
             try {
-                const response = await axios.get('http://localhost:3331/fetchCountryDetails');
+                const response = await axios.get('http://localhost:3334/fetchCountryDetails');
                 setCountries(response.data);
             } catch (error) {
                 console.error('Error fetching countries:', error);
             }
         };
-
         fetchCountries();
-        // console.log(selectedCountry)
     }, []);
 
     useEffect(() => {
