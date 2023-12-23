@@ -1,12 +1,22 @@
 import Carousel from "react-bootstrap/Carousel";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 
 import "./carous.css";
 import MainPageDataContext from "../../GlobalData/MainPage";
+import TextTransition, { presets } from 'react-text-transition';
+
 
 const Crousel = React.memo(() => {;
   const [index, setIndex] = useState(0);
   const {carrousalData}=useContext(MainPageDataContext)
+  useEffect(() => {
+    const intervalId = setInterval(
+      () => setIndex((index) => index + 1),
+      7000 // Transition every 7 seconds
+    );
+
+    return () => clearInterval(intervalId);
+  }, []);
   if(carrousalData.isLoading){
     return(
       <></>
@@ -14,7 +24,7 @@ const Crousel = React.memo(() => {;
   }
   return (
     <Carousel
-      interval={8000} /* Change slide every 8 seconds (3000 milliseconds) */
+      interval={900} /* Change slide every 8 seconds (3000 milliseconds) */
     className="hr-mb-10">
       {carrousalData?.data?.map((item, index) => (
         <Carousel.Item key={index}>
@@ -24,6 +34,24 @@ const Crousel = React.memo(() => {;
               src={item.image}
               alt="Slide 1"
             />
+            <div className="center-caption">
+              <Carousel.Caption>
+                <TextTransition
+                  springConfig={{ mass: 4, tension: 90, friction: 96 }}
+                  direction="up"
+                  text="text"
+                  interval={3000}
+                >
+                  <div className=" cr-cap new">
+                    <h3 className="text-size">
+                      {item.brandName} {item.subCategoryName}
+                    </h3>
+                    <p>100% original</p>
+                    <button className="btn  btn-light" onClick={(e)=>{handleClick()}}>Shop Now</button>
+                  </div>
+                </TextTransition>
+              </Carousel.Caption>
+      </div>
           </div> 
         </Carousel.Item>
       ))}

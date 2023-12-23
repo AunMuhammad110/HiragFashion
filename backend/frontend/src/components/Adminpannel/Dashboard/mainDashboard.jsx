@@ -12,6 +12,7 @@ import { CategoryProvider } from "./Product/details";
 import MainPageProductsSettings from "./MainPageProducts";
 import { QueryClient, QueryClientProvider } from "react-query";
 import ScrollToTop from "../../Customhooks/scrolltotop";
+import FeedBack from "./Reviews/FeedResponse";
 export default function MainDashboard(props) {
   const queryClient = new QueryClient();
   const {pathname} = useLocation();
@@ -34,6 +35,7 @@ export default function MainDashboard(props) {
         <Route path="/notification" element={<Notifications/>} />
         <Route path="/deliveryprice" element={<DeliverPrice/>} />
         <Route path="/product-settings" element={<MainPageProductsSettings/>} />
+        <Route path="/contact" element={<FeedBack/>}/>
       </Routes>
       </CategoryProvider>
       </QueryClientProvider>

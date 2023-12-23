@@ -20,6 +20,19 @@ import MainPageProducts from "./MainPage/MainPageProducts";
 import { CountProvider } from "./GlobalData/cartContext/cartData";
 import ScrolToTop from "../Customhooks/scrolltotop";
 import SimpleBackdrop from "../Components/fullPageLoader";
+import SubTree from "./useContextt/routeescomp";
+import Feedback from "./staticPages/feedback";
+
+const MainLayout = ({ children }) => (
+  <>
+    <Navbarr />
+    {children}
+    <NotificationController />
+    <WhatsAppPopUp />
+    <Footer />
+  </>
+);
+
 
 // Lazy load components using React.lazy
 const LazyCarrousalSectionWrapper = React.lazy(() => import("./MainPage"));
@@ -39,42 +52,48 @@ const queryClient = new QueryClient();
 function MainBuyer(props) {
   return (
     <>
+
       <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<SimpleBackdrop/>}>
+      {/* <Suspense fallback={<SimpleBackdrop/>}> */}
+      <CountProvider>
         <MainDataProvider>
-          <CountProvider>
-            <Navbarr />
-            <ScrolToTop />
-            
-              <Routes>
-                <Route path="/" element={<LazyCarrousalSectionWrapper />} />
-                <Route path="/product-section" element={<LazyMainProductSection />} />
-                <Route path="/product-detail" element={<LazyImageGallery />} />
-                <Route path="/terms-condition" element={<LazyTermsCondition />} />
-                <Route path="/shipping-policy" element={<LazyPrivacyPolicy />} />
-                <Route path="/custom-tailoring" element={<LazyCustomTailoring />} />
-                <Route path="/about-us" element={<LazyAboutUs />} />
-                <Route path="/faqs" element={<LazyFaqs />} />
-                <Route path="/exchange-policy" element={<LazyExchangePolicy />} />
-                <Route path="/privacy-policy" element={<LazyPrivacyPolicy />} />
-                <Route path="/main-products" element={<MainPageProducts />} />
-              </Routes>
-            
-          </CountProvider>
+          <Routes>
+            <Route path="/" element={<MainLayout>
+              <CarrousalSectionWrapper />
+            </MainLayout>} />
+            <Route path="/product-section" element={<MainLayout>
+              <MainProductSection />
+            </MainLayout>} />
+            <Route path="/product-detail" element={<MainLayout>
+              <ImageGallery />
+            </MainLayout>} />
+            <Route
+              path="/terms-condition"
+              element={
+                <MainLayout>
+                  <TermsCondition />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/shipping-policy"
+              element={
+                <MainLayout>
+                  <PrivacyPolicy /></MainLayout>} />
+            <Route path="/custom-tailoring" element={<MainLayout><CustomTailoring /></MainLayout>} />
+            <Route path="/about-us" element={<MainLayout><AboutUs /></MainLayout>} />
+            <Route path="/faqs" element={<MainLayout><Faqs /></MainLayout>} />
+            <Route path="/context/*" element={<SubTree />}></Route>
+            <Route path="/exchange-policy" element={<MainLayout><ExchangePolicy /></MainLayout>} />
+            <Route path="/privacy-policy" element={<MainLayout><PrivacyPolicy /></MainLayout>} />
+            <Route path="/main-products" element={<MainLayout><MainPageProducts /></MainLayout>} />
+            <Route path="/feed-form" element={<MainLayout><Feedback/></MainLayout>}></Route>
+          </Routes>
         </MainDataProvider>
-        </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
-          <NotificationController />
-        </Suspense>
-
-        <Suspense fallback={<div>Loading...</div>}>
-          <LazyWhatsAppPopUp />
-        </Suspense>
-
-        <Suspense fallback={<div>Loading...</div>}>
-          <LazyFooter />
-        </Suspense>
+        </CountProvider>
+        <NotificationController />
       </QueryClientProvider>
+      <WhatsAppPopUp />
     </>
   );
 }

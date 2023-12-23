@@ -1,0 +1,356 @@
+.container{
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.container>.row>.col-md-7>.row>.size{
+    width: 233px;
+    height: 115px;
+}
+.container>.row>.col-md-7>.row{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.payment>h2{
+    font-size:19px;
+    font-weight: 600;
+}
+
+.x{
+    background-color: black;
+    overflow-y: auto;
+}
+.container>.row>.col-md-7>.row>a{
+    width: 50px;
+    height: 50px;
+    margin-right: 1vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}  
+.container>.row>.col-md-7{
+
+    /* for right border */
+    border-right: 1px solid #ddd; /* Adjust the width and color as needed */
+  box-shadow: 5px 0 5px -5px #888; /* Adjust the offset, blur, and color as needed */
+  padding-right: 15px;
+  margin-bottom: 20px;
+}
+/* .container>.row>.col-md-7>form>.row>h2{
+    margin-left: 15px;
+} */
+.container>.row>.col-md-7>form>.row>.inputcss{
+    width:95%;
+    border-radius: 5px;
+    margin-left:13px;
+}
+.container>.row>.col-md-7>.row>#email{
+    font-family: 'Times New Roman', Times, serif;
+}
+.container>.row>.col-md-7>.row>.form-group>span{
+    font-weight: 700;
+}
+.container>.row>.col-md-7>.row>.col-1{
+    display: flex;
+    justify-content:center;
+    margin-top: 1vh;
+}
+.container>.row>.col-md-7>.row>.col-md-7{
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1vh;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight:bold;
+}
+.container>.row>.col-md-7>form>.row>.pad>.txt{
+    padding-left: 0.5vw;
+    /* font-weight:2px; */
+    font-family: 'Times New Roman', Times, serifs;
+}
+.container>.row>.col-md-7>form>.row>.pad{
+    padding-left: 2vw;
+    margin-top: 1vh;
+    font-family: 'Times New Roman', Times, serifs;
+}
+.container>.row>.col-md-7>form>.row>.form-group{
+    margin-bottom: 7px;
+    width: 100%;
+}
+.container>.row>.col-md-7>form>.row>.form-group>label>span{
+    font-weight: 600;
+    margin-bottom: 0%;
+    padding-bottom: 0;
+    font-size: 16px;
+
+}
+
+.container>.row>.col-md-7>form>.row>.form-group>label{
+    margin-bottom: 2px;
+}
+label{
+    margin-bottom: 2px !important;
+    font-weight: 700;
+    font-size: 15px;
+}
+.container>.row>.col-md-7>form>.row>.col-6>.row>label{
+    font-weight: 700;
+    margin-bottom: 2px;
+    font-size: 16px;
+}
+  
+.foremail{
+    transform: scale(1.2);
+}
+.container>.row>.col-md-7>form>.row>div>button{
+    width: 100% !important;
+    /* margin-left: 12px !important; */
+}
+
+
+/* .copyright {
+    border-top: 1px solid #111;
+    font-size: 14px;
+    color: #ccc;
+    padding-top: 15px;
+    text-align: center;
+    padding-bottom: 15px;
+    width: 100% !important;
+    background: #222;
+    z-index: 2;
+} */
+.container-fluid>.row>.container{
+    z-index: 1;
+    position: relative;
+}
+/* .container-fluid>.row>.copyright{
+    position: absolute;
+} */
+/* Here the CSS for right column */
+.container>.row>.col-md-5{
+    /* background-color: rgb(200, 206, 216); */
+}
+
+.container>.row>.col-md-5>.row>.col-12>.row{
+    padding-bottom: 0;
+    padding-right: 0 !important;
+}
+.container>.row>.col-md-5>.row>.col-12>.row>.row{
+    padding-bottom: 0;
+}
+
+
+/* for image */
+.container>.row>.col-md-5>.row>.col-12>.row>.row>.col-3>img{
+    width: 100% !important;
+    display: flex;
+    align-items: center;
+    height: 75px; 
+    border-radius: 10px;
+}
+.container>.row>.col-md-5>.row>.col-12>.row>.row>.badgeee{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.poss{
+    /* background: url('/images/badge.png') no-repeat 0 0; */
+    position: absolute;
+    right: 2px;
+    top: -7px;
+    padding-top: 10px;
+    width: 20px;
+    border-radius: 8px;
+    height: 20px;
+  }
+  .anchirr{
+    display: inline-block;
+    position: relative;
+    line-height: 0;
+  }
+  .imageee{
+    /* border: none; */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center !important;
+    /* vertical-align: middle; */
+  }
+.container>.row>.col-md-5>.row>.col-12>.row>.row>.badgeee>span{
+    position:absolute;
+    top:0;
+    right:0;
+}
+.container>.row>.col-md-5>.row>.col-12>.row>.row>.col-3>.amount{
+    display: flex;
+    justify-content: center;
+}
+
+.container>.row>.col-md-5>.row>.col-12>.row>.row>.col-6{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+.container>.row>.col-md-5>.row>.col-12>.row>.row>.col-3>#pos{
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+}
+.container>.row>.col-md-5>.row>.col-12>.row>.row>.col-6>div>p{
+    display: flex;
+    padding-left: 12px;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.container>.row>.col-md-5>.row>.col-12>.row>.row{
+    padding-right: 0;
+}
+/* this is for the positioning of pricce on right side of the screen */
+.container>.row>.col-md-5>.row>.col-12>.row>.row>.col-3{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container>.row>.col-md-5>.row>.col-12>.row>.row>.col-3>.amount{
+    display: flex ;
+    justify-content: flex-end;
+    align-items:flex-end;
+    width:3vw;
+    /* width: 15vw; */
+    /* padding-right: 10px; */
+    /* padding-right: 12px; */
+    /* width: 45px; */
+    /* padding-right: 23px; */
+    /* font-size: 33px; */
+}
+
+.container>.row>.col-md-5>.row>.col-12>.row{
+    /* height:; */
+    /* background-color: rgb(230, 6, 6); */
+    max-height: 50vh;
+    overflow-y: hidden;
+    overflow: auto;
+   
+}
+.container>.row>.col-md-5>.row>.col-12>.row::-webkit-scrollbar {
+    /* This property is used to customize a scrollbar  */
+    /* but it doesnot work */
+    width: 12px;
+  }
+
+  /* .container>.row>.col-md-5>hr{
+    width: 100%;
+  } */
+  .container>.row>.col-md-5>.row>.shipment{
+    display: flex;
+    justify-content: space-between;
+  }
+  .container>.row>.col-md-5>.row>.shipment>.aligng{
+    display: flex;
+    justify-content: flex-start;
+  }
+  .container>.row>.col-md-5>.row>.shipment>.amountts{
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    /* padding-right:7vh ; */
+  }
+  /* .container-fluid>.row>.copyright{
+    position: relative;
+  } */
+
+
+@media screen and (max-width:750px){
+    contau.size{
+        width:200px;
+        height: 200px;
+    }
+    .container>.row>.col-12>.row{
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: space-between;
+        flex-direction: row;
+    }
+    .container>.row>.col-12>.row>button{
+        width: 43vw;
+        height: 5vh;
+    }
+    .container>.row>.col-12>.row>.dropRs{
+        width: 30vw;
+        display: flex;
+        justify-content: center;
+        /* height: 50px; */
+    }
+    .container>.row>.col-12>.row>a{
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }  
+    .container>.row>.col-12>.row>.size{
+        width:160px;
+        height: 55px;
+    }
+    /* the logo image is not getting aligned */
+    /* .container>.row>.col-12>.row>img{
+        display: flex;
+        justify-content: center;
+
+    } */
+    .foremail{
+        transform: scale(1);
+    }
+    .container>.row>.col-12>form>.row>.pad>.txt{
+        padding-left: 1vw;
+        font-weight:normal;
+        font-size: 15px;
+        font-family: 'Times New Roman', Times, serifs;
+    }
+    .container>.row>.col-12>form>.row>.pad{
+        padding-left: 4vw;
+        margin-top: 1vh;
+        font-family: 'Times New Roman', Times, serifs;
+    }
+    .seq-ord-1{
+        order:1;
+    }
+    /* .seq-ord-2{
+        order:2
+    };
+    .seq-ord{
+        order:3;
+    } */
+    label{
+        margin-bottom: 2px !important;
+        font-weight: 700;
+        font-size: 14px;
+    }
+    .container>.row>.col-12>.row>.col-12>.row>.col-6{
+        /* margin-left: 1px; */
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+    .container>.row>.col-12>.row>.col-12>.row>.col-3>.amount{
+        margin-left: 1px;
+        padding-left: 1px;
+        background-color: #111;
+        
+    }
+    .container>.row>.col-md-5>.row>.col-12>.row>.row>#zaroori{
+        display: flex;
+        align-items: center;
+        justify-content: center !important;
+    }
+
+    .css-1vmau9z-MuiButtonBase-root-MuiAccordionSummary-root{
+        padding-right: 1px !important;
+    }
+   
+
+}

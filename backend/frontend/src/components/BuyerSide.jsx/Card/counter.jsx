@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './card.css'
 const NumberControl = ({stock,disableButton}) => {
-  const [number, setNumber] = useState(0);
+  const [number, setNumber] = useState(1);
   const [showError, setShowError] = useState(false);
 
   const increment = () => {

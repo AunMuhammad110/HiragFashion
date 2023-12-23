@@ -11,12 +11,12 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cors());
 app.use(express.json());
 app.use('/MainPage', mainPage);
-require("dotenv").config({ path: "data.env" });
+// require("dotenv").config({ path: "data.env" });
 
 
 app.use(bodyParser.json({ limit: "30mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
-let ans = mongoose.connect("mongodb://localhost:27017/hiraGfashion");
+let ans = mongoose.connect("mongodb://127.0.0.1:27017/hiraGfashion");
 let lastGeneratedProductId = "D5361029";
 
 if (ans) {
@@ -36,6 +36,8 @@ require("./schema/deliveryPrice");
 require("./schema/categoryDetails");
 require("./schema/productImages")
 require("./schema/mainPageBrands")
+require("./schema/ordertable")
+require('./schema/feedBackform')
 
 // // creating product Schema Model
 const Product = mongoose.model("Product");
@@ -45,7 +47,8 @@ const DeliveryPricing = mongoose.model("DeliveryPricing");
 const Brand = mongoose.model("BrandDetail");
 const Images = mongoose.model("Images");
 const MainPageBrands=mongoose.model("mainPageBrands")
-
+const Order = mongoose.model("Order");
+const Feedback = mongoose.model("Feedback");
 
 const buyerSide= require('./MainPage/index')
 app.use("/buyerSide",  buyerSide);
@@ -80,7 +83,7 @@ app.post("/signin", (req, res) => {
   const UserName = req.body.User_Name;
   const Password = req.body.Password;
 
-  if (UserName === process.env.USERNAME && Password === process.env.PASSWORD) {
+  if (UserName === "hiragfashion" && Password =="123") {
     // User is successfully signed in
     res.send("TrueTrue");
   } else {
@@ -476,7 +479,7 @@ app.post("/CreateCarrousal", (req, res) => {
   const carrousalImage = req.body.imageUrl; // Use req.file.path for the file path
   let categoryName = req.body.subcategoryName;
   const brandName = req.body.brandName;
-  categoryName = categoryName.trim();
+  // categoryName = categoryName.trim();
   const newCarrousal = new carrousalSettings({
     image: carrousalImage,
     subCategoryName: categoryName,
@@ -746,6 +749,535 @@ app.get('/GetMainPageProducts', async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 });
+
+// for feedback
+app.post('/saveFeedback', async (req, res) => {
+  try {
+    const {FormData :{namee, mail, review}, rating}= req.body;
+    console.log("the form  Data is ", FormData)
+    console.log("The rating is ", rating)
+
+    // console.log(req.body)
+    // return;
+    // const { namee, mail, review, rating } = req.body;
+
+    // Create a new feedback entry
+    const newFeedback = new Feedback({
+      namee,
+      mail,
+      review,
+      rating,
+    });
+
+    // Save the feedback to the database
+    const savedFeedback = await newFeedback.save();
+
+    res.status(201).json(savedFeedback);
+  } catch (error) {
+    console.error('Error saving feedback:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+app.get('/getFeedbacks', async (req,res)=>{
+  try{
+    const response = await Feedback.find({});
+    res.status(201).json(response);
+  }catch(error){
+    console.error(error);
+  }
+})
+app.post('/delFeedback', async (req, res) => {
+  try {
+    const userEmail = req.body.mail; // Assuming email is in req.body.mail
+    console.log(userEmail)
+
+    // Check if the email is provided in the request body
+    if (!userEmail) {
+      return res.status(400).json({ error: 'Email not provided in the request body' });
+    }
+
+    // Attempt to find and delete the feedback entry by email
+    const deletedFeedback = await Feedback.findOneAndDelete({ mail: userEmail });
+
+    // Check if the feedback was found and deleted
+    if (!deletedFeedback) {
+      return res.status(404).json({ error: 'Feedback not found' });
+    }
+
+    res.status(200).json({ message: 'Feedback deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting feedback:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+// below code is for order admit pnael
+
+// From here the order api's begin
+app.post('/orders', (req, res) => {
+  // Create a new order document based on the request body
+  const newOrder = new Order({
+    orderId: req.body.orderId,
+    clientName: req.body.clientName,
+    NoProduct: req.body.NoProduct,
+    Location: req.body.Location,
+  }).save();
+  if (!newOrder){return res.status(404).json({ message: "Error Occurred" })}
+else{return res.status(200).json({message:"Order posted"})}
+  // Save the new order to the database
+});
+
+app.get('/getOrder', async (req, res) => {
+  try {
+    const result = await Order.find({});
+
+    // Check if the array is empty
+    if (result.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    return res.status(200).json(result);
+  } catch (error) {
+    // Log more details about the error
+    console.error('Error occurred:', error);
+
+    // Return an error response
+    return res.status(500).json({ message: "An error occurred" });
+  }
+});
+
+app.get('/getorderbyid/:id', (req, res) => {
+  const id=req.params.id;
+  console.log(id)
+  Order.find({orderId:id})
+  .then(result=> res.json(result))
+  .catch(err => res.json(err))
+});
+
+
+
+//this is used to delete order from the table
+app.post("/DeleteOrder",async (req,res)=>{
+  try{
+    const id =req.body.orderId;
+    console.log(id);
+    const ordId= await Order.findOneAndDelete({orderId:id});
+    let deletionMessage = "order deleted successfully";
+    if(!ordId){
+       console.log('nahi hoa')
+      return res.status(400).json({message:"Error in Deletion"})
+    }
+     console.log('hogyaa delete')
+    res.status(200).json({ message: deletionMessage });}
+  catch(error){
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+})
+
+
+const axios = require('axios');
+app.post("/verify-token", async (req,res) => {
+  const { reCAPTCHA_TOKEN, Secret_Key} = req.body;
+
+  try {
+    let response = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${Secret_Key}&response=${reCAPTCHA_TOKEN}`);
+    console.log(response.data);
+
+    return res.status(200).json({
+      success:true,
+      message: "Token successfully verified",
+      verification_info: response.data
+    });
+  } catch(error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success:false,
+      message: "Error verifying token"
+    })
+  }
+});
+
+
+// below api is for order
+const nodemailer = require("nodemailer")
+const fs= require('fs');
+const handlebars = require('handlebars');
+const { emitWarning } = require("process");
+// const { default: axiosClient } = require("./frontend/src/apisSetup/axiosClient");
+//Dummy api to add data in the order database:((IT woyuld be change according to frontend implementation))
+app.post('/addOrder', async (req, res) => {
+  try {
+    // Initialize variables from the request body
+    const orderId = req.body.orderId;
+    const clientFName = req.body.clientFName;
+    const clientLName = req.body.clientLName;
+    const Address = req.body.Address;
+    const postalCode = req.body.postalCode;
+    const PhoneNo = req.body.PhoneNo;
+    const Image = req.body.PaymentSS;
+    const NoProduct = req.body.NoOfProduct;
+    const Location = req.body.Location;
+    const email= req.body.email;
+    const totalBill = req.body.totalBill;
+    const productsInfo = req.body.productsInfo;
+    const shipmentTotal = req.body.shipmentTotal;
+    // console.log(req.body);
+    // Create a new order document with the variables
+    const newOrder = new Order({
+      email:email,
+      totalBill:totalBill,
+      orderId:orderId,
+      clientFName:clientFName,
+      clientLName:clientLName,
+      Address:Address,
+      postalCode:postalCode,
+      PhoneNo:PhoneNo,
+      Image:Image,
+      NoProduct:NoProduct,
+      Location:Location,
+      productsInfo:productsInfo
+    });
+//  console.log(newOrder)
+    // Save the document to the database
+    const savedOrder = await newOrder.save();
+    // console.log(savedOrder)
+    // console.log(shipmentTotal);
+    res.status(201).json({message:"Order has been saved"});
+    sendOrderConfirmationEmail(savedOrder,shipmentTotal)
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error adding order' });
+  }
+});
+
+
+async function sendOrderConfirmationEmail(orderDetails,shipmentT) {
+  const { email, clientFName, clientLName, Address, Location, PhoneNo,postalCode,productsInfo,totalBill,orderId} = orderDetails;
+  const shipmentTotal =  shipmentT;
+  const templateSource = fs.readFileSync('./Emails/ordermail.handlebars', 'utf8');
+  console.log(shipmentTotal);
+  const template = handlebars.compile(templateSource);
+  const currentDate=new Date();
+  const respon = ( await fetchInfoOfProduct(productsInfo));
+  
+  // console.log(respon);
+  const subTotal=totalBill-shipmentTotal;
+  const data = {
+    subject: "Order Confirmation",
+    name: `${clientFName}`,
+    address: Address,
+    postalcode:postalCode,
+    location: Location,
+    phone: PhoneNo,
+    arrayofobject:respon,
+    totalbill:totalBill,
+    orderid:orderId,
+    orderdate:currentDate,
+    shipmenttotal:shipmentTotal,
+    subtotal:subTotal
+  };
+  // console.log(data);
+
+  const htmlbody = template(data);
+  let transporter = nodemailer.createTransport({
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: "naveedmoiz928@gmail.com",
+      pass: "xsmtpsib-a038afd3ee78ebab370f6ea01797247f2a314119db637be42a936c8e9b386711-8h2n5HtZa3dRCkOW",
+    },
+  });
+
+  const message = {
+    from: "naveedmoiz928@gmail.com",
+    to: email,
+    subject: "Order Confirmation",
+    html: htmlbody,
+  };
+
+  transporter.sendMail(message, function (err, info) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(info);
+    }
+  });
+}
+
+// app.post('/setOrderDetailCheck', async (req, res) => {
+//   const Email = req.body.Email;
+//   const clientFName = req.body.clientFName;
+//   const clientLName = req.body.clientLName;
+//   const Address = req.body.Address;
+//   const Location = req.body.Location;
+//   const PhoneNo = req.body.PhoneNo;
+
+//   const templateSource = fs.readFileSync('./Emails/ordermail.handlebars', 'utf8');
+//   // console.log(templateSource);
+//     const template = handlebars.compile(templateSource);
+//     const data = {
+//       subject: "I love Coding ",
+//       name: "moiz khan"
+//   };
+//   const htmlbody= template(data);
+//   // console.log(htmlbody)
+//   // res.status(200).json({message:htmlbody});
+
+//   let transporter = nodemailer.createTransport({
+//     host: "smtp-relay.brevo.com",
+//     port: 587,
+//     secure: false,
+//     auth: {
+//       user: "naveedmoiz928@gmail.com",
+//       pass: "xsmtpsib-a038afd3ee78ebab370f6ea01797247f2a314119db637be42a936c8e9b386711-8h2n5HtZa3dRCkOW",
+//     },
+//   });
+
+//   // transporter.use('compile',hbs({
+//   //   viewEngine:'express-handlebars',
+//   //   viewPath:'./Emails/'
+//   // }))
+
+//   const message = {
+//     from: "naveedmoiz928@gmail.com",
+//     to: "naveed4403529@cloud.neduet.edu.pk",
+//     subject: "Order Confirmation",
+//     html: htmlbody,
+//   };
+
+//   transporter.sendMail(message, function (err, info) {
+//     if (err) {
+//       console.log(err);
+//       res.status(500).send(err.message);
+//     } else {
+//       console.log(info);
+//       res.status(200).send('Email sent successfully!');
+//     }
+//   });
+// });
+
+
+//changing response
+app.put('/updateOrderResponse', async (req, res) => {
+  const orderId = req.body.id;
+  const Response = req.body.status;
+  const email = req.body.email;
+// console.log("the response would be"+Response+".");
+  try {
+    console.log(req.body);
+    const order = await Order.findOne({ orderId });
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Update the orderResponse field to true
+    order.Response = Response;
+    // Save the updated document
+    await order.save();
+    ApprovalEmail(Response,orderId,email);
+
+    res.status(200).json({ message: 'Order response updated to true' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error updating order response' });
+  }
+});
+
+
+app.post('/updateStock', async (req, res) => {
+  try {
+    const orderItems = req.body;
+    console.log(orderItems);
+
+    for (const orderItem of orderItems) {
+      const { productId, quantity } = orderItem;
+
+      // Find the product by productId
+      const product = await Product.findOne({ productId });
+
+      if (!product) {
+        return res.status(404).json({ error: `Product with productId ${productId} not found.` });
+      }
+
+      // Update the stock count
+      product.stockCount -= quantity;
+
+      // Save the updated product
+      await product.save();
+    }
+
+    res.status(200).json({ message: 'Stock updated successfully.' });
+  } catch (error) {
+    console.error('Error updating stock:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+async function ApprovalEmail(Response,orderId,email){
+  if(Response==='accepted'){
+    const templateSource = fs.readFileSync('./Emails/accptanceEmail.handlebars', 'utf8');
+    const data = {
+      subject: "Order Approved",
+      orderid: orderId};
+      const template = handlebars.compile(templateSource);
+      const htmlbody = template(data);
+
+      let transporter = nodemailer.createTransport({
+        host: "smtp-relay.brevo.com",
+        port: 587,
+        secure: false,
+        auth: {
+          user: "naveedmoiz928@gmail.com",
+          pass: "xsmtpsib-a038afd3ee78ebab370f6ea01797247f2a314119db637be42a936c8e9b386711-8h2n5HtZa3dRCkOW",
+        },
+      });
+    
+      const message = {
+        from: "naveedmoiz928@gmail.com",
+        to: email,
+        subject: "Order Approved",
+        html: htmlbody
+      };
+    
+      transporter.sendMail(message, function (err, info) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(info);
+        }
+      });
+
+  }else{
+    const templateSource = fs.readFileSync('./Emails/rejection.handlebars', 'utf8');
+    const data = {
+      subject: "Order Rejected",
+      orderid: orderId};
+      const template = handlebars.compile(templateSource);
+      const htmlbody = template(data);
+      
+      let transporter = nodemailer.createTransport({
+        host: "smtp-relay.brevo.com",
+        port: 587,
+        secure: false,
+        auth: {
+          user: "naveedmoiz928@gmail.com",
+          pass: "xsmtpsib-a038afd3ee78ebab370f6ea01797247f2a314119db637be42a936c8e9b386711-8h2n5HtZa3dRCkOW",
+        },
+      });
+      
+      const message = {
+        from: "naveedmoiz928@gmail.com",
+        to: email,
+        subject: "Order Rejection",
+        html: htmlbody,
+      };
+      
+      transporter.sendMail(message, function (err, info) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(info);
+        }
+      });
+    }
+
+};
+
+const fetchInfoOfProduct = async (productsInfo) =>{
+  const productIds = productsInfo.map(item => item.productId);
+  const productIdandQunatity = productsInfo;
+
+  try {
+    // Query the database to find products by productIds in the Product model
+    const products = await Product.find({ productId: { $in: productIds } });
+    // console.log(products);
+    if (!products || products.length === 0) {
+      // If no products are found in the Product model, return a 404 response indicating that the products do not exist
+      return 'error';
+    }
+    // const mergedArray = products.map((objA, index) => ({ ...objA, ...mainObject[index] }));
+    // const productsWithQuantity = products.map((product, index) => ({
+    //   ...product,
+    //   quantity: quantity[index]
+    // }));
+    // You may need to adapt the logic based on your specific requirements
+    // For example, you might want to aggregate data from other models
+// console.log(mergedArray)
+// console.log(productsWithQuantity)
+const productDetailsMap = new Map(products.map(item => [item.productId, item]));
+
+// Merge the arrays based on the product ID
+const mergedArray = productIdandQunatity.map(({ productId, quantity }) => ({
+  ...productDetailsMap.get(productId),
+  quantity
+}));
+    // Send the product data to the front end
+    return (mergedArray);
+    // console.log(mergedArray)
+  } catch (error) {
+    return 'error';
+  }
+}; 
+
+
+
+// this is for checkout and order(admin) as well
+app.post("/GetProducts", async (req, res) => {
+  console.log(req.body);
+  // const mainObject=req.body;
+  const productIds = req.body.map(item => item.productId);
+  const quantity = req.body.map(item => item.quantity);
+  // console.log(productIds);
+  // console.log(req.body);
+  const productIdandQunatity = req.body;
+
+  try {
+    // Query the database to find products by productIds in the Product model
+    const products = await Product.find({ productId: { $in: productIds } });
+    // console.log(products);
+    if (!products || products.length === 0) {
+      // If no products are found in the Product model, return a 404 response indicating that the products do not exist
+      return res.status(404).send("Products not found");
+    }
+    // const mergedArray = products.map((objA, index) => ({ ...objA, ...mainObject[index] }));
+    // const productsWithQuantity = products.map((product, index) => ({
+    //   ...product,
+    //   quantity: quantity[index]
+    // }));
+    // You may need to adapt the logic based on your specific requirements
+    // For example, you might want to aggregate data from other models
+// console.log(mergedArray)
+// console.log(productsWithQuantity)
+const productDetailsMap = new Map(products.map(item => [item.productId, item]));
+
+// Merge the arrays based on the product ID
+const mergedArray = productIdandQunatity.map(({ productId, quantity }) => ({
+  ...productDetailsMap.get(productId),
+  quantity
+}));
+    // Send the product data to the front end
+    res.status(200).json(mergedArray);
+    // console.log(mergedArray)
+  } catch (error) {
+    console.error("Error while fetching products:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+app.get('/fetchCountryDetails', async (req,res)=>{
+  try{
+    const data = await DeliveryPricing.find({});
+    res.status(200).json(data)
+  }catch{
+    console.status(500).json("error")
+  }
+  
+})
+
 
 app.listen(3334, () => {
   console.log("The Server is running on port 3334");

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import axiosClient from "../../../apisSetup/axiosClient";
 import { useRequestProcessor } from "../../../apisSetup/requestProcessor";
@@ -9,6 +9,8 @@ import ZoomImage from "./zoomImage";
 import ProductCard from "../ProductSection/brandCards/brandCards";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useCount } from "../GlobalData/cartContext/cartData";
+import styles from '../Card/mpCSS.module.css';
+
 
 const ImageGallery = React.memo(() => {
   const {state,dispatch}= useCount();
@@ -17,8 +19,8 @@ const ImageGallery = React.memo(() => {
   const {
     state: { id, parentCollection },
   } = locationData;
+  const [number, setNumber] = useState(1);
   const navigate = useNavigate();
-  const [number, setNumber] = useState(0);
   const [productData, setProductData] = useState({}); // Move useLocation inside the component
   const [showError, setShowError] = useState(false);
   const [selectedImage, setSelectedImage] = useState([]);
@@ -30,12 +32,12 @@ const ImageGallery = React.memo(() => {
     const fetchData = async () => {
       try {
         const res = await axiosClient.get(
-          `/buyerSide/GetProductDetails/${id}`,
-          {
-            params: { parentCollection },
-          }
+          `/buyerSide/GetProductDetails/${id}`, {
+          params: { parentCollection }
+        }
         );
         setProductData(res.data);
+        setSelectedImage(res.data.images[0]);
         return;
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -67,6 +69,20 @@ const ImageGallery = React.memo(() => {
     }
   }, [number]);
 
+  // useEffect(()=>{
+  const [added, setAdded] = useState(false);
+
+  const handleeClick = (productId,quantity) => {
+    setAdded(!added);
+    setNumber(1);
+    AddDataLocalStorage(productId,quantity);
+    setTimeout(()=>{
+      navigate('/context/chkout')
+    },800)
+  };
+
+  // },[selectedImage])
+
   const smallImages = productData.images;
 
   const handleClick = (image) => {
@@ -82,57 +98,75 @@ const ImageGallery = React.memo(() => {
       setNumber(number - 1);
     }
   };
-  function AddDataLocalStorage() {
-    if (number === 0) {
-      setShowButtonError(true);
-      return;
-    }
-    setShowButtonError(false);
-    let prevShoppingData =
-      JSON.parse(window.localStorage.getItem("SHOPPING_DATA")) || [];
+  const AddDataLocalStorage= (productId,quantity) => {
+    const existingCartItems = JSON.parse(localStorage.getItem('SHOPPING_DATA')) || [];
 
-    const productInfo = {
-      productId: productData.productId,
-      productCount: number,
-    };
-
-    // Check if the productId is already in the array
-    const existingProductIndex = prevShoppingData.findIndex(
-      (item) => item.productId === productData.productId
-    );
-
-    if (existingProductIndex !== -1) {
-      // If productId exists, update the productCount
-      prevShoppingData[existingProductIndex].productCount = number;
+    // Check if the product is already in the cart
+    const existingCartItemIndex = existingCartItems.findIndex(item => item.productId === productId);
+  
+    if (existingCartItemIndex !== -1) {
+      // Product already exists in the cart, update the quantity
+      existingCartItems[existingCartItemIndex].quantity += quantity;
     } else {
-      // If productId doesn't exist, add a new object to the array
-      prevShoppingData.push(productInfo);
+      // Product doesn't exist in the cart, add a new item
+      const newCartItem = {
+        productId,
+        quantity,
+      };
+      existingCartItems.push(newCartItem);
     }
+  
+    // Update the cart in localStorage
+    localStorage.setItem('SHOPPING_DATA', JSON.stringify(existingCartItems));
+    // setShowButtonError(false);
+    // let prevShoppingData =
+    //   JSON.parse(window.localStorage.getItem("SHOPPING_DATA")) || [];
 
-    // Save the updated array back to localStorage
-    window.localStorage.setItem(
-      "SHOPPING_DATA",
-      JSON.stringify(prevShoppingData)
-    );
-    
-    setShowSuccessMessage(true);
-    dispatch({ type: 'INCREMENT' });
-    setTimeout(() => {
-      setShowSuccessMessage(false);
-    }, 3000);
+    // const productInfo = {
+    //   productId: productData.productId,
+    //   quantity: number,
+    // };
+
+    // // Check if the productId is already in the array
+    // const existingProductIndex = prevShoppingData.findIndex(
+    //   (item) => item.productId === productData.productId
+    // );
+
+    // if (existingProductIndex !== -1) {
+    //   // If productId exists, update the quantity
+    //   prevShoppingData[existingProductIndex].quantity = number;
+    // } else {
+    //   // If productId doesn't exist, add a new object to the array
+    //   prevShoppingData.push(productInfo);
+    // }
+
+
+    // // Save the updated array back to localStorage
+    // window.localStorage.setItem(
+    //   "SHOPPING_DATA",
+    //   JSON.stringify(prevShoppingData)
+    // );
+    // setShowSuccessMessage(true);
+
+    // setTimeout(() => {
+    //   setShowSuccessMessage(false);
+    // }, 3000);
   }
-
+  if(!productData){
+    return <></>
+  }
   return (
-    Object.keys(productData).length > 0 && (
-      <div className="container">
-        <div className="row">
-          <div className="col-12 col-md-6 shadoww pr-4">
+    <div>
+    {Object.keys(productData).length > 0 && (
+      <div className="container-fluid wt">
+        <div className="row ">
+          <div className="col-12 col-md-6 shadoww ">
             <div className="image-gallery shadoww">
               {
                 // this is for large screen
                 smallImagesVisible && (
                   <div className="large-image">
-                    <ZoomImage src={productData.images[0]} />
+                    <ZoomImage src={selectedImage} />
                   </div>
                 )
               }
@@ -147,7 +181,7 @@ const ImageGallery = React.memo(() => {
               {/* this code is for small images of laptop screen */}
               {smallImagesVisible && (
                 <div className="small-images">
-                  {smallImages.map((image, index) => (
+                  {smallImages?.map((image, index) => (
                     <img
                       key={index}
                       src={image}
@@ -160,23 +194,23 @@ const ImageGallery = React.memo(() => {
             </div>
           </div>
 
-          <div className="col-12 col-md-6 container my-4">
-            <div className="row">
+          <div className={`col-md-6 container large-Screen-Right-Side`} style={{ backgroundColor: "#f5f5f5", boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)", padding: "10px"}}>
+            <div className={`row d-block`}>
               <div className="bordder"></div>
               {/* add the name of the product + category  */}
-              <h2>{productData.productTitle}</h2>
-
+              <h2 style={{ fontSize: "23px", marginBottom: "3px" }}>{productData.productTitle}</h2>
               {/* below add the product ID  */}
               <div className="sub-cat">
                 {" "}
                 {productData.productId}&nbsp;<span className="bar">|</span>
                 &nbsp;{" "}
+
                 <span className="text-success">
                   {productData.stockCount > 0 ? "IN STOCK" : "Out of Stock"}
                 </span>
               </div>
 
-              <div className="bordder col-12"></div>
+              <div className="bordder"></div>
             </div>
             {/* First Row ending */}
 
@@ -186,16 +220,16 @@ const ImageGallery = React.memo(() => {
                 <div className="bold">
                   <p className="bold">
                     {" "}
-                    Rs <span>{productData.productPrice}</span>
+                    Rs <span>{productData.productPrice}.00 /-</span>
                   </p>
                 </div>
 
                 {/* Add how many suits are left*/}
                 <div
                   style={{
-                    fontSize: "17px",
+                    fontSize: "16px",
                     fontWeight: 500,
-                    marginTop: "10px",
+                    marginTop: "4px",
                   }}
                 >
                   Only <span className="colr">{productData.stockCount}</span>{" "}
@@ -203,8 +237,9 @@ const ImageGallery = React.memo(() => {
                 </div>
               </div>
 
-              <div className="col-5 my-3">
+              {/* <div className="col-5 my-3">
                 {/* Favourite Icon */}
+                {/*}
                 <a href="#" className="anchorr">
                   <i
                     className="fa fa-heart-o"
@@ -213,11 +248,11 @@ const ImageGallery = React.memo(() => {
                   ></i>
                   &nbsp;<p className="txt"></p>
                 </a>
-              </div>
+              </div> */}
               {/* Second row closes here */}
             </div>
 
-            <div className="row">
+            <div className="row ">
               <div className="pb-4">
                 <div className="number-control">
                   <h3 className="qty">Quantity&nbsp;&nbsp;</h3>
@@ -232,19 +267,28 @@ const ImageGallery = React.memo(() => {
                 {showError && (
                   <p className="colr">Can not buy {number}, only {productData.stockCount} left</p>
                 )}
-                {showButtonError && (
+                {/* {showButtonError && (
                   <p className="colr">Please Select Qunatity of Product</p>
-                )}
+                )} */}
               </div>
 
               <div className="d-flex f-direction-row">
-                <button
+                {/* <button
                   type="button"
                   className="col-5 button-86"
                   disabled={showError}
                   onClick={AddDataLocalStorage}
                 >
                   Bag it Now!
+                </button> */}
+                <button className={`addtocart ${added ? 'added' : ''}`} onClick={(e)=>handleeClick(productData.productId,number)} disabled={showError}>
+                  <div className="pretext">
+                    <i className="fas fa-cart-plus"></i> ADD TO CART
+                  </div>
+                  <div className={`pretext done ${added ? 'added' : ''}`}>
+                    <div className="posttext">
+                      <i className="fas fa-check"></i> ADDED</div>
+                  </div>
                 </button>
                 <div className="col-6">
                   <p className="txt-ship">
@@ -260,18 +304,27 @@ const ImageGallery = React.memo(() => {
             </div>
             <hr />
             <div className="row">
-              <h6>Product Details</h6>
+              <h6><b>Product Details</b></h6>
+              </div>
+              <div className="row">
               <ul className="px-5">
-                {productData.splitProductDetails.map((item, key) => {
+                <li>Prjfd   sdf df dsfds </li>
+                <li>sdsdsad  </li>
+                <li>Prjfd   sdf df dsfds </li>
+                <li>sdsdsad  </li><li>Prjfd   sdf df dsfds </li>
+                <li>sdsdsad  </li><li>Prjfd   sdf df dsfds </li>
+                <li>sdsdsad  </li>
+                {/* {productData.splitProductDetails.map((item, key) => {
                   return <li key={key}>{item}</li>;
-                })}
+                })} */}
               </ul>
-            </div>
+              </div>
           </div>
         </div>
-        {productData?.relatedProducts.length >0 && (
+        {productData["relatedProducts"] && (
           <div className="related-products-main">
             <p>RELATED PRODUCTS</p>
+            <hr />
             <div className="related-products-container">
               {productData.relatedProducts.map((item, index) => {
                 if (item.productId != id) {
@@ -301,8 +354,12 @@ const ImageGallery = React.memo(() => {
             </div>
           </div>
         )}
+   
       </div>
-    )
+
+    )}
+
+    </div>
   );
 });
 

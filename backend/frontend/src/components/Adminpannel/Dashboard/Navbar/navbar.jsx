@@ -7,7 +7,7 @@ export default function Navbar() {
       <ul className="navbar-list">
         <li>
            {/* <MessageIcon sx={{ 'color': 'white','width':'25px' }}/>  */}
-          <Link to="/contact">Contact Messages</Link>
+          <Link to="/admin/mainDashboard/contact">Contact Messages</Link>
         </li>
         <li className="dropdown">
           <Link>Product</Link>
@@ -18,7 +18,7 @@ export default function Navbar() {
           </div>
         </li>
         <li>
-          <Link to="/order">Order</Link>
+          <Link to="/admin/mainDashboard/">Order</Link>
         </li>
         <li>
           <Link to="/admin/mainDashboard/carrousalSettings">Carrousal Settings</Link>
