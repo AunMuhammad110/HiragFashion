@@ -5,6 +5,8 @@ import NavBar from "./nav";
 import logo from "./hg2r.png";
 import MainPageDataContext from "../GlobalData/MainPage";
 import { useNavigate } from "react-router-dom"; 
+import CheckOut from "../Checkout/checkout";
+import { Link } from "react-router-dom";
 
 const Navbarr = React.memo(() => {
   const navigate = useNavigate();
@@ -34,6 +36,7 @@ const Navbarr = React.memo(() => {
     e.preventDefault();
     navigate("/product-section", { state: { name: name, id: id } });
   }
+
 
   return (
     <>
@@ -86,13 +89,16 @@ const Navbarr = React.memo(() => {
               <i className="fa fa-heart-o" id="bag-Icon" aria-hidden="true"></i>
             </a>
 
-            <a href="#" className="p-2 parent-cart-alert">
+            <a href="/context/chkout" className="p-2 parent-cart-alert">
+              {/* <Link path="/context/chkout"> */}
               <i
                 className="fas fa-shopping-cart"
                 id="bag-Icon"
                 aria-hidden="true"
+                // onClick={handleCart}
               ></i>
               <span className="cart-alert">{cartDataLength.current}</span>
+              {/* </Link> */}
             </a>
           </div>
 

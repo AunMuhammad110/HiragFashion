@@ -34,11 +34,93 @@ img{
 }
 
 @media screen and (min-width:768px){
+  .container{
+    max-width:1100px
+  }
+
+/* Styles for the button */
+.addtocart {
+  display: block;
+  margin-left: 12px;
+  padding: 0.5em 1em;
+  border-radius: 100px;
+  border: none;
+  /* size:30px; */
+  /* font-size: 25px; */
+  position: relative;
+  background: #000000;
+  cursor: pointer;
+  height: 50px;
+  width: 10em;
+  overflow: hidden;
+  transition: transform 0.1s;
+  z-index: 1;
+}
+
+.addtocart:hover {
+  transform: scale(1.1);
+}
+
+/* Styles for the "ADD TO CART" state */
+.addtocart .pretext {
+  color: #fff;
+  background: #000000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* Styles for the "ADDED" state */
+.addtocart.added .done {
+  transform: translate(0px);
+}
+
+.addtocart .done {
+  background: #d4dbd1;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease;
+  transform: translate(-110%) skew(-40deg);
+}
+.koko{
+  /* padding-bottom: 7px; */
+}
+
+.addtocart .posttext {
+  background: #d4dbd1;
+  color: #1ba708;
+}
+
+/* Additional styles for Font Awesome icons if needed */
+.addtocart i {
+  margin-right: 10px;
+}
+
+
+  .col-md-6>.row>.col-7>div>p{
+    padding-left: 0 !important;
+    margin-bottom: 0px !important;
+  }
+  .col-md-6>.row>.col-7{
+    padding-left: 0 !important;
+  }
+  .col-md-6>.row{
+    margin-left: 0 !important;
+    margin-right:0 !important ;
+  }
 
     
     .zoom {
-        max-width: 350px;
-        max-height: 400px;
+        max-width: 500px;
+        max-height: 450px;
         position: relative;
         display: inline-block;
         overflow: hidden;
@@ -46,8 +128,8 @@ img{
     }
     
     .zoom img {
-        width: 100%;
-        height: 100%;
+        width: 300px;
+        height: 450px;
         /* position: absolute; */
         /* 
         ; */
@@ -79,9 +161,9 @@ h2{
     /* padding-left: 0 !important; */
 }
 .bold{
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 20px;
-    font-weight: 500;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+    font-weight: 550;
     padding-top: 5px;
     height: 40px;
     /* padding-left: 0 !important; */
@@ -111,12 +193,12 @@ h2{
     background-color: #000000;
     border-left: none;
     border-top:3px;
-    width: 95% !important;
+    width: 100% !important;
     height: 2px;
-    padding-left:0 !important;
-    padding-right:0 !important ;
-    margin-left: 12px;
-    margin-right: 24px;
+    /* padding-left:0px !important; */
+    /* padding-right:0 !important ; */
+    /* margin-left: 12px; */
+    /* margin-right: 24px; */
 
 }
 .hr-style{
@@ -131,7 +213,7 @@ h2{
 
 /* Below CSS is for image at the left */
 .shadoww{
-    filter: drop-shadow(1px 1px 3px #a6a6a6)
+    filter: drop-shadow(1px 1px 2px #a6a6a6)
 }
 .image-gallery {
     display: flex;
@@ -146,7 +228,7 @@ h2{
     margin-top: 20px;
     display: flex;
     gap: 20px;
-    overflow-x: auto;
+    /* overflow-x: auto; */
     white-space: nowrap;
   }
   
@@ -193,7 +275,7 @@ h2{
   align-items: center;
   font-family: Arial, sans-serif;
   padding-left: 0 !important;
-  margin-top: 20px;
+  margin-top: 14px;
 }
 
 .control-button-l {
@@ -203,12 +285,12 @@ h2{
   padding: 5px 12px;
   cursor: pointer;
   font-size: 20px;
-  
   margin: 0 2px;
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
   transition: background-color 0.3s ease;
 }
+
 .control-button-r{
     background-color: #0d1011;
     color: #fff;
@@ -389,12 +471,96 @@ h2{
 .container>.row>.col-md-6>.row>h6{
   font-weight: 600;
 }
+.error{
+  border-color: red !important;
+}
+.error-message {
+  color: red;
+  font-size: 15px;
+  margin-top: 1px;
+  margin-bottom: 5px;
+}
 @media only screen and (max-width: 767px) {
+
   .related-products-container{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 3.5vw;
     /* padding: 1vh 2vw; */
   }
+  .row{
+    margin-left:-1px !important;
+    margin-right: -1px !important;
+  }
+  
+/* Styles for the button */
+.addtocart {
+  display: block;
+  margin-left: 12px;
+  padding: 0.5em 1em;
+  border-radius: 100px;
+  border: none;
+  /* size:30px; */
+  /* font-size: 25px; */
+  position: relative;
+  background: #000000;
+  cursor: pointer;
+  height: 50px;
+  width: 10em;
+  overflow: hidden;
+  transition: transform 0.1s;
+  z-index: 1;
+}
+
+.addtocart:hover {
+  transform: scale(1.1);
+}
+
+/* Styles for the "ADD TO CART" state */
+.addtocart .pretext {
+  color: #fff;
+  background: #000000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* Styles for the "ADDED" state */
+.addtocart.added .done {
+  transform: translate(0px);
+}
+
+.addtocart .done {
+  background: #d4dbd1;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease;
+  transform: translate(-110%) skew(-40deg);
+}
+.koko{
+  /* padding-bottom: 7px; */
+}
+
+.addtocart .posttext {
+  background: #d4dbd1;
+  color: #1ba708;
+}
+
+/* Additional styles for Font Awesome icons if needed */
+.addtocart i {
+  margin-right: 10px;
+}
+.col-7{
+  padding-left: 0.5vw;
+}
+
   
 }

@@ -7,7 +7,7 @@ export default function Navbar() {
       <ul className="navbar-list">
         <li>
            {/* <MessageIcon sx={{ 'color': 'white','width':'25px' }}/>  */}
-          <Link to="/contact">Contact Messages</Link>
+          <Link to="/admin/mainDashboard/contact">Contact Messages</Link>
         </li>
         <li className="dropdown">
           <Link>Product</Link>

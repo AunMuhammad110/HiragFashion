@@ -83,6 +83,10 @@ function Footer() {
                   <h3>Quick LInks</h3>
                   <ul className="footer-links">
                     <li>
+                      <a onClick={()=>navigate('/feed-form')} className="cursor-pointer">Feedback Form</a>
+                    </li>
+                    <li>
+
                       <a onClick={()=>navigate('/')} className="cursor-pointer">Home</a>
                     </li>
                     <li>

@@ -9,6 +9,7 @@ import CarrousalSettings from "./CarrousalSettings/carrousal"; // Corrected the 
 import Notifications from "./Notifications/notifications";
 import DeliverPrice from "./DeliverRates/deliveryrates";
 import { CategoryProvider } from "./Product/details";
+import FeedBack from "./Reviews/FeedResponse";
 export default function MainDashboard(props) {
   return (
     <>
@@ -22,6 +23,7 @@ export default function MainDashboard(props) {
         <Route path="/carrousalSettings" element={<CarrousalSettings />} />
         <Route path="/notification" element={<Notifications/>} />
         <Route path="/deliveryprice" element={<DeliverPrice/>} />
+        <Route path="/contact" element={<FeedBack/>}/>
       </Routes>
       </CategoryProvider>
      

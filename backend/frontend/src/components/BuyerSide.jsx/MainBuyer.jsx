@@ -18,34 +18,65 @@ import ExchangePolicy from "./StaticPages/ExchangePolicy";
 import WhatsAppPopUp from "./WhatsappComponent/whatsapp";
 import NotificationController from "./Notification";
 import MainPageProducts from "./MainPage/MainPageProducts";
+import SubTree from "./useContextt/routeescomp";
+import Feedback from "./staticPages/feedback";
+
+const MainLayout = ({ children }) => (
+  <>
+    <Navbarr />
+    {children}
+    <NotificationController />
+    <WhatsAppPopUp />
+    <Footer />
+  </>
+);
+
 
 
 export default function MainBuyer(props) {
   const queryClient = new QueryClient();
   return (
     <>
+
       <QueryClientProvider client={queryClient}>
         <MainDataProvider>
-          <Navbarr/>
           <Routes>
-            <Route path="/" element={<CarrousalSectionWrapper />}/>
-            <Route path="/product-section" element={<MainProductSection/>}/>
-            <Route path="/product-detail" element={<ImageGallery/>}/>
-            <Route path="/terms-condition" element={<TermsCondition/>}/>
-            <Route path="/shipping-policy" element={<PrivacyPolicy/>}/>
-            <Route path="/custom-tailoring" element={<CustomTailoring/>}/>
-            <Route path="/about-us" element={<AboutUs/>}/>
-            <Route path="/faqs" element={<Faqs/>}/>
-            <Route path="/exchange-policy" element={<ExchangePolicy/>}/>
-            <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
-            <Route path="/main-products" element={<MainPageProducts/>}/>
+            <Route path="/" element={<MainLayout>
+              <CarrousalSectionWrapper />
+            </MainLayout>} />
+            <Route path="/product-section" element={<MainLayout>
+              <MainProductSection />
+            </MainLayout>} />
+            <Route path="/product-detail" element={<MainLayout>
+              <ImageGallery />
+            </MainLayout>} />
+            <Route
+              path="/terms-condition"
+              element={
+                <MainLayout>
+                  <TermsCondition />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/shipping-policy"
+              element={
+                <MainLayout>
+                  <PrivacyPolicy /></MainLayout>} />
+            <Route path="/custom-tailoring" element={<MainLayout><CustomTailoring /></MainLayout>} />
+            <Route path="/about-us" element={<MainLayout><AboutUs /></MainLayout>} />
+            <Route path="/faqs" element={<MainLayout><Faqs /></MainLayout>} />
+            <Route path="/context/*" element={<SubTree />}></Route>
+            <Route path="/exchange-policy" element={<MainLayout><ExchangePolicy /></MainLayout>} />
+            <Route path="/privacy-policy" element={<MainLayout><PrivacyPolicy /></MainLayout>} />
+            <Route path="/main-products" element={<MainLayout><MainPageProducts /></MainLayout>} />
+            <Route path="/feed-form" element={<MainLayout><Feedback/></MainLayout>}></Route>
           </Routes>
         </MainDataProvider>
-     
-      <NotificationController/>
+        <NotificationController />
       </QueryClientProvider>
       <WhatsAppPopUp />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

@@ -6,6 +6,8 @@ import { useRequestProcessor } from "../../../../apisSetup/requestProcessor";
 import image from './carrousal.jpeg'
 import axiosClient from "../../../../apisSetup/axiosClient";
 import MainPageDataContext from "../../GlobalData/MainPage";
+import TextTransition, { presets } from 'react-text-transition';
+
 
 const Crousel = React.memo(() => {
   const { query } = useRequestProcessor();
@@ -27,14 +29,14 @@ const Crousel = React.memo(() => {
   // useEffect(()=>{
   //   window.location.reload();
   // },[])
-  // useEffect(() => {
-  //   const intervalId = setInterval(
-  //     () => setIndex((index) => index + 1),
-  //     7000 // Transition every 7 seconds
-  //   );
+  useEffect(() => {
+    const intervalId = setInterval(
+      () => setIndex((index) => index + 1),
+      7000 // Transition every 7 seconds
+    );
 
-  //   return () => clearInterval(intervalId);
-  // }, []);
+    return () => clearInterval(intervalId);
+  }, []);
   if(carrousalData.isLoading){
     return(
       <></>
@@ -53,10 +55,10 @@ const Crousel = React.memo(() => {
               src={item.image}
               alt="Slide 1"
             />
-            {/* <div className="center-caption">
+            <div className="center-caption">
               <Carousel.Caption>
                 <TextTransition
-                  springConfig={{ mass: 1, tension: 90, friction: 96 }}
+                  springConfig={{ mass: 4, tension: 90, friction: 96 }}
                   direction="up"
                   text="text"
                   interval={3000}
@@ -66,11 +68,11 @@ const Crousel = React.memo(() => {
                       {item.brandName} {item.subCategoryName}
                     </h3>
                     <p>100% original</p>
-                    <button className="btn  btn-light">Shop Now</button>
+                    <button className="btn  btn-light" onClick={(e)=>{handleClick()}}>Shop Now</button>
                   </div>
                 </TextTransition>
               </Carousel.Caption>
-      </div>*/}
+      </div>
           </div> 
         </Carousel.Item>
       ))}
