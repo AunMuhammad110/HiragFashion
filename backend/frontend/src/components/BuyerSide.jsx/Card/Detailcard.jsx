@@ -152,7 +152,7 @@ const ImageGallery = React.memo(() => {
 
   return (
     Object.keys(productData).length > 0 && (
-      <div className="container">
+      <div className="container-fluid wt">
         <div className="row ">
           <div className="col-12 col-md-6 shadoww ">
             <div className="image-gallery shadoww">
@@ -188,7 +188,7 @@ const ImageGallery = React.memo(() => {
             </div>
           </div>
 
-          <div className={`col-md-6 container`} style={{ backgroundColor: "#f5f5f5", boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)", padding: "10px"}}>
+          <div className={`col-md-6 container large-Screen-Right-Side`} style={{ backgroundColor: "", boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)", padding: "10px"}}>
             <div className={`row d-block`}>
               <div className="bordder"></div>
               {/* add the name of the product + category  */}
@@ -199,7 +199,7 @@ const ImageGallery = React.memo(() => {
                 {productData.productId}&nbsp;<span className="bar">|</span>
                 &nbsp;{" "}
 
-                <span className="text-success">
+                <span className={productData.stockCount > 0 ? "text-success" : "text-danger"}>
                   {productData.stockCount > 0 ? "IN STOCK" : "Out of Stock"}
                 </span>
               </div>
@@ -259,7 +259,7 @@ const ImageGallery = React.memo(() => {
                   </button>
                 </div>
                 {showError && (
-                  <p className="colr">Can not buy {number}, only 4 left</p>
+                  <p className="colr">Can not buy {number}, only {productData.stockCount} left</p>
                 )}
                 {/* {showButtonError && (
                   <p className="colr">Please Select Qunatity of Product</p>
@@ -298,13 +298,21 @@ const ImageGallery = React.memo(() => {
             </div>
             <hr />
             <div className="row">
-              <h6>Product Details</h6>
+              <h6><b>Product Details</b></h6>
+              </div>
+              <div className="row">
               <ul className="px-5">
-                {productData.splitProductDetails.map((item, key) => {
+                <li>Prjfd   sdf df dsfds </li>
+                <li>sdsdsad  </li>
+                <li>Prjfd   sdf df dsfds </li>
+                <li>sdsdsad  </li><li>Prjfd   sdf df dsfds </li>
+                <li>sdsdsad  </li><li>Prjfd   sdf df dsfds </li>
+                <li>sdsdsad  </li>
+                {/* {productData.splitProductDetails.map((item, key) => {
                   return <li key={key}>{item}</li>;
-                })}
+                })} */}
               </ul>
-            </div>
+              </div>
           </div>
         </div>
         {productData?.relatedProducts && (

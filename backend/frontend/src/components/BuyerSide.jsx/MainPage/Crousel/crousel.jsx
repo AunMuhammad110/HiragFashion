@@ -44,7 +44,7 @@ const Crousel = React.memo(() => {
   }
   return (
     <Carousel
-      interval={8000} /* Change slide every 8 seconds (3000 milliseconds) */
+      interval={3000} /* Change slide every 8 seconds (3000 milliseconds) */
     className="hr-mb-10">
       {carrousalData?.data?.map((item) => (
         <Carousel.Item>

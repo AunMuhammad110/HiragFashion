@@ -34,8 +34,16 @@ img{
 }
 
 @media screen and (min-width:768px){
+  .wt{
+    max-width: 1100px;
+  }
+  .large-Screen-Right-Side{
+    /* max-width:900px;
+    margin-right: 10px !important; */
+  margin-top: 4vh;
+  }
   .container{
-    max-width:1100px
+    max-width:1100px;
   }
 
 /* Styles for the button */

@@ -41,14 +41,15 @@ function FeedBack(){
           }};
           const handleClick =(mail)=>{
             handleDelete(mail);
+            fetchData();
           }
     console.log("state data is ",data);
     if(data.length ===0) return <></>
 
     return(
         <>
-<div className="static-container">
-      <div className="faq-static-container">
+<div className="static-container" >
+      <div className="faq-static-container"style={{minHeight:"90vh"}}>
         <h1>Client Reviews</h1>
         <hr />
         {data && data.map((item)=>(
