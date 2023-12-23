@@ -3,8 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const mainPage=require("./MainPage/index")
-// Import body-parser
-// const UserModel = require('./models/users')
+
 const path = require("path");
 const app = express();
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -14,7 +13,7 @@ app.use(express.json());
 app.use('/MainPage', mainPage);
 require("dotenv").config({ path: "data.env" });
 
-// Increase request payload size limit to handle larger images
+
 app.use(bodyParser.json({ limit: "30mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
 let ans = mongoose.connect("mongodb://localhost:27017/hiraGfashion");
@@ -441,6 +440,7 @@ app.post("/GetProductToDelete", async (req, res) => {
     const response = {
       productTitle: productDetails.productTitle,
       productPrice: productDetails.productPrice,
+      images:productDetails.images
     };
 
     res.json(response);
@@ -473,7 +473,7 @@ app.post("/DeleteProduct", async (req, res) => {
 // Update Carrousal
 
 app.post("/CreateCarrousal", (req, res) => {
-  const carrousalImage = req.body.carrousalImage; // Use req.file.path for the file path
+  const carrousalImage = req.body.imageUrl; // Use req.file.path for the file path
   let categoryName = req.body.subcategoryName;
   const brandName = req.body.brandName;
   categoryName = categoryName.trim();

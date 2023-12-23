@@ -1,10 +1,9 @@
-import React from "react";
-import { Route, Routes,useLocation } from "react-router-dom";
+import React, { Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import Footer from "./footer/footer";
 import Navbarr from "./Navbarr/navbar";
-
 import MainProductSection from "./ProductSection/mainSection";
 import CarrousalSectionWrapper from "./MainPage";
 import { MainDataProvider } from "./GlobalData/MainPage";
@@ -20,42 +19,64 @@ import NotificationController from "./Notification";
 import MainPageProducts from "./MainPage/MainPageProducts";
 import { CountProvider } from "./GlobalData/cartContext/cartData";
 import ScrolToTop from "../Customhooks/scrolltotop";
+import SimpleBackdrop from "../Components/fullPageLoader";
 
+// Lazy load components using React.lazy
+const LazyCarrousalSectionWrapper = React.lazy(() => import("./MainPage"));
+const LazyMainProductSection = React.lazy(() => import("./ProductSection/mainSection"));
+const LazyImageGallery = React.lazy(() => import("./Card/Detailcard"));
+const LazyPrivacyPolicy = React.lazy(() => import("./StaticPages/PrivacyPolicy"));
+const LazyTermsCondition = React.lazy(() => import("./StaticPages/TermsCondiiton"));
+const LazyCustomTailoring = React.lazy(() => import("./StaticPages/CustomTailoring"));
+const LazyFaqs = React.lazy(() => import("./StaticPages/Faqs"));
+const LazyAboutUs = React.lazy(() => import("./StaticPages/AboutUs"));
+const LazyExchangePolicy = React.lazy(() => import("./StaticPages/ExchangePolicy"));
+const LazyWhatsAppPopUp = React.lazy(() => import("./WhatsappComponent/whatsapp"));
+const LazyFooter = React.lazy(() => import("./footer/footer"));
 
-export default function MainBuyer(props) {
-  const queryClient = new QueryClient();
-  // const {pathname} = useLocation();
+const queryClient = new QueryClient();
 
-  // React.useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, [pathname]);
+function MainBuyer(props) {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+      <Suspense fallback={<SimpleBackdrop/>}>
         <MainDataProvider>
           <CountProvider>
-          <Navbarr/>
-          <ScrolToTop/>
-          <Routes>
-            <Route path="/" element={<CarrousalSectionWrapper />}/>
-            <Route path="/product-section" element={<MainProductSection/>}/>
-            <Route path="/product-detail" element={<ImageGallery/>}/>
-            <Route path="/terms-condition" element={<TermsCondition/>}/>
-            <Route path="/shipping-policy" element={<PrivacyPolicy/>}/>
-            <Route path="/custom-tailoring" element={<CustomTailoring/>}/>
-            <Route path="/about-us" element={<AboutUs/>}/>
-            <Route path="/faqs" element={<Faqs/>}/>
-            <Route path="/exchange-policy" element={<ExchangePolicy/>}/>
-            <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
-            <Route path="/main-products" element={<MainPageProducts/>}/>
-          </Routes>
+            <Navbarr />
+            <ScrolToTop />
+            
+              <Routes>
+                <Route path="/" element={<LazyCarrousalSectionWrapper />} />
+                <Route path="/product-section" element={<LazyMainProductSection />} />
+                <Route path="/product-detail" element={<LazyImageGallery />} />
+                <Route path="/terms-condition" element={<LazyTermsCondition />} />
+                <Route path="/shipping-policy" element={<LazyPrivacyPolicy />} />
+                <Route path="/custom-tailoring" element={<LazyCustomTailoring />} />
+                <Route path="/about-us" element={<LazyAboutUs />} />
+                <Route path="/faqs" element={<LazyFaqs />} />
+                <Route path="/exchange-policy" element={<LazyExchangePolicy />} />
+                <Route path="/privacy-policy" element={<LazyPrivacyPolicy />} />
+                <Route path="/main-products" element={<MainPageProducts />} />
+              </Routes>
+            
           </CountProvider>
         </MainDataProvider>
-     
-      <NotificationController/>
+        </Suspense>
+        <Suspense fallback={<div>Loading...</div>}>
+          <NotificationController />
+        </Suspense>
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazyWhatsAppPopUp />
+        </Suspense>
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazyFooter />
+        </Suspense>
       </QueryClientProvider>
-      <WhatsAppPopUp />
-      <Footer />
     </>
   );
 }
+
+export default MainBuyer;

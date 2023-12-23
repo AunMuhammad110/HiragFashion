@@ -38,6 +38,15 @@
   /* justify-content: center; */
   align-items: center;
 }
+.flex-container{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+}
 .wrapper{
   height: 60vh;
   width: 100vw;
@@ -91,6 +100,10 @@
 .h-37{
   height: 37vh;
 }
+
+.w-20{
+  width: 20vw;
+}
 .text-center {
   text-align: center;
 }
@@ -122,3 +135,20 @@
   color: black !important;
 }
 
+
+.not-allowed{
+  cursor: not-allowed;
+}
+.disable-add-button{
+  cursor: not-allowed !important;
+  background-color: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 5%;
+  width: 10vw;
+  margin-left: 11vw !important;
+}

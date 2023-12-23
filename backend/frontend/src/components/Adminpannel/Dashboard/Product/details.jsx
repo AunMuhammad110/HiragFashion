@@ -8,7 +8,6 @@ export function CategoryProvider({ children }) {
   const [categoryList, setCategoryList] = useState([]);
 
   useEffect(() => {
-    // Fetch categoryList from the server or wherever you need
     if(shouldFetch){
       axiosClient.get('/GetCategories')
       .then((result) => {

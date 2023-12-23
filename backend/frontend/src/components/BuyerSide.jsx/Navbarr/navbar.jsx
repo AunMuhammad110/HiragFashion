@@ -11,7 +11,6 @@ const Navbarr = React.memo(() => {
   const navigate = useNavigate();
   const cartDataLength = useRef;
   const { data, isLoading, isError } = useContext(MainPageDataContext);
-  // console.log("The data from the navbar is ", data);
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [smallImagesVisible, setSmallImagesVisible] = useState(true);
   useEffect(()=>{

@@ -9,6 +9,9 @@
     order: 3;
   }
   
+  .navbar-nav .nav-item.dropdown:hover .dropdown-menu{
+    display: block;
+  }
   
   .notification-badge {
         position:absolute;

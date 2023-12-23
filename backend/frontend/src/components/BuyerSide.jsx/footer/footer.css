@@ -43,6 +43,7 @@ img{
     border: none; /* Remove default border */
     height: 1px; /* Set the desired height of the horizontal rule */
     background-color: #000000; /* Set the dark color (e.g., black) */
+    margin-bottom: 4vh;
   }
 /* clone footer csss */
 
@@ -74,8 +75,9 @@ img{
   
   .footer-wrap {
     background-size: cover;
-    margin-bottom: -4vh;
-}
+    /* margin-bottom: -4vh; */
+ }
+    /* padding: 0 vw;} */
 
 .footer-wrap h3 {
     color: #000000;
@@ -101,7 +103,9 @@ img{
     text-decoration: none;
     color: #ff7800;
 }
-
+.custom-padding{
+    padding-left: 4vw !important; 
+}
 .footer-links li a {
     font-size: 13px;
     line-height: 30px;
@@ -132,6 +136,9 @@ img{
 }
 .footer-category a:hover{
     color:#D6403A;
+}
+.custom-padding{
+    /* background-color: #155E54; */
 }
 
 .address {
@@ -185,6 +192,11 @@ img{
     background: #222;
     width: 100%;
 }
+
+.custom-margin{
+    margin-left: 2vw;
+}
+
 footer .second_class{
     border-bottom: 1px solid #444;
     padding-bottom: 25px;
@@ -204,7 +216,7 @@ footer{
 }
 
 footer .newsletter input[type="text"] {
-    width: 100%;
+    width: 85%;
     background: #fff;
     color: #333;
     border: 1px solid #222;
@@ -216,7 +228,7 @@ footer .newsletter input[type="text"] {
 .newsletter .newsletter_submit_btn {
     background: #fff;
     position: absolute;
-    right: 30px;
+    right: 100px;
     border: 0;
     top: 26px;
     font-size: 17px;
@@ -262,8 +274,15 @@ footer dl, ol, ul {
     
     footer .round-btn {
     margin: 15px 4px;}
+    .custom-margin{
+        margin-left: 0;
+    }
 }
-@media(max-width:320px){
+@media(max-width:726px){
 .copyright {
-    font-size: 13px;}
+    font-size: 13px;
+    padding: 1vh 10vw;
+    /* max-width: 85%; */
+}
+
 } 

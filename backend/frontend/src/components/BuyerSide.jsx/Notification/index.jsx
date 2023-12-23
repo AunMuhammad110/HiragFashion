@@ -1,13 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
 import NotificationCard from "./notification";
 import axiosClient from "../../../apisSetup/axiosClient";
-import { useRequestProcessor } from "../../../apisSetup/requestProcessor";
-import { clippingParents } from "@popperjs/core";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function NotificationController() {
   const notificationDataRef = useRef();
   const count = useRef(0);
-  // Create a ref to hold the notification data
   const [showNotification, setShowNotification] = useState(false);
   const [showNothing, setShowNothing]=useState(false);
 

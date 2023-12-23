@@ -5,9 +5,17 @@ import Modal from "@mui/material/Modal";
 import React, { useState } from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import {
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
 
 import "./deleteproduct.css";
 import Alert from "./alert.png";
+import imageDb from "../../../../config";
 import axiosClient from "../../../../apisSetup/axiosClient";
 
 export default function DeleteProduct() {
@@ -40,14 +48,27 @@ export default function DeleteProduct() {
         }
       })
       .catch((error) => {
-        // If there's an error, display an alert with the error message
         console.log(error.message);
       });
   }, 500);
 
+  const handleDelete = () => {
+    productDetails?.images?.map((item, index)=>{
+      const imageRef = ref(imageDb, item);
+      deleteObject(imageRef)
+        .then(() => {
+        })
+        .catch((error) => {
+          console.error("Error deleting image:", error);
+        });
+    })
+
+  };
+
 
 const RemoveProduct = debounce(() => {
   closeModal();
+  handleDelete();
   axiosClient
     .post("/DeleteProduct", { productId })
     .then((response) => {

@@ -54,7 +54,7 @@ export default function MainPageProductsSettings() {
 
 function EntryForm({closeContainer}) {
   const { categoryList } = useContext(CategoryContext);
-  const [brandName, setBrandName] = useState(categoryList[0]);
+  const [brandName, setBrandName] = useState();
   const [subcategoryName, setSubCategoryName] = useState("");
   const [subCategoryList, setSubCategoryList] = useState([]);
   const [category, setCategory] = useState("");
@@ -110,6 +110,7 @@ function EntryForm({closeContainer}) {
           required
           className="custom-select"
         >
+         <option value="">Select Brand</option>
           {categoryList.map((category, index) => (
             <option key={index} value={category}>
               {category}
@@ -125,6 +126,7 @@ function EntryForm({closeContainer}) {
           required
           className="custom-select"
         >
+          <option value="">Select Brand Category</option>
           {subCategoryList?.map((category, index) => (
             <option key={index} value={category.subBrandName}>
               {category.subBrandName}
@@ -140,6 +142,8 @@ function EntryForm({closeContainer}) {
           required
           className="custom-select"
         >
+          
+          <option value="">Select Category</option>
           <option value="Sale">Sale</option>
           <option value="New Collection">New Collection</option>
         </select>

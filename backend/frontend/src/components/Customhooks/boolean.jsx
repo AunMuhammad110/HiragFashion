@@ -2,7 +2,6 @@ import React from "react";
 
 const useBoolean = (initialState = false) => {
   const [state, setState] = React.useState(initialState);
-
   const handleTrue = () => setState(true);
   const handleFalse = () => setState(false);
   const handleToggle = () => setState(!state);

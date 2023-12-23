@@ -12,7 +12,7 @@ function Footer() {
         <div className="footer-wrap hr-mt-50">
           <div className="container-fluid first_className">
             <hr className="ss" />
-            <div className="row">
+            <div className="row custom-margin ">
               <div className="col-md-4 col-sm-6">
                 <h2 className="sad">BE THE FIRST TO KNOW</h2>
                 <p>
@@ -21,7 +21,7 @@ function Footer() {
                   newsletter today.
                 </p>
               </div>
-              <div className="col-md-4 col-sm-6">
+              <div className="col-md-4 col-sm-6 pl-3 ">
                 <form className="newsletter">
                   <input type="text" placeholder="Email Address" />
                   <button className="newsletter_submit_btn" type="submit">
@@ -30,7 +30,7 @@ function Footer() {
                 </form>
               </div>
               <div className="col-md-4 col-sm-6">
-                <div className="col-md-12">
+                <div className="col-md-12 pl-0">
                   <div className="standard_social_links">
                     <div>
                       <li className="round-btn btn-facebook">
@@ -60,7 +60,7 @@ function Footer() {
                   </div>
                 </div>
                 <div className="clearfix"></div>
-                <div className="col-md-12">
+                <div className="col-md-12 pl-3">
                   <h3>Stay Connected</h3>
                 </div>
               </div>
@@ -69,7 +69,7 @@ function Footer() {
           </div>
           <div className="second_className">
             <div className="container-fluid second_className_bdr">
-              <div className="row">
+              <div className="row custom-margin">
                 <div className="col-md-4 col-sm-6">
                   <div className="footer-logo">
                     <img src={logo} alt="logo" width="350px" height="200px" />
@@ -79,33 +79,33 @@ function Footer() {
                     brands, latest collection, wedding collection
                   </p>{" "}
                 </div>
-                <div className="col-md-4 col-sm-6">
+                <div className="col-md-4 col-sm-6 custom-padding">
                   <h3>Quick LInks</h3>
                   <ul className="footer-links">
                     <li>
                       <a onClick={()=>navigate('/')} className="cursor-pointer">Home</a>
                     </li>
                     <li>
-                      <a onClick={()=>navigate('/about-us')} className="cursor-pointer">About us</a>
+                      <a onClick={()=>window.open("/about-us", '_blank')} className="cursor-pointer">About us</a>
                     </li>
                     <li>
                       <a onClick={()=>navigate('/')} className="cursor-pointer">Contact Us</a>
                     </li>
                     <li>
-                      <a onClick={()=>navigate('/terms-condition')} className="cursor-pointer">
+                      <a  onClick={()=>window.open("/terms-condition", '_blank')}  className="cursor-pointer">
                         Terms &amp; Conditions
                       </a>
                     </li>
                     <li>
-                      <a  onClick={()=>navigate('/exchange-policy')} className="cursor-pointer">Exchange Policy</a>
+                      <a   onClick={()=>window.open("/exchange-policy", '_blank')}  className="cursor-pointer">Exchange Policy</a>
                     </li>
                   </ul>
                 </div>
-                <div className="col-md-4 col-sm-6">
+                <div className="col-md-4 col-sm-6 ">
                   <h3>INFORMATION</h3>
                   <ul className="footer-category">
                     <li>
-                      <a onClick={()=>navigate('/privacy-policy')} className="cursor-pointer">
+                      <a  onClick={()=>window.open("/privacy-policy", '_blank')}  className="cursor-pointer">
                         Privacy Policy
                       </a>
                     </li>
@@ -116,16 +116,12 @@ function Footer() {
                       <a onClick={()=>navigate('/custom-tailoring')} className="cursor-pointer">Custom Tailoring</a>
                     </li>
                     <li>
-                      <a onClick={()=>navigate('/faqs')} className="cursor-pointer">FAQ's</a>
+                      <a  onClick={()=>window.open("/faqs", '_blank')}  className="cursor-pointer">FAQ's</a>
                     </li>
                   </ul>
                   <div className="clearfix"></div>
                 </div>
-                <div className="copyright">
-                  {" "}
-                  @Copyright 2023 | All Right Reserved and developed by Auniz
-                  Tech Innovators
-                </div>
+                
               </div>
               {/* <div className="col-md-3 col-sm-6">
           <h3>triedge Events</h3>
@@ -142,8 +138,13 @@ function Footer() {
         </div>
 
         <div className="row">
-          <div className="container"></div>
+        <div className="copyright">
+                  {" "}
+                  @Copyright 2023 | All Right Reserved and developed by Auniz
+                  Tech Innovators
+                </div>
         </div>
+
         {/* <div classNameName="container-fluid">
             <div classNameName="row d-flex flex-md-row flex-column">
             <div classNameName="col-4 py-0">

@@ -12,7 +12,6 @@ import TableRow from "@mui/material/TableRow";
 import "react-toastify/dist/ReactToastify.css";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import TableContainer from "@mui/material/TableContainer";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
@@ -91,14 +90,15 @@ export default function Notifications() {
       )}
        <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="">Product Id</StyledTableCell>
-              <StyledTableCell align="">Product Title</StyledTableCell>
-              <StyledTableCell align="">Product Price</StyledTableCell>
-              <StyledTableCell align="">Delete Product</StyledTableCell>
-            </TableRow>
-          </TableHead>
+            {notificationDetails.length > 0  &&
+                      <TableHead>
+                      <TableRow>
+                        <StyledTableCell align="">Product Id</StyledTableCell>
+                        <StyledTableCell align="">Product Title</StyledTableCell>
+                        <StyledTableCell align="">Product Price</StyledTableCell>
+                        <StyledTableCell align="">Delete Product</StyledTableCell>
+                      </TableRow>
+                    </TableHead>}
           <TableBody>
 
           {notificationDetails.length > 0 &&

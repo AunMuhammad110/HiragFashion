@@ -230,7 +230,7 @@ const ImageGallery = React.memo(() => {
                   </button>
                 </div>
                 {showError && (
-                  <p className="colr">Can not buy {number}, only 4 left</p>
+                  <p className="colr">Can not buy {number}, only {productData.stockCount} left</p>
                 )}
                 {showButtonError && (
                   <p className="colr">Please Select Qunatity of Product</p>
@@ -269,7 +269,7 @@ const ImageGallery = React.memo(() => {
             </div>
           </div>
         </div>
-        {productData?.relatedProducts && (
+        {productData?.relatedProducts.length >0 && (
           <div className="related-products-main">
             <p>RELATED PRODUCTS</p>
             <div className="related-products-container">
@@ -295,7 +295,7 @@ const ImageGallery = React.memo(() => {
               >
                 <span>
                   <KeyboardBackspaceIcon />
-                </span>{" "}
+                </span>
                 BACK TO {parentCollection.name.toUpperCase()}
               </button>
             </div>

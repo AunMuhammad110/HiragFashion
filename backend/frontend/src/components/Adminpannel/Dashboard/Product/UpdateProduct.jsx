@@ -1,18 +1,27 @@
-import axios from "axios";
+import { v4 } from "uuid";
 import { nanoid } from "nanoid";
 import debounce from "lodash.debounce";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import {
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
 
 import "./updateproduct.css";
 import CategoryContext from "./details";
+import imageDb from "../../../../config";
 import useBoolean from "../../../Customhooks/boolean";
 import axiosClient from "../../../../apisSetup/axiosClient";
 
-const UpdateProduct= React.memo(()=> {
-  const {categoryList,CallData} = useContext(CategoryContext);
+const UpdateProduct = React.memo(() => {
+  const { categoryList, CallData } = useContext(CategoryContext);
   const [displayCategory, setDisplayCategory] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [subCategoryList, setSubCategoryList] = useState([]);
   const [productformData, setProductFormData] = React.useState({
     brandName: categoryList[0],
@@ -29,58 +38,47 @@ const UpdateProduct= React.memo(()=> {
   const image1Ref = useRef();
   const image2Ref = useRef();
   const image3Ref = useRef();
-
+  const imageUrl = useRef("");
   const [showImageInputs, { setToggle: setShowImageInputs }] =
     useBoolean(false);
-  const [showImage, { setToggle: setShowImage }] = useBoolean(false);
   const [image, setImage] = useState([]);
   const [productId, setProductId] = useState("");
+  const [rawImages, setRawImages] = useState([]);
 
-  function convertToBase64(e) {
-    const reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-  
-    reader.onload = () => {
-      const img = new Image();
-      img.src = reader.result;
-  
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-  
-        // Set canvas dimensions based on the desired width and height
-        const maxWidth = 800;
-        const maxHeight = 800;
-  
-        let width = img.width;
-        let height = img.height;
-  
-        if (width > height) {
-          if (width > maxWidth) {
-            height *= maxWidth / width;
-            width = maxWidth;
-          }
-        } else {
-          if (height > maxHeight) {
-            width *= maxHeight / height;
-            height = maxHeight;
-          }
-        }
-  
-        canvas.width = width;
-        canvas.height = height;
-  
-        // Draw the image onto the canvas
-        ctx.drawImage(img, 0, 0, width, height);
-  
-        // Convert the canvas content to base64
-        const compressedBase64 = canvas.toDataURL("image/jpeg", 0.9); // Adjust quality (0.9 is just an example)
-  
-        // Add the compressed image to the image array
-        setImage([...image, compressedBase64]);
-      };
-    };
-  }
+  const handleImage = (productImage) => {
+    return new Promise((resolve, reject) => {
+      const imageRef = ref(imageDb, `files/${v4()}`);
+      const uploadTask = uploadBytes(imageRef, productImage);
+
+      uploadTask
+        .then((snapshot) => {
+          getDownloadURL(snapshot.ref)
+            .then((url) => {
+              imageUrl.current = url;
+              resolve();
+            })
+            .catch((error) => {
+              console.error("Error getting download URL:", error);
+              reject(error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+          reject(error);
+        });
+    });
+  };
+
+  const handleDelete = () => {
+    image.map((item, index) => {
+      const imageRef = ref(imageDb, item);
+      deleteObject(imageRef)
+        .then(() => {})
+        .catch((error) => {
+          console.error("Error deleting image:", error);
+        });
+    });
+  };
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -101,7 +99,6 @@ const UpdateProduct= React.memo(()=> {
           toast.success("Product data successfully retrieved");
           const productData = response.data;
           if (productData) {
-            // Update the product form data with the fetched data
             setProductFormData({
               category: productData.brandName,
               subBrandName: productData.subBrandName,
@@ -115,7 +112,6 @@ const UpdateProduct= React.memo(()=> {
             setDisplayCategory(false);
             setImage(productData.images || []);
             setDisplayCategory(true);
-            setShowImage(true);
           } else if (response.status === 404) {
             toast.error("Product not found");
           }
@@ -128,17 +124,15 @@ const UpdateProduct= React.memo(()=> {
       });
   }, 500);
 
-
   const RemoveProduct = debounce(() => {
     axiosClient
       .post("/DeleteProduct", { productId })
-      .then((response) => {
-      })
+      .then((response) => {})
       .catch((error) => {
         toast.error("Product not found");
         console.log("Server error: " + error.message);
       });
-  }, 500); 
+  }, 500);
 
   useEffect(() => {
     axiosClient
@@ -156,57 +150,65 @@ const UpdateProduct= React.memo(()=> {
   }, [productformData.brandName]);
 
   function RemoveImages() {
+    handleDelete();
     setImage([]);
     setDisplayCategory(false);
     setShowImageInputs();
   }
 
   const AddProduct = async () => {
-    let productId = nanoid(8);
+    let imageArray = [];
     // e.preventDefault();
+    setIsLoading(true);
     if (!productformData.category || !productformData.subBrandName) {
       toast.error("Please fill the required inputs");
       return;
     }
-
     try {
-      // Send the product data to be uploaded
-      const productResponse = await axiosClient.post(
-        "/UploadProduct",
-        {
-          image,
-          productformData,
-          productId,
-        }
-      ).then((response) => {
+      await Promise.all(
+        rawImages.map(async (item) => {
+          await handleImage(item);
+          imageArray.push(imageUrl.current);
+        })
+      );
+      let productId = nanoid(8);
+
+      const productResponse = await axiosClient.post("/UploadProduct", {
+        image: imageArray,
+        productformData,
+        productId,
+      });
+
+      if (productResponse.status === 200) {
         setProductFormData({
           productName: "",
           category: "",
           subBrandName: "",
-          price: Number,
-          stock: Number,
-          discountPrice: Number,
-          productWeight: Number,
+          price: 0,
+          stock: 0,
+          discountPrice: 0,
           productDetails: "",
-        }); 
-          setShowImageInputs(false);
-          setDisplayCategory(false);
-          setImage([]);
-          if(image1Ref.current ) image1Ref.current.value=null;
-          if(image2Ref.current ) image2Ref.current.value=null;
-          if(image3Ref.current ) image3Ref.current.value=null;
-          toast.success("Product Updated successfully");
-      })
+          productWeight: 0,
+        });
+        image1Ref.current.value = "";
+        image2Ref.current.value = "";
+        image3Ref.current.value = "";
+        imageUrl.current = "";
+        setRawImages([]);
+        imageArray = [];
+        toast.success("Product Updated successfully");
+      }
     } catch (error) {
+      console.error("Error", error);
       toast.error("Failed to upload the product or images.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-
-  function Handler(){
+  function Handler() {
     RemoveProduct();
-    AddProduct()
-
+    AddProduct();
   }
   return (
     <div className="update-product-container">
@@ -368,7 +370,9 @@ const UpdateProduct= React.memo(()=> {
                 style={{ width: "15vw" }}
                 placeholder="Input Product Image"
                 name="image1"
-                onChange={convertToBase64}
+                onChange={(e) =>
+                  setRawImages([...rawImages, e.target.files[0]])
+                }
                 accept="image/*"
                 required
                 id="image1"
@@ -392,7 +396,9 @@ const UpdateProduct= React.memo(()=> {
                 style={{ width: "15vw" }}
                 type="file"
                 placeholder="Input Product Image"
-                onChange={convertToBase64}
+                onChange={(e) =>
+                  setRawImages([...rawImages, e.target.files[0]])
+                }
                 name="image2"
                 accept="image/*"
                 id="image2"
@@ -416,7 +422,9 @@ const UpdateProduct= React.memo(()=> {
                 type="file"
                 style={{ width: "15vw" }}
                 placeholder="Input Product Image"
-                onChange={convertToBase64}
+                onChange={(e) =>
+                  setRawImages([...rawImages, e.target.files[0]])
+                }
                 name="image3"
                 accept="image/*"
                 id="image3"
@@ -426,9 +434,25 @@ const UpdateProduct= React.memo(()=> {
           </>
         )}
 
-        <button className="product-update-button" onClick={Handler}>
-          {" "}
-          Update Changes
+        <button
+          class="custom-button"
+          type="submit"
+          disabled={isLoading}
+          style={{ width: "20vw" }}
+          onClick={Handler}
+        >
+          {isLoading ? (
+            <div>
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              &nbsp; Updating Product
+            </div>
+          ) : (
+            "Update Product"
+          )}
         </button>
       </div>
 
@@ -444,7 +468,13 @@ const UpdateProduct= React.memo(()=> {
               />
             ))}
             <br />
-            <button onClick={RemoveImages}>Delete Images</button>
+            <button
+              onClick={RemoveImages}
+              className={isLoading ? "not-allowed" : ""}
+              disabled={isLoading}
+            >
+              Delete Images
+            </button>
           </div>
         </div>
       )}

@@ -1,16 +1,24 @@
-import axios from "axios";
+import { v4 } from "uuid";
 import { nanoid } from "nanoid";
 import { Button } from "@mui/material";
 import debounce from "lodash.debounce";
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import "react-toastify/dist/ReactToastify.css";
+import CloseIcon from "@mui/icons-material/Close";
 import { ToastContainer, toast } from "react-toastify";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
+import {
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
 
 import "./upload.css";
 import CategoryContext from "./details";
+import imageDb from "../../../../config";
 import useBoolean from "../../../Customhooks/boolean";
 import axiosClient from "../../../../apisSetup/axiosClient";
 
@@ -21,6 +29,8 @@ const UploadProduct = React.memo(() => {
   const image1Ref = useRef();
   const image2Ref = useRef();
   const image3Ref = useRef();
+  const imageUrl = useRef("");
+  const [isLoading, setIsLoading] = useState(false);
   const [productformData, setProductFormData] = React.useState({
     productName: "",
     category: "",
@@ -31,70 +41,66 @@ const UploadProduct = React.memo(() => {
     productDetails: "",
     productWeight: Number,
   });
-  const [image, setImage] = useState([]);
-  function convertToBase64(e) {
-    const reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
+  const [rawImages, setRawImages] = useState([]);
 
-    reader.onload = () => {
-      const img = new Image();
-      img.src = reader.result;
+  const handleImage = (productImage) => {
+    return new Promise((resolve, reject) => {
+      const imageRef = ref(imageDb, `files/${v4()}`);
+      const uploadTask = uploadBytes(imageRef, productImage);
 
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-        const maxWidth = 800;
-        const maxHeight = 800;
-
-        let width = img.width;
-        let height = img.height;
-
-        if (width > height) {
-          if (width > maxWidth) {
-            height *= maxWidth / width;
-            width = maxWidth;
-          }
-        } else {
-          if (height > maxHeight) {
-            width *= maxHeight / height;
-            height = maxHeight;
-          }
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height);
-        const compressedBase64 = canvas.toDataURL("image/jpeg", 0.9); // Adjust quality (0.9 is just an example)
-        setImage([...image, compressedBase64]);
-      };
-    };
-
-    reader.onerror = () => {
-      toast.error("Error ", error);
-    };
-  }
+      uploadTask
+        .then((snapshot) => {
+          getDownloadURL(snapshot.ref)
+            .then((url) => {
+              imageUrl.current = url;
+              resolve();
+            })
+            .catch((error) => {
+              console.error("Error getting download URL:", error);
+              reject(error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+          reject(error);
+        });
+    });
+  };
 
   function handleChange(event) {
-    const { name, value } = event.target;
+    const { name, value, type } = event.target;
+
+    // Check if the input type is 'number' and the value is a valid number
+    const numericValue = type === "number" ? parseFloat(value) : value;
+
     setProductFormData((prevFormData) => {
       return {
         ...prevFormData,
-        [name]: value,
+        [name]: numericValue,
       };
     });
   }
+
   const AddProduct = async (e) => {
-    let productId = nanoid(8);
+    let imageArray = [];
     e.preventDefault();
+    setIsLoading(true);
     if (!productformData.category || !productformData.subBrandName) {
       toast.error("Please fill the required inputs");
+      setIsLoading(false);
       return;
     }
-
     try {
-      // Send the product data to be uploaded
+      await Promise.all(
+        rawImages.map(async (item) => {
+          await handleImage(item);
+          imageArray.push(imageUrl.current);
+        })
+      );
+      let productId = nanoid(8);
+
       const productResponse = await axiosClient.post("/UploadProduct", {
-        image,
+        image: imageArray,
         productformData,
         productId,
       });
@@ -104,21 +110,25 @@ const UploadProduct = React.memo(() => {
           productName: "",
           category: "",
           subBrandName: "",
-          price: Number,
-          stock: Number,
-          discountPrice: Number,
+          price: 0,
+          stock: 0,
+          discountPrice: 0,
           productDetails: "",
-          productWeight: Number,
+          productWeight: 0,
         });
         image1Ref.current.value = "";
-        setImage([]);
         image2Ref.current.value = "";
         image3Ref.current.value = "";
+        imageUrl.current = "";
+        setRawImages([]);
+        imageArray = [];
         toast.success("Product uploaded successfully");
       }
     } catch (error) {
       console.error("Error", error);
       toast.error("Failed to upload the product or images.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -131,10 +141,7 @@ const UploadProduct = React.memo(() => {
       })
       .then((response) => {
         if (response.status === 200) {
-          if (response.data.subCategory.length > 0) {
-            productformData.subBrandName =
-              response.data.subCategory[0].subBrandName;
-          }
+
           setSubCategoryList(response.data.subCategory);
         }
       })
@@ -166,11 +173,14 @@ const UploadProduct = React.memo(() => {
           <select
             name="category"
             onChange={handleChange}
-            value={productformData.category}
+            value={
+              productformData.category 
+            }
             id="category"
             style={{ width: "15vw" }}
             required
           >
+            <option value={""}>Select Brand</option>
             {categoryList.map((category, index) => (
               <option key={index} value={category}>
                 {category}
@@ -183,11 +193,14 @@ const UploadProduct = React.memo(() => {
           <select
             name="subBrandName"
             onChange={handleChange}
-            value={productformData.subBrandName}
+            value={
+              productformData.subBrandName 
+            }
             id="category"
             style={{ width: "15vw" }}
             required
           >
+            <option value={""}>Select Category</option>
             {subCategoryList.map((category, index) => (
               <option key={category.subBrandName} value={category.subBrandName}>
                 {category.subBrandName}
@@ -283,7 +296,7 @@ const UploadProduct = React.memo(() => {
             style={{ width: "15vw" }}
             placeholder="Input Product Image"
             name="image1"
-            onChange={convertToBase64}
+            onChange={(e) => setRawImages([...rawImages, e.target.files[0]])}
             accept="image/*"
             required
             id="image1"
@@ -308,7 +321,7 @@ const UploadProduct = React.memo(() => {
             style={{ width: "15vw" }}
             type="file"
             placeholder="Input Product Image"
-            onChange={convertToBase64}
+            onChange={(e) => setRawImages([...rawImages, e.target.files[0]])}
             name="image2"
             accept="image/*"
             id="image2"
@@ -333,15 +346,32 @@ const UploadProduct = React.memo(() => {
             type="file"
             style={{ width: "15vw" }}
             placeholder="Input Product Image"
-            onChange={convertToBase64}
+            onChange={(e) => setRawImages([...rawImages, e.target.files[0]])}
             name="image3"
             accept="image/*"
             id="image3"
             ref={image3Ref}
           />
         </div>
-
-        <input className="product-upload-button" type="submit" />
+        <button
+          class="custom-button"
+          type="submit"
+          disabled={isLoading}
+          style={{ width: "20vw" }}
+        >
+          {isLoading ? (
+            <div>
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>&nbsp;
+              Uploading Product
+            </div>
+          ) : (
+            "Add"
+          )}
+        </button>
       </form>
       <ToastContainer />
     </div>
@@ -489,6 +519,7 @@ function SubBrandForm(addprops) {
         </label>
         <br />
         <select {...register("brandName")} required>
+        <option value={""}>Select Brand</option>
           {categoryList.map((category, index) => (
             <option key={index} value={category}>
               {category}
@@ -947,6 +978,7 @@ function RemoveSubCategory(removeprops) {
           Select Brand Name
         </label>
         <select onChange={handleChange} value={brandName} required>
+        <option value={""}>Select Brand</option>
           {categoryList.map((category, index) => (
             <option key={index} value={category}>
               {category}

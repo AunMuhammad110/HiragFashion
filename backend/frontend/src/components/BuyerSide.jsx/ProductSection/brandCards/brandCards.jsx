@@ -1,7 +1,8 @@
 import "../index.css";
-import bgImage from "./productimage.webp";
+// import bgImage from "./productimage.webp";
 import { useNavigate } from "react-router-dom";
-import tempImage from "./productimage.webp"
+
+
 export default function ProductCard(data) {
   const {item,className,parentCollection}=data;
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function ProductCard(data) {
           objectFit: "center",
         }}
       >
+       {item.stockCount === 0 && <p className="sold-out-badge">Sold Out</p>}
       </div>
 
       <p className="product-title">{item.productTitle.toUpperCase()}</p>

@@ -3,13 +3,6 @@ import image from "../MainPage/Crousel/carrousal.jpeg";
 import { useLocation } from "react-router-dom";
 // import image from "./staticPages/carousal.jpeg"
 export default function AboutUs() {
-  // const locaiton = useLocation()
-  // useLayoutEffect(()=>{
-  //   console.log("This ran");
-  //   const element= document.getElementsByClassName("about-main-container")[0];
-  //   console.log("The element is ", element);
-  //   element.scrollTop=0;
-  // },[location.pathname])
   return (
     <div className="about-main-container">
       <div className="about-container">

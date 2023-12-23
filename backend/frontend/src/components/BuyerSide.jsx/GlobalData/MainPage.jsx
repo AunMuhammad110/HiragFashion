@@ -33,7 +33,6 @@ export function MainDataProvider({ children }) {
       const response = await axiosClient.get("/buyerSide/GetSaleProducts");
       return response.data;
     } catch (error) {
-      console.log("Error occured:");
       console.error("Error fetching data:", error);
       throw error; // Rethrow the error to propagate it to the caller
     }

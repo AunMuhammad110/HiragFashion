@@ -1,14 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const mainPageBrands = require("../schema/mainPageBrands.js");
-// require("/Users/aunmuhammad/Documents/HiragFashion/backend/schema/product.js");
 require("../schema/product.js");
-// require("/Users/aunmuhammad/Documents/HiragFashion/backend/schema/categoryDetails.js");\
 require("../schema/categoryDetails.js")
-// require("../schema/productImages.js")
 require("../schema/notification")
 require("../schema/mainPageBrands")
-// require("../")
 const router = express.Router();
 const Brand = mongoose.model("BrandDetail");
 const Product = mongoose.model("Product");
@@ -221,10 +217,8 @@ router.get("/GetSaleProducts",async(req, res) => {
     if (item.category === "Sale") {
       subBrandName = item?.categoryName;
     } else {
-      subBrandName2 = item?.categoryName; // Change this line as needed
+      subBrandName2 = item?.categoryName; 
     }
-    // Note: This loop will overwrite 'subBrandName' in each iteration.
-    // If you want to store multiple subBrandNames, consider using an array.
   });
   const products = await Product.find({subBrandName:subBrandName}).limit(4);
   const products2 = await Product.find({subBrandName:subBrandName2}).limit(6);

@@ -83,7 +83,7 @@
     /* margin-top: 2.5vh; */
 }
 
-.change-carrousal-container  > button {
+.add-button {
     background-color: #dc3545;
     color: white;
     padding: 10px 20px;
@@ -96,7 +96,7 @@
     margin-left: 11vw !important;
 
   }
-  .change-carrousal-container  > button:hover{
+  .add-button:hover{
     background-color: transparent;
     border: 1px solid black;
   }
