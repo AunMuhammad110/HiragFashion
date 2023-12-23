@@ -32,7 +32,7 @@ export function MainDataProvider({ children }) {
   const mainPageProducts = query("MainPageProducts", async () => {
     try {
       const response = await axiosClient.get("/buyerSide/GetSaleProducts");
-      console.log("data from context is ", response.data);
+      // console.log("data from context is ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error occured:");
