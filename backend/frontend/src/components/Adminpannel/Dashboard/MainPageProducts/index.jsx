@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import "./index.css";
-import noDataImage from "./nodata.jpg";
+import noDataImage from "../../../../assets/nodata.jpg"
 import CategoryContext from "../Product/details";
 import axiosClient from "../../../../apisSetup/axiosClient";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -36,18 +36,12 @@ export default function MainPageProductsSettings() {
           Add Products
         </button>
       </div>
+    
 
       {showAddProduct && <EntryForm  closeContainer={()=>setShowAddProduct(false)}/>}
       <DisplayCard  />
 
-      {productData.length === 1 && (
-        <div className="wrapper">
-          <div className="display-flex-col no-data-container">
-            <img src={noDataImage} alt="no data image here" />
-            <h5>No Data Found</h5>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }
@@ -217,7 +211,16 @@ function DisplayCard() {
 
   return (
     <div>
+      {data?.data.length===0 && (
+        <div className="wrapper">
+          <div className="display-flex-col no-data-container">
+            <img src={noDataImage} alt="no data image here" />
+            <h5>No Data Found</h5>
+          </div>
+        </div>
+      )}
       <br />
+      {data.data.length >0&&
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
@@ -229,8 +232,8 @@ function DisplayCard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.data &&
-              data?.data?.map((item, index) => (
+            
+             { data?.data?.map((item, index) => (
                 <StyledTableRow key={index} style={{ height: "7vh" }}>
                   <StyledTableCell component="th" scope="row">
                     {item.brandName}
@@ -248,7 +251,7 @@ function DisplayCard() {
               ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer>}
       <ToastContainer />
     </div>
   );

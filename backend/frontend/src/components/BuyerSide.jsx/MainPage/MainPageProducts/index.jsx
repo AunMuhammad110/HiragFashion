@@ -42,7 +42,7 @@ export default function MainPageProducts() {
               })}
             </div>
             {showSaleButton && (
-              <div className="related-product-button">
+              <div className="related-product-button button-padding">
                 <button
                   onClick={() => {
                     navigate("/product-section", { state: { name: data["subBrandDetails"][0]["subBrandName"], id: 2 } });

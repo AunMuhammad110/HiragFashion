@@ -86,14 +86,7 @@ function Footer() {
                       <a onClick={()=>navigate('/feed-form')} className="cursor-pointer">Feedback Form</a>
                     </li>
                     <li>
-
-                      <a onClick={()=>navigate('/')} className="cursor-pointer">Home</a>
-                    </li>
-                    <li>
                       <a onClick={()=>window.open("/about-us", '_blank')} className="cursor-pointer">About us</a>
-                    </li>
-                    <li>
-                      <a onClick={()=>navigate('/')} className="cursor-pointer">Contact Us</a>
                     </li>
                     <li>
                       <a  onClick={()=>window.open("/terms-condition", '_blank')}  className="cursor-pointer">
@@ -112,9 +105,6 @@ function Footer() {
                       <a  onClick={()=>window.open("/privacy-policy", '_blank')}  className="cursor-pointer">
                         Privacy Policy
                       </a>
-                    </li>
-                    <li>
-                      <a href="#">Refund Policy</a>
                     </li>
                     <li>
                       <a onClick={()=>navigate('/custom-tailoring')} className="cursor-pointer">Custom Tailoring</a>

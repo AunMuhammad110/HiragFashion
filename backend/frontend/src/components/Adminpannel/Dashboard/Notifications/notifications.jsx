@@ -14,6 +14,7 @@ import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import noDataImage from "../../../../assets/nodata.jpg"
 
 import "./notification.css";
 import useBoolean from "../../../Customhooks/boolean";
@@ -74,12 +75,16 @@ export default function Notifications() {
 
   return (
     <div className="notification-container">
+
+
+
       <h1>Notifications Settings</h1>
       <div className="ccategory-bar">
         <p onClick={() => setShowAddProductId()}>
           Want to add Product ? Click here to add a product
         </p>
       </div>
+
       {showAddProductId && (
         <NotificationUpdate
           closeNU={() => {
@@ -87,6 +92,14 @@ export default function Notifications() {
             setCount(count + 1);
           }}
         />
+      )}
+        {notificationDetails.length===0 && (
+        <div className="wrapper">
+          <div className="display-flex-col no-data-container">
+            <img src={noDataImage} alt="no data image here" />
+            <h5>No Data Found</h5>
+          </div>
+        </div>
       )}
        <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
