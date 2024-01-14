@@ -34,7 +34,7 @@ const Order = () => {
         }
     }
     const handleClose = () => {
-        toast.success('Modal is closed')
+        // toast.success('Modal is closed')
         setIsModalOpen2(false);
     };
     function openModal() {
@@ -107,7 +107,7 @@ const Order = () => {
                                     <th> Delete </th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className='t-body'>
                                 {orders.map((order) => (
                                     <tr key={order._id}>
                                         <td>{order.orderId}</td>

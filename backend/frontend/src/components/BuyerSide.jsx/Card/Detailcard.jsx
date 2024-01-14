@@ -1,15 +1,13 @@
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import axiosClient from "../../../apisSetup/axiosClient";
-import { useRequestProcessor } from "../../../apisSetup/requestProcessor";
+import { useCount } from "../GlobalData/cartContext/cartData";
+import ProductCard from "../ProductSection/brandCards/brandCards";
 import "./card.css";
 import ImageCarousel from "./crousel-img";
 import ZoomImage from "./zoomImage";
-import ProductCard from "../ProductSection/brandCards/brandCards";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { useCount } from "../GlobalData/cartContext/cartData";
-import styles from '../Card/mpCSS.module.css';
 
 
 const ImageGallery = React.memo(() => {
@@ -76,6 +74,7 @@ const ImageGallery = React.memo(() => {
     setAdded(!added);
     setNumber(1);
     AddDataLocalStorage(productId,quantity);
+    dispatch({type:'INCREMENT'})
     setTimeout(()=>{
       navigate('/context/chkout')
     },800)
@@ -144,7 +143,7 @@ const ImageGallery = React.memo(() => {
     // // Save the updated array back to localStorage
     // window.localStorage.setItem(
     //   "SHOPPING_DATA",
-    //   JSON.stringify(prevShoppingData)
+    //   JSON.stringify(prevShoppingData)∏
     // );
     // setShowSuccessMessage(true);
 
@@ -154,6 +153,9 @@ const ImageGallery = React.memo(() => {
   }
   if(!productData){
     return <></>
+  }
+  else{
+    console.log({productData})
   }
   return (
     <div>
@@ -194,7 +196,7 @@ const ImageGallery = React.memo(() => {
             </div>
           </div>
 
-          <div className={`col-md-6 container large-Screen-Right-Side`} style={{ backgroundColor: "#f5f5f5", boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)", padding: "10px"}}>
+          <div className={`col-md-6 container large-Screen-Right-Side`} style={{ boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)", padding: "20px"}}>
             <div className={`row d-block`}>
               <div className="bordder"></div>
               {/* add the name of the product + category  */}
@@ -304,19 +306,13 @@ const ImageGallery = React.memo(() => {
             </div>
             <hr />
             <div className="row">
-              <h6><b>Product Details</b></h6>
+              <h5><b>Product Details</b></h5>
               </div>
               <div className="row">
-              <ul className="px-5">
-                <li>Prjfd   sdf df dsfds </li>
-                <li>sdsdsad  </li>
-                <li>Prjfd   sdf df dsfds </li>
-                <li>sdsdsad  </li><li>Prjfd   sdf df dsfds </li>
-                <li>sdsdsad  </li><li>Prjfd   sdf df dsfds </li>
-                <li>sdsdsad  </li>
-                {/* {productData.splitProductDetails.map((item, key) => {
-                  return <li key={key}>{item}</li>;
-                })} */}
+              <ul className="px-4">
+                {productData?.splitProductDetails?.map((item,index) =>(
+                  <li className="font-18" key={index}>{item}</li>
+                ))}
               </ul>
               </div>
           </div>

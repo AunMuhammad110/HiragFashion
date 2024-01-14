@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { json } from 'react-router-dom';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useCount } from '../GlobalData/cartContext/cartData';
 // Create a context
 const DataContext = createContext();
 
@@ -12,6 +12,7 @@ export const useDataContext = () => {
 
 // Create a provider component that fetches data and provides the context
 export const DataProvider = ({ children }) => {
+  const {state,dispatch}= useCount();
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -54,7 +55,6 @@ export const DataProvider = ({ children }) => {
   //   }
   // };
   const removeFromCart = (productId) => {
-    console.log(productId)
     // Check if the product is in the cart
     const existingProductIndex = cart.findIndex(item => item.productId === productId);
     if (existingProductIndex !== -1) {
@@ -68,6 +68,7 @@ export const DataProvider = ({ children }) => {
       } else {
         // If quantity is 1, remove the product from the cart
         const updatedCart = cart.filter(item => item.productId !== productId);
+        dispatch({type:"DECREMENT"});
         setCart(updatedCart);
       }
     }

@@ -138,9 +138,14 @@ img{
     .zoom img {
         width: 300px;
         height: 450px;
-        /* position: absolute; */
-        /* 
-        ; */
+        object-fit: cover  !important;
+        /* scale: ; */
+        /* width: 20vw !important; */
+        /* height: 100vh; */
+        object-position:40% 40%;
+        /* background-position: center Top;
+        background-size: cover;
+        object-fit: center; */
         cursor: pointer;
     }
     

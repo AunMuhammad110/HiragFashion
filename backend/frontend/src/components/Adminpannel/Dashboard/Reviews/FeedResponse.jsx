@@ -42,12 +42,11 @@ function FeedBack(){
           const handleClick =(mail)=>{
             handleDelete(mail);
           }
-    console.log("state data is ",data);
     if(data.length ===0) return <></>
 
     return(
         <>
-<div className="static-container">
+<div className="static-container h-90 ">
       <div className="faq-static-container">
         <h1>Client Reviews</h1>
         <hr />
@@ -66,7 +65,7 @@ function FeedBack(){
                 </div>
                 </div>
                 <div className="col-2">
-                <button type="button" class="btn btn-dark" onClick={(e)=>{handleClick(item.mail)}}>Delete</button>
+                <button type="button" class="custom-button " onClick={(e)=>{handleClick(item.mail)}}>Delete</button>
                 </div>
                 </div>
                     <hr />

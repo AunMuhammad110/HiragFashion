@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import "./index.css";
-import noDataImage from "../../../../assets/nodata.jpg"
+import noDataImage from "../../../../assets/nodata.jpg";
 import CategoryContext from "../Product/details";
 import axiosClient from "../../../../apisSetup/axiosClient";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -22,8 +22,6 @@ export default function MainPageProductsSettings() {
   const [productData, setProductData] = useState([]);
   const [showAddProduct, setShowAddProduct] = useState(false);
 
-
-
   return (
     <div className="delivery-price-container">
       <div className="display-flex justify-sb">
@@ -36,17 +34,16 @@ export default function MainPageProductsSettings() {
           Add Products
         </button>
       </div>
-    
 
-      {showAddProduct && <EntryForm  closeContainer={()=>setShowAddProduct(false)}/>}
-      <DisplayCard  />
-
-
+      {showAddProduct && (
+        <EntryForm closeContainer={() => setShowAddProduct(false)} />
+      )}
+      <DisplayCard />
     </div>
   );
 }
 
-function EntryForm({closeContainer}) {
+function EntryForm({ closeContainer }) {
   const { categoryList } = useContext(CategoryContext);
   const [brandName, setBrandName] = useState();
   const [subcategoryName, setSubCategoryName] = useState("");
@@ -61,7 +58,6 @@ function EntryForm({closeContainer}) {
       .then((response) => {
         if (response.status === 200) {
           setSubCategoryList(response.data.subCategory);
-         
         }
       })
       .catch((error) => {
@@ -78,7 +74,7 @@ function EntryForm({closeContainer}) {
       toast.error("Please Fill the inputs");
       return;
     }
-  
+
     axiosClient
       .post("/AddMainPageProducts", {
         brandName: brandName,
@@ -90,10 +86,10 @@ function EntryForm({closeContainer}) {
         closeContainer();
       })
       .catch((error) => {
-          toast.error(`Category ${category} already exists`);
+        toast.error(`Category ${category} already exists`);
       });
   }
-  
+
   return (
     <div className="change-carrousal-container">
       <div>
@@ -104,7 +100,7 @@ function EntryForm({closeContainer}) {
           required
           className="custom-select"
         >
-         <option value="">Select Brand</option>
+          <option value="">Select Brand</option>
           {categoryList.map((category, index) => (
             <option key={index} value={category}>
               {category}
@@ -136,7 +132,6 @@ function EntryForm({closeContainer}) {
           required
           className="custom-select"
         >
-          
           <option value="">Select Category</option>
           <option value="Sale">Sale</option>
           <option value="New Collection">New Collection</option>
@@ -211,7 +206,7 @@ function DisplayCard() {
 
   return (
     <div>
-      {data?.data.length===0 && (
+      {data?.data.length === 0 && (
         <div className="wrapper">
           <div className="display-flex-col no-data-container">
             <img src={noDataImage} alt="no data image here" />
@@ -220,38 +215,36 @@ function DisplayCard() {
         </div>
       )}
       <br />
-      {data.data.length >0&&
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Brand Name </StyledTableCell>
-              <StyledTableCell align="">Category Name</StyledTableCell>
-              <StyledTableCell align="">Category</StyledTableCell>
-              <StyledTableCell align="">Delete</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            
-             { data?.data?.map((item, index) => (
+      {data.data.length > 0 && (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Brand Name </StyledTableCell>
+                <StyledTableCell >Category Name</StyledTableCell>
+                <StyledTableCell >Category</StyledTableCell>
+                <StyledTableCell >Delete</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data?.data?.map((item, index) => (
                 <StyledTableRow key={index} style={{ height: "7vh" }}>
                   <StyledTableCell component="th" scope="row">
                     {item.brandName}
                   </StyledTableCell>
-                  <StyledTableCell align="">
-                    {item.categoryName}
-                  </StyledTableCell>
-                  <StyledTableCell align="">{item.category}</StyledTableCell>
-                  <StyledTableCell align="">
+                  <StyledTableCell>{item.categoryName}</StyledTableCell>
+                  <StyledTableCell>{item.category}</StyledTableCell>
+                  <StyledTableCell>
                     <div onClick={() => deleteRecord(item._id)}>
                       <DeleteOutlineOutlinedIcon />
                     </div>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
-          </TableBody>
-        </Table>
-      </TableContainer>}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       <ToastContainer />
     </div>
   );

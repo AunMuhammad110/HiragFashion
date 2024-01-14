@@ -8,19 +8,24 @@ import { useNavigate } from "react-router-dom";
 import CartIcon from "./cartIcon";
 import CheckOut from "../Checkout/checkout";
 import { Link } from "react-router-dom";
+import { useCount } from "../GlobalData/cartContext/cartData";
+
+
 
 const Navbarr = React.memo(() => {
   const navigate = useNavigate();
-  const cartDataLength = useRef;
+  const { state }=useCount();
+  console.log("the cart length is " + state.count);
+  // const cartDataLength = useRef;
   const { data, isLoading, isError } = useContext(MainPageDataContext);
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [smallImagesVisible, setSmallImagesVisible] = useState(true);
-  useEffect(()=>{
-    const shoppingData = JSON.parse(window.localStorage.getItem("SHOPPING_DATA"));
-    if (shoppingData) {
-    cartDataLength.current=shoppingData.length;
-    }
-  },[window.localStorage])
+  // useEffect(()=>{
+  //   const shoppingData = JSON.parse(window.localStorage.getItem("SHOPPING_DATA"));
+  //   if (shoppingData) {
+  //   cartDataLength.current=shoppingData.length;
+  //   }
+  // },[window.localStorage])
 
   if (isLoading) {
     return <p></p>;
@@ -97,7 +102,7 @@ const Navbarr = React.memo(() => {
                 aria-hidden="true"
                 // onClick={handleCart}
               ></i>
-              <span className="cart-alert">{cartDataLength.current}</span>
+              {state.count > 0 && (<span className="cart-alert">{state.count}</span>)}
               {/* </Link> */}
             </a>
           </div>

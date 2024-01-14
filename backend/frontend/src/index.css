@@ -58,6 +58,9 @@
 .h-50 {
   height: 50vh;
 }
+.h-90 {
+  height: 90vh;
+}
 .hr-mb-10 {
   margin-bottom: 10px;
 }
@@ -112,6 +115,9 @@
 }
 .font-60 {
   font-size: 50px !important;
+}
+.font-18{
+  font-size: 18px;
 }
 .underline-text {
   text-decoration: underline;

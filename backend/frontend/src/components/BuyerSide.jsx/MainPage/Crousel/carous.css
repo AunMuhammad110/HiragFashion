@@ -46,6 +46,10 @@
     }
 
     .center-caption {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -53,6 +57,17 @@
         max-height: 100%;
         height: auto;
     }
+    .center-caption > h1{
+        color: white;
+        letter-spacing: 2px;
+        text-align: center;
+    }
+    .center-caption > button{
+        padding: 4px 15px;
+        font-weight: 0 !important;
+        font-size: 14   px;
+    }
+    
 
     .carousel-caption {
         /* min-height: 10%;

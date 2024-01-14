@@ -4,9 +4,15 @@ import React, { createContext, useContext, useReducer } from 'react';
 const CountContext = createContext();
 
 // Initial state for the context
-const initialState = { count: 0 };
+const initialState = { count:0};
 
 // Reducer function to handle different actions
+if(window.localStorage.getItem("SHOPPING_DATA")){
+  initialState.count=JSON.parse(window.localStorage.getItem("SHOPPING_DATA")).length;
+  console.log("the length is " + initialState.count)
+}
+
+
 const countReducer = (state, action) => {
   switch (action.type) {
     case 'INCREMENT':

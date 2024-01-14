@@ -169,7 +169,7 @@ router.get('/GetProductDetails/:id', async (req, res) => {
       return { ...relatedProduct, firstImage };
     });
 
-    let pd = product.productDetails.split("<br>");
+    let pd = product.productDetails.split("\n");
     const customObject = { ...product, splitProductDetails: pd, relatedProducts: relatedProductsModified };
     res.status(200).json(customObject);
   } catch (error) {

@@ -38,9 +38,13 @@ function FormmFeedback() {
                     // console.log("Data:", response.data);
             
                     if (response.status === 201) {
-                        window.alert("Feedback Submitted");
+                        setFormData( {
+                            namee: "",
+                            mail: "",
+                            review: ""
+                        })
                     } else {
-                        window.alert("Error occurred");
+                        // window.alert("Error occurred");
                     }
                 } catch (error) {
                    console.error(error)
@@ -108,7 +112,7 @@ function FormmFeedback() {
                                 <div className="form-group">
                                     <label htmlFor="review" className="d-flex text-allign-left my-2">Write review</label>
                                     <textarea
-                                        name="review" className="d-flex text-allign-left col-12 w-100 rounded-2"
+                                        name="review" className="d-flex text-allign-left col-12 pt-2 w-100 rounded-2"
                                         id="review"
                                         placeholder=" Enter your comments here"
                                         rows="5"
