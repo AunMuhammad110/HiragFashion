@@ -9,6 +9,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Outlet,Navigate, useNavigate } from "react-router-dom";
 
 import "./login.css";
+import axiosClient from "../../../apisSetup/axiosClient";
 
 
 export default function Login(props) {
@@ -34,11 +35,12 @@ export default function Login(props) {
   });
 
 
+
   const [showPassword, setShowPassword] = useState(false);
 
   //   handle submission of login request
   function onSubmit(data) {
-    axios.post("http://localhost:3334/signin", { User_Name: data.User_Name, Password: data.Password }).then(
+    axiosClient.post(`/signin`, { User_Name: data.User_Name, Password: data.Password }).then(
         (response) => {
             if (response.data == 'TrueTrue') {
                 setIsLoggedin(true);
